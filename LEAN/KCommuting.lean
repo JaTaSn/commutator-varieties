@@ -1,1 +1,2 @@
 import KCommuting.MinimalGenerators
+import KCommuting.Independence
