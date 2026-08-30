@@ -1,0 +1,54 @@
+==============================================================================
+[A] Jacobian recursion (lem-jacrecursion) as polynomial identity, D encoding
+==============================================================================
+  k=2: J_k == recursion RHS?  True
+  k=3: J_k == recursion RHS?  True
+  k=4: J_k == recursion RHS?  True
+  k=5: J_k == recursion RHS?  True
+  k=6: J_k == recursion RHS?  True
+
+==============================================================================
+[B] the printed k=3 example blocks: stale tau version, or correct D version?
+==============================================================================
+  Block 1 printed == D version?   False
+  Block 1 printed == tau version? True
+  Block 2 printed == D version?   False
+  Block 2 printed == tau version? True
+  Correct D-version block 1 (rows):
+    [-v2_2*v3_2 + v2_3*v3_3, v2_1*v3_2, -v2_1*v3_3, v1_2*v3_2 - v1_3*v3_3, -v1_1*v3_2, v1_1*v3_3]
+    [v2_2*v3_1, -v2_1*v3_1 + v2_3*v3_3, -v2_2*v3_3, -v1_2*v3_1, v1_1*v3_1 - v1_3*v3_3, v1_2*v3_3]
+    [-v2_3*v3_1, -v2_3*v3_2, v2_1*v3_1 + v2_2*v3_2, v1_3*v3_1, v1_3*v3_2, -v1_1*v3_1 - v1_2*v3_2]
+  Correct D-version block 2 (rows):
+    [0, v1_2*v2_1 - v1_1*v2_2, -v1_3*v2_1 + v1_1*v2_3]
+    [-v1_2*v2_1 + v1_1*v2_2, 0, -v1_3*v2_2 + v1_2*v2_3]
+    [v1_3*v2_1 - v1_1*v2_3, v1_3*v2_2 - v1_2*v2_3, 0]
+  [printed blocks side-by-side] == J_3 of tau-encoding w_3?  True
+  [D-version blocks side-by-side] == J_3 of D-encoding w_3?  True
+
+==============================================================================
+[F] displayed w_3 generators (article ex-wk-signed) vs D recursion
+==============================================================================
+  displayed (g1,g2,g3) == w_3 (D)?  True
+
+==============================================================================
+[C] false-shortcut remark: rank J_3(q, 0) for q a rank-2 witness on V(I_2)
+==============================================================================
+  q = ((1,0,0),(0,0,0)) on V(I_2); rank J_3(q,0) = 0  (remark claims 0)
+
+==============================================================================
+[D]+[E] witness recipe on every component, D encoding, k=2..6
+==============================================================================
+  nondeg chain: w_2(p_2)=(0, 0, 1); w_3(p_3)=(0, 1, 0); w_4(p_4)=(0, 0, 1); w_5(p_5)=(0, 1, 0); w_6(p_6)=(0, 0, 1)
+  k=2 comp j=2: witness=(1, 0, 0, 0, 0, 0)  on V(I_k)=True  rank J_k=2
+  k=3 comp j=2: witness=(1, 0, 0, 0, 0, 0, 1, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2]] (intended: first 2)
+  k=3 comp j=3: witness=(1, 0, 0, 0, 1, 0, 0, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3]] (intended: first 3)
+    (k=3: 2 primary components found; expected 2)
+  k=4 comp j=2: witness=(1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2]] (intended: first 2)
+  k=4 comp j=3: witness=(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3]] (intended: first 3)
+  k=4 comp j=4: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4]] (intended: first 4)
+    (k=4: 3 primary components found; expected 3)
+  k=5 comp j=2: witness=(1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2]] (intended: first 2)
+  k=5 comp j=3: witness=(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3]] (intended: first 3)
+  k=5 comp j=4: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4]] (intended: first 4)
+  k=5 comp j=5: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4, 5]] (intended: first 5)
+    (k=5: 4 primary components found; expected 4)
