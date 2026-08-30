@@ -1,0 +1,182 @@
+# Y~1~/Y~2~ non-containment --- raw verification output
+
+Raw, verbatim output backing Step 4 of
+[working-notes/proof-plan-conjectures.org](../working-notes/proof-plan-conjectures.org) --- the
+computational half of closing the \"no containment either way\" gap in that note\'s Step 1. Same role
+as the other files here: `code/`{.verbatim} holds the script, this holds what it actually printed,
+`working-notes/`{.verbatim} holds the interpretation.
+
+Scripts:
+
+- [`code/verify_Y1_Y2_noncontainment.sage`{.verbatim}](../code/verify_Y1_Y2_noncontainment.sage) --- the
+  $Y_1/Y_2$ battery, run per $k$.
+- [`code/verify_tau_cross_identity.sage`{.verbatim}](../code/verify_tau_cross_identity.sage) --- the base
+  identity $\mathrm{red}([A,B])=\tau(\mathrm{red}(A)\times\mathrm{red}(B))$, which is what makes
+  the $I_k=(w_k)$ structural claim a proof for all $k$ rather than a check at $k\le6$.
+
+A note on the `light`{.verbatim} flag: at $k=5,6$ the per-component radicality tests, `I_k.radical()`{.verbatim}, the
+ideal intersections and `J2.is_prime()`{.verbatim} do not finish in reasonable wall time, so those runs pass
+`light`{.verbatim} and print `(skipped)`{.verbatim} for exactly those lines. Everything load-bearing --- the exact
+ideal-equality matching in `[3]`{.verbatim} and the direct containment tests in `[4]`{.verbatim} --- runs in every case.
+
+# The base identity (all $k$)
+
+`sage verify_tau_cross_identity.sage`{.verbatim}
+
+    red([A,B])            = (-a12*b11 + a11*b12 - a22*b12 + a12*b22, a21*b11 - a11*b21 + a22*b21 - a21*b22, -2*a21*b12 + 2*a12*b21)
+    tau(red(A) x red(B))  = (-a12*b11 + a11*b12 - a22*b12 + a12*b22, a21*b11 - a11*b21 + a22*b21 - a21*b22, -2*a21*b12 + 2*a12*b21)
+    difference            = (0, 0, 0)
+    identity holds as polynomials in the 8 generic entries? True
+    trace([A,B]) == 0? True
+    tau as a matrix:
+     [0 1 0]
+    [1 0 0]
+    [0 0 2]
+    det(tau) = -2 -- invertible over any field of characteristic != 2
+
+# $k=3\to4$ --- full battery, nothing skipped
+
+`sage verify_Y1_Y2_noncontainment.sage 4`{.verbatim}
+
+    ==============================================================================
+    k = 4   (transition k-1 = 3  ->  k = 4)
+    ==============================================================================
+    [0] I_k (cross5 chaining) == ideal(w_k) (tau-recursion)? True
+        dim V(I_k) = 10   (ambient 12, codim 2)
+    [1] primary decomposition of I_{k-1}: 2 components (expect k-2 = 2)
+          comp 0: dim=7 radical? True  blocks=[0, 1]
+          comp 1: dim=7 radical? True  blocks=[0, 1, 2]
+        primary decomposition of I_k:     3 components (expect k-1 = 3)
+          comp 0: dim=10 radical? True  blocks=[0, 1]
+          comp 1: dim=10 radical? True  blocks=[0, 1, 2]
+          comp 2: dim=10 radical? True  blocks=[0, 1, 2, 3]
+        I_k radical? True   I_k == intersection of components? True
+    [2] I(Y_2) by elimination of lam from the graph ideal of Phi:
+          3 generators, dim = 10, prime? True
+          generators: [2*w2*x1 + 2*w1*x2 + w3*x3, u3*v2*x1 - u2*v3*x1 - u3*v1*x2 + u1*v3*x2 + u2*v1*x3 - u1*v2*x3, 2*u3*v2*w1*x2 - 2*u2*v3*w1*x2 + 2*u3*v1*w2*x2 - 2*u1*v3*w2*x2 - 2*u2*v1*w2*x3 + 2*u1*v2*w2*x3 + u3*v2*w3*x3 - u2*v3*w3*x3]
+    [3] exact ideal-equality matching (I_k's components vs. Y_1 pieces / Y_2):
+          comp 0  ==  Y_1 piece 0  (component 0 of I_{k-1}, v_k free)
+          comp 1  ==  Y_1 piece 1  (component 1 of I_{k-1}, v_k free)
+          comp 2  ==  Y_2 (eliminated graph ideal)
+        every Y_1 piece equals some component of I_k? True
+        Y_2 equals some component of I_k?             True
+        V(I_k) = Y_1 u Y_2 as ideals (I_k.radical() == intersection)? True
+    [4] direct containment tests (V(J) <= V(J') iff J' <= J as ideals):
+          Y_1 piece 0  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 0 ?  False
+          Y_1 piece 1  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 1 ?  False
+          Y_2  <=  Y_1 (whole union) ?  False
+          Y_1 (union)  <=  Y_2 ?        False
+    [5] w_{k-1} not identically zero -- witness built by the inductive recipe:
+          point (v_1,...,v_{k-1}) = (1, 0, 0, 0, 1, 0, 1, 0, 0)
+          w_{k-1} there = (0, 2, 0)   (nonzero? True)
+
+# $k=4\to5$ --- `light`{.verbatim} mode
+
+`sage verify_Y1_Y2_noncontainment.sage 5 light`{.verbatim}
+
+    ==============================================================================
+    k = 5   (transition k-1 = 4  ->  k = 5)
+    ==============================================================================
+    [0] I_k (cross5 chaining) == ideal(w_k) (tau-recursion)? True
+        dim V(I_k) = 13   (ambient 15, codim 2)
+    [1] primary decomposition of I_{k-1}: 3 components (expect k-2 = 3)
+          comp 0: dim=10 radical? (skipped)  blocks=[0, 1]
+          comp 1: dim=10 radical? (skipped)  blocks=[0, 1, 2]
+          comp 2: dim=10 radical? (skipped)  blocks=[0, 1, 2, 3]
+        primary decomposition of I_k:     4 components (expect k-1 = 4)
+          comp 0: dim=13 radical? (skipped)  blocks=[0, 1]
+          comp 1: dim=13 radical? (skipped)  blocks=[0, 1, 2]
+          comp 2: dim=13 radical? (skipped)  blocks=[0, 1, 2, 3]
+          comp 3: dim=13 radical? (skipped)  blocks=[0, 1, 2, 3, 4]
+        I_k radical? (skipped)   I_k == intersection of components? (skipped)
+    [2] I(Y_2) by elimination of lam from the graph ideal of Phi:
+          3 generators, dim = 13, prime? (skipped)
+          generators: [2*x2*y1 + 2*x1*y2 + x3*y3, 2*u2*v1*w2*y1 - 2*u1*v2*w2*y1 - u3*v2*w3*y1 + u2*v3*w3*y1 - 2*u2*v1*w1*y2 + 2*u1*v2*w1*y2 - u3*v1*w3*y2 + u1*v3*w3*y2 + u3*v2*w1*y3 - u2*v3*w1*y3 + u3*v1*w2*y3 - u1*v3*w2*y3, 4*u2*v1*w2*x1*y2 - 4*u1*v2*w2*x1*y2 - 2*u3*v2*w3*x1*y2 + 2*u2*v3*w3*x1*y2 + 4*u2*v1*w1*x2*y2 - 4*u1*v2*w1*x2*y2 + 2*u3*v1*w3*x2*y2 - 2*u1*v3*w3*x2*y2 - 2*u3*v2*w1*x2*y3 + 2*u2*v3*w1*x2*y3 - 2*u3*v1*w2*x2*y3 + 2*u1*v3*w2*x2*y3 + 2*u2*v1*w2*x3*y3 - 2*u1*v2*w2*x3*y3 - u3*v2*w3*x3*y3 + u2*v3*w3*x3*y3]
+    [3] exact ideal-equality matching (I_k's components vs. Y_1 pieces / Y_2):
+          comp 0  ==  Y_1 piece 0  (component 0 of I_{k-1}, v_k free)
+          comp 1  ==  Y_1 piece 1  (component 1 of I_{k-1}, v_k free)
+          comp 2  ==  Y_1 piece 2  (component 2 of I_{k-1}, v_k free)
+          comp 3  ==  Y_2 (eliminated graph ideal)
+        every Y_1 piece equals some component of I_k? True
+        Y_2 equals some component of I_k?             True
+        V(I_k) = Y_1 u Y_2 as ideals (I_k.radical() == intersection)? (skipped)
+    [4] direct containment tests (V(J) <= V(J') iff J' <= J as ideals):
+          Y_1 piece 0  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 0 ?  False
+          Y_1 piece 1  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 1 ?  False
+          Y_1 piece 2  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 2 ?  False
+          Y_2  <=  Y_1 (whole union) ?  (skipped)
+          Y_1 (union)  <=  Y_2 ?        (skipped)
+    [5] w_{k-1} not identically zero -- witness built by the inductive recipe:
+          point (v_1,...,v_{k-1}) = (1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0)
+          w_{k-1} there = (0, 0, 2)   (nonzero? True)
+
+# $k=5\to6$ --- `light`{.verbatim} mode
+
+`sage verify_Y1_Y2_noncontainment.sage 6 light`{.verbatim}
+
+    ==============================================================================
+    k = 6   (transition k-1 = 5  ->  k = 6)
+    ==============================================================================
+    [0] I_k (cross5 chaining) == ideal(w_k) (tau-recursion)? True
+        dim V(I_k) = 16   (ambient 18, codim 2)
+    [1] primary decomposition of I_{k-1}: 4 components (expect k-2 = 4)
+          comp 0: dim=13 radical? (skipped)  blocks=[0, 1]
+          comp 1: dim=13 radical? (skipped)  blocks=[0, 1, 2]
+          comp 2: dim=13 radical? (skipped)  blocks=[0, 1, 2, 3]
+          comp 3: dim=13 radical? (skipped)  blocks=[0, 1, 2, 3, 4]
+        primary decomposition of I_k:     5 components (expect k-1 = 5)
+          comp 0: dim=16 radical? (skipped)  blocks=[0, 1]
+          comp 1: dim=16 radical? (skipped)  blocks=[0, 1, 2]
+          comp 2: dim=16 radical? (skipped)  blocks=[0, 1, 2, 3]
+          comp 3: dim=16 radical? (skipped)  blocks=[0, 1, 2, 3, 4]
+          comp 4: dim=16 radical? (skipped)  blocks=[0, 1, 2, 3, 4, 5]
+        I_k radical? (skipped)   I_k == intersection of components? (skipped)
+    [2] I(Y_2) by elimination of lam from the graph ideal of Phi:
+          3 generators, dim = 16, prime? (skipped)
+          generators: [2*y2*z1 + 2*y1*z2 + y3*z3, 2*u3*v2*w1*x2*z1 - 2*u2*v3*w1*x2*z1 + 2*u3*v1*w2*x2*z1 - 2*u1*v3*w2*x2*z1 - 2*u2*v1*w2*x3*z1 + 2*u1*v2*w2*x3*z1 + u3*v2*w3*x3*z1 - u2*v3*w3*x3*z1 - 2*u3*v2*w1*x1*z2 + 2*u2*v3*w1*x1*z2 - 2*u3*v1*w2*x1*z2 + 2*u1*v3*w2*x1*z2 - 2*u2*v1*w1*x3*z2 + 2*u1*v2*w1*x3*z2 - u3*v1*w3*x3*z2 + u1*v3*w3*x3*z2 + 2*u2*v1*w2*x1*z3 - 2*u1*v2*w2*x1*z3 - u3*v2*w3*x1*z3 + u2*v3*w3*x1*z3 + 2*u2*v1*w1*x2*z3 - 2*u1*v2*w1*x2*z3 + u3*v1*w3*x2*z3 - u1*v3*w3*x2*z3, 4*u3*v2*w1*x2*y1*z2 - 4*u2*v3*w1*x2*y1*z2 + 4*u3*v1*w2*x2*y1*z2 - 4*u1*v3*w2*x2*y1*z2 - 4*u2*v1*w2*x3*y1*z2 + 4*u1*v2*w2*x3*y1*z2 + 2*u3*v2*w3*x3*y1*z2 - 2*u2*v3*w3*x3*y1*z2 + 4*u3*v2*w1*x1*y2*z2 - 4*u2*v3*w1*x1*y2*z2 + 4*u3*v1*w2*x1*y2*z2 - 4*u1*v3*w2*x1*y2*z2 + 4*u2*v1*w1*x3*y2*z2 - 4*u1*v2*w1*x3*y2*z2 + 2*u3*v1*w3*x3*y2*z2 - 2*u1*v3*w3*x3*y2*z2 - 4*u2*v1*w2*x1*y2*z3 + 4*u1*v2*w2*x1*y2*z3 + 2*u3*v2*w3*x1*y2*z3 - 2*u2*v3*w3*x1*y2*z3 - 4*u2*v1*w1*x2*y2*z3 + 4*u1*v2*w1*x2*y2*z3 - 2*u3*v1*w3*x2*y2*z3 + 2*u1*v3*w3*x2*y2*z3 + 2*u3*v2*w1*x2*y3*z3 - 2*u2*v3*w1*x2*y3*z3 + 2*u3*v1*w2*x2*y3*z3 - 2*u1*v3*w2*x2*y3*z3 - 2*u2*v1*w2*x3*y3*z3 + 2*u1*v2*w2*x3*y3*z3 + u3*v2*w3*x3*y3*z3 - u2*v3*w3*x3*y3*z3]
+    [3] exact ideal-equality matching (I_k's components vs. Y_1 pieces / Y_2):
+          comp 0  ==  Y_1 piece 0  (component 0 of I_{k-1}, v_k free)
+          comp 1  ==  Y_1 piece 1  (component 1 of I_{k-1}, v_k free)
+          comp 2  ==  Y_1 piece 2  (component 2 of I_{k-1}, v_k free)
+          comp 3  ==  Y_1 piece 3  (component 3 of I_{k-1}, v_k free)
+          comp 4  ==  Y_2 (eliminated graph ideal)
+        every Y_1 piece equals some component of I_k? True
+        Y_2 equals some component of I_k?             True
+        V(I_k) = Y_1 u Y_2 as ideals (I_k.radical() == intersection)? (skipped)
+    [4] direct containment tests (V(J) <= V(J') iff J' <= J as ideals):
+          Y_1 piece 0  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 0 ?  False
+          Y_1 piece 1  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 1 ?  False
+          Y_1 piece 2  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 2 ?  False
+          Y_1 piece 3  <=  Y_2 ?  False        Y_2  <=  Y_1 piece 3 ?  False
+          Y_2  <=  Y_1 (whole union) ?  (skipped)
+          Y_1 (union)  <=  Y_2 ?        (skipped)
+    [5] w_{k-1} not identically zero -- witness built by the inductive recipe:
+          point (v_1,...,v_{k-1}) = (1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0)
+          w_{k-1} there = (0, 4, 0)   (nonzero? True)
+
+# A wall-time gotcha, not a mathematical one
+
+$I_k$ has two natural generating sets: the chained-`cross5`{.verbatim} entries (what the real algorithm
+produces) and the three entries of $w_k$ (the $\tau$-recursion). Line `[0]`{.verbatim} of every block
+above confirms they generate the **same ideal**. Singular\'s `primary_decomposition`{.verbatim} is nevertheless
+extremely sensitive to which one it is given: at $k=6$ the `cross5`{.verbatim} generators decompose in
+**61 seconds**, while the $\tau$-recursion generators had **still not finished after 15 minutes**
+and were killed. The script hands Singular the `cross5`{.verbatim} set throughout for this reason. Recorded
+here because the obvious way to write this script -- build $w_k$ by the recursion, decompose it
+-- is the slow one, and the failure mode is \"it just never returns\", not an error.
+
+# What to read out of these
+
+1.  Line `[0]`{.verbatim} in each block: the ideal produced by the real chained `cross5`{.verbatim} code and the ideal
+    produced by the $\tau$/cross recursion are **equal**, so everything below concerns the actual
+    commutator ideal.
+2.  Line `[3]`{.verbatim}: every component of $I_k$\'s primary decomposition is matched to a $Y_1$ piece or
+    to $Y_2$ by **exact ideal equality** (both containments via Gröbner bases), not by dimension or
+    degree coincidence.
+3.  Line `[4]`{.verbatim}: all containment tests between $Y_2$ and each $Y_1$ piece return `False`{.verbatim}, in both
+    directions, computed by ideal membership of generators --- independently of the primary
+    decomposition, which is the point (reading non-containment off the decomposition would be
+    circular).
+4.  Line `[5]`{.verbatim}: an explicit point where $w_{k-1}\ne0$, constructed by the same recipe as Lemma 4.2
+    of the proof-plan note. Worth noting the naive guess $(e_1,e_2,e_3)$ **fails** at $k-1=3$
+    ($w_3=0$ there), which is why the recipe, not a guess, is what the script implements.

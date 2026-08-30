@@ -1,0 +1,361 @@
+#+title: References considered for fast-commutators
+
+Full research corpus — everything that comes up while researching, not just what ends up cited.
+Ordered by relevance (most to least), per this workspace's project-level convention (org format,
+not =.md=, per Jan's explicit instruction 2026-08-16 — a deliberate per-project deviation from the
+usual workspace-wide convention). BibTeX entries in =references.bib=.
+
+1. *Bari (2021)*, /On the Structure Tensor of $\mathfrak{sl}_n$/, PhD thesis, Texas A&M
+   University (advisor: J.M. Landsberg).
+   - File: =bari_structure-tensor-sln-thesis.pdf=.
+   - Relevance: *highest* — this is, almost verbatim, our project's own question, already studied
+     under the name "structure tensor of $\mathfrak{sl}_n$" (the Lie bracket bilinear map on
+     traceless $n\times n$ matrices — loses nothing vs. the full commutator, since scalar/trace
+     parts never contribute to $[A,B]$ anyway).
+   - Included: cited throughout =working-notes/small-commutators-musings.org=.
+   - Downloaded: yes — legitimate open academic posting, hosted directly on advisor J.M.
+     Landsberg's own Texas A&M page.
+   - Summary: proves $\mathbf R(T_{\mathfrak{sl}_2})=5$ (citing Mirwald 1985) and new bounds
+     $16\le\mathbf R(T_{\mathfrak{sl}_3})\le20$ (the lower bound via a new "border apolarity"
+     technique — first known explicit tensor with border rank $\ge2m$ for $m<13$; the upper bound
+     via a numerical search giving an explicit, if algebraically messy, rank-20 decomposition using
+     a primitive 6th root of unity) and a border-rank lower bound $\mathbf R(T_{\mathfrak{sl}_4})
+     \ge28$. Crucially states (Theorem 4.1, attributed to Lim & Ye below) that the *asymptotic
+     exponent* of $\mathfrak{sl}_n$'s structure tensor equals $\omega$, the ordinary
+     matrix-multiplication exponent, exactly — so upper bounds on $\mathbf R(T_{\mathfrak{sl}_n})$
+     are also upper bounds on $\omega$ itself, and there is no separate asymptotic "commutator
+     speedup" to be found (see the working note's dedicated section on this). Techniques used
+     (Koszul flattenings, border substitution, border apolarity) are representation-theoretic/
+     algebraic-geometric and fairly heavy — noted as a ceiling on how far we can extend these
+     specific bounds ourselves without the same machinery.
+
+2. *Mirwald (1985)*, /The algorithmic structure of $\mathfrak{sl}(2,k)$/, Proc. 3rd International
+   Conference on Algebraic Algorithms and Error-Correcting Codes (AAECC-3), Springer, 274–287.
+   - Relevance: *highest for the $n=2$ case* — the actual original source for
+     $\mathbf R(T_{\mathfrak{sl}_2})=5$, cited by Bari above. Predates Gustafson–Aluru (below) by
+     11 years and is specifically about $\mathfrak{sl}(2,k)$, not the cross product per se.
+   - Included: cited in the working note as the authority for "5 is optimal," via Bari's citation.
+   - Downloaded: no — old Springer LNCS conference proceedings, not found freely available;
+     not pursued further (low expected yield for an 11-page 1985 conference paper).
+   - Summary: not read directly (only via Bari's citation) — flagged if we ever want the original
+     algorithm as actually written, rather than our own independently-rediscovered one.
+
+3. *Gustafson & Aluru (1996)*, /Massively Parallel Searching for Better Algorithms or How to Do a
+   Cross Product with Five Multiplications/, Scientific Programming 5(3), 203–217.
+   - Relevance: *high* — independent confirmation that the 3D cross product (= the $2\times2$
+     commutator, traceless part) has bilinear complexity 5, found by a genuinely different method
+     (their own massively-parallel brute-force search program, one of the field's early examples of
+     automated algorithm discovery — a spiritual ancestor of AlphaTensor/AlphaEvolve, which is what
+     produced this project's founding DPS reference).
+   - Included: cited in the working note.
+   - Downloaded: no — Scientific Programming (IOS Press) journal article; found only via
+     ResearchGate abstract page (login-gated) and a probably-stale Ames Laboratory URL
+     (=scl.ameslab.gov=, DOE national lab); not pursued further. A DOE/Ames Laboratory technical
+     report version may exist via OSTI and be genuinely open access — not checked.
+   - Summary: not read directly — we independently rediscovered a (probably different, equally
+     valid) 5-multiplication formula ourselves by a bounded randomized local search rather than
+     transcribing theirs; see =code/search_5mult_cross_product.py= and
+     =code/verify_2x2_commutator_5mult.sage=.
+
+4. *Bruns & Vetter (1988)*, /Determinantal Rings/, Lecture Notes in Mathematics 1327,
+   Springer-Verlag.
+   - Relevance: *highest, as of 2026-08-16* — supplies the exact classical theorems this project's
+     own results (Conjecture 1's Cohen–Macaulayness/generator-count, and the codimension input to
+     Conjecture 2's Theorem 4.6) rest on: Theorem (2.7) (p. 13), the general "grade at expected
+     value $\Rightarrow$ perfect" result for the ideal of maximal minors of an *arbitrary* matrix
+     (not just independent-indeterminate entries — exactly this project's situation, where one row
+     of the relevant $2\times3$ matrix is a fixed complicated polynomial vector, not a row of
+     indeterminates); and Theorem (16.36) (p. 217, Appendix 16.F, "The Theorem of Hilbert-Burch"),
+     the codimension-2 structure theorem itself, with an explicit remark that its hypotheses hold
+     whenever the ambient ring is a polynomial ring over a field, $\mathrm{grade}(I)=2$, and $A/I$
+     is Cohen–Macaulay — again, precisely this project's situation. Section 2.C is the actual
+     construction of the Eagon–Northcott complex (pp. 16–22).
+   - Included: cited as =BrunsVetter1988= in =article/fast-commutators.typ='s Proposition 3,
+     replacing an earlier, less careful citation to "Bruns–Vasconcelos" (a misremembered co-author
+     — Vetter, not Vasconcelos; caught and fixed 2026-08-16 during this citation chase).
+   - Downloaded: *yes* — genuinely open access: the book is out of print, and the title page states
+     "The authors are grateful to Springer-Verlag for the permission to make this postscript file
+     accessible," hosted directly on Bruns' own Universität Osnabrück page. Confirmed by fetching
+     and inspecting the PDF directly (title page, table of contents, and both theorem statements
+     checked verbatim) rather than trusted from a search snippet.
+   - Summary: as above — read directly (the two specific theorems and their surrounding
+     subsections), not just cited secondhand.
+   - File: =bruns-vetter1988_determinantal-rings.pdf=.
+
+5. *Eagon & Northcott (1962)*, /Ideals defined by matrices and a certain complex associated with
+   them/, Proc. Roy. Soc. London Ser. A 269(1337), 188–204. DOI: 10.1098/rspa.1962.0170.
+   - Relevance: *high* — the historical origin of the Eagon–Northcott complex, and (per the
+     2026-08-16 direct read below) actually sufficient *on its own* for this project's Proposition
+     21/Theorem 23, not merely the superseded predecessor of Bruns–Vetter's treatment.
+   - Included: cited as =EagonNorthcott1962= in =article/ring-of-k-commuting-2x2-matrices.typ='s
+     Proposition 21.
+   - Downloaded: *yes*, 2026-08-16 — closed access via Unpaywall (confirmed, no OA location for the
+     DOI), but obtained via JSTOR through Jan's LiU institutional access after he dropped a copy in
+     =INBOX/=; filed at
+     =literature/subscription/eagon-northcott1962_ideals-defined-by-matrices.pdf= (not the main
+     =literature/= directory, per the workspace's subscription-provenance convention).
+   - Summary: *read in full*, 2026-08-16, prompted by Jan asking specifically what this project
+     uses from it. Correction to the earlier "superseded... arbitrary matrix entries, not just the
+     generic case" framing above (which implied the 1962 theorem itself needed genericity): it does
+     not. Theorem 2 (§5, p. 201) is already fully general — arbitrary Noetherian $R$, arbitrary
+     $s\times r$ matrix $A$, no independent-indeterminates hypothesis anywhere — and gives exactly
+     $\mathrm{pd}(R/(A))=r-s+1$ (with an explicit resolution) whenever
+     $\mathrm{gr}\{(A);R\}=r-s+1$. Applied directly to $I_k$ ($s=2,r=3$, expected grade 2, matching
+     this project's own Theorem 15/codim-2 result), this already gives Theorem 23's
+     Cohen–Macaulayness via Auslander–Buchsbaum, with no need for Bruns–Vetter's more general
+     hypotheses claim (Bruns–Vetter remains fine as a modern-textbook citation, just not necessary
+     to cover a gap that turns out not to exist). Full working-through, including an explicit $I_3$
+     example unwinding the Eagon–Northcott complex's own graded pieces to recover the
+     3-generators/2-syzygies Hilbert–Burch shape directly:
+     =working-notes/eagon-northcott-1962-primary-source.org=. Not yet reflected in the article
+     itself — flagged there as a citation-accuracy finding for Jan to decide on, not acted on
+     unilaterally.
+
+6. *Ja'Já (1978)*, /Optimal Evaluation of Pairs of Bilinear Forms/, STOC 1978, 173–183 (journal
+   version: SIAM J. Computing, 1979).
+   - Relevance: *medium* — foundational general theory for exactly this class of problem
+     (simultaneously evaluating a small fixed set of bilinear forms with minimal nonscalar
+     multiplications — matrix, quaternion, and other structured products are all instances), giving
+     a complete solution for the two-bilinear-form case via Kronecker pencil theory. Our commutator
+     problem is a *three*-bilinear-form instance (not two), so this doesn't directly apply, but is
+     the right classical entry point for the general theory.
+   - Included: not cited yet.
+   - Downloaded: no — ACM STOC 1978 proceedings / SIAM J. Computing, both paywalled; not found
+     open access.
+   - Summary: not read directly, only via search-result abstracts.
+
+7. *Lim & Ye (2020)*, /Ubiquity of the exponent of matrix multiplication/, ISSAC 2020, 8–11.
+   - Relevance: *high* — the actual source (per Bari's Theorem 4.1 citation) of the exponent-
+     equivalence result: $\omega$ is the asymptotic exponent not just for ordinary matrix
+     multiplication but for the product operation in whole families of Lie, Jordan, and Clifford
+     algebras, structure tensor of $\mathfrak{sl}_n$ included. Directly resolves this project's
+     "block-recursion obstruction" open question from session 1 (see the working note).
+   - Included: cited (via Bari) in the working note.
+   - Downloaded: no — ACM Digital Library only, paywalled; no self-archived copy found on either
+     author's homepage (Ke Ye, Lek-Heng Lim both checked). /LiU likely has ACM DL access via
+     institutional subscription/ — if Jan wants the actual paper rather than Bari's summary of its
+     one relevant theorem, this is a candidate for =literature/subscription/= once fetched through
+     his own login, not something an agent can obtain autonomously.
+   - Summary: not read directly, only via Bari's citation of its Theorem 4.1.
+
+8. *Conner, Gesmundo, Landsberg & Ventura (2020)*, /Kronecker Powers of Tensors and Strassen's
+   Laser Method/, ITCS 2020 (LIPIcs vol. 151), arXiv:1909.04785.
+   - Relevance: *medium* — general theory of exactly the recursive/self-tensoring mechanics
+     (Kronecker powers of a tensor, and what does or doesn't happen to rank/border rank under
+     repeated tensor-squaring) that underlies whether a small commutator decomposition can be
+     "recursed" the way Strassen's can. Cited in Bari's own references list ([23]); not yet read in
+     depth ourselves.
+   - Included: not cited yet.
+   - Downloaded: yes — =conner-gesmundo-landsberg-ventura2020_kronecker-powers-laser-method.pdf=
+     (arXiv preprint, openly distributable).
+   - Summary: not read beyond the abstract/search-result level yet — flagged as the natural next
+     read if we want to understand the general Kronecker-power machinery ourselves rather than just
+     cite Lim–Ye's conclusion secondhand. Headline results (from search, not full reading): shows
+     border rank of the Kronecker square of the "little Coppersmith–Winograd" tensor equals the
+     square of the tensor's own border rank (for $q>2$), and similar for the cube ($q>4$); also
+     floats the $3\times3$ determinant tensor as a candidate for Strassen's laser method.
+
+9. *de Groote & Heintz (1985)*, /A lower bound for the bilinear complexity of some semisimple Lie
+   algebras/, in Algebraic algorithms and error-correcting codes (Grenoble, 1985), LNCS 229,
+   211–222, Springer.
+   - Relevance: *medium* — per Bari's Introduction, this was "the only known non-trivial result" on
+     $\mathbf R(T_{\mathfrak{sl}_n})$ before her own thesis — i.e. the direct predecessor result to
+     what we actually want (rank bounds for $\mathfrak{sl}_n$, $n\ge3$).
+   - Included: not cited yet.
+   - Downloaded: no — old Springer LNCS conference proceedings, not found freely available.
+   - Summary: not read directly, only via Bari's citation.
+
+10. *Dumas, Pernet & Sedoglavic (2025)*, /A non-commutative algorithm for multiplying a 3×4 matrix
+   by a 4×7 matrix using 63 non-complex multiplications/, HAL hal-05121550v2.
+   - Relevance: *high — the project's founding reference*, but not itself about commutators; its
+     tensor-decomposition formalism (bilinear map as $\sum_i M_i\otimes N_i\otimes O_i$, tensor
+     rank, the isotropy group acting on decompositions to find nicer representatives of the same
+     rank) is the toolkit this project applies to commutators instead of products.
+   - Included: cited in =STATE.org=, =README.org=, and =working-notes/strassen-eli5.org=.
+   - Downloaded: yes — =dumas-pernet-sedoglavic2025_3x4x7-rational-63.pdf= (HAL open-access
+     preprint).
+   - Summary: see =STATE.org= for the full summary (unchanged from session 1).
+
+** Commuting-matrices ring/variety literature (added 2026-08-16, for the $[A,B,C]{=}0$ variety analysis)
+
+Jan asked specifically for Freyja Hreinsdóttir's work on "the ring of commuting matrices" and what
+she cites — directly relevant background for
+=working-notes/varieties-of-triple-commutators.org='s analysis of $\{(A,B,C):[A,B,C]=0\}$, which
+turns out to be closely parallel to (though a different object from) the classical *commuting
+variety* $\{(X,Y):XY=YX\}$ her whole body of work studies.
+
+11. *Hreinsdóttir (2005)*, /Conjectures on the ring of commuting matrices/, arXiv:math/0501465.
+   - Relevance: *high* — her most detailed single paper on the subject; studies $R=S/I$ where $I$
+     is generated by the entries of $Z=XY-YX$ for generic $n\times n$ $X,Y$, with conjectures on
+     syzygies, the canonical module, and Betti numbers, building on her own thesis and 1998 paper.
+   - Included: cited in =working-notes/varieties-of-triple-commutators.org=.
+   - Downloaded: yes — =hreinsdottir_conjectures-ring-commuting-matrices.pdf= (arXiv, open access).
+   - Summary: read in full. States the classical irreducibility results (Motzkin–Taussky,
+     Gerstenhaber — both below) as the starting point, then develops first-syzygy conjectures for
+     $I$ via a trace-pairing trick ($\mathrm{tr}(A(XY-YX))=0$ whenever $A$ commutes with $X$ or
+     $Y$), verified computationally (Macaulay/Macaulay2) through $n=4$–$7$. Rich source of the
+     "off-diagonal ideal $J$ vs. full ideal $I$" distinction that directly parallels this project's
+     own trace-zero-vs-full-commutator structure.
+12. *Hreinsdóttir (1997)*, /On the ring of Commuting Matrices/, PhD thesis, Stockholm University.
+    - Relevance: *high* — the founding thesis behind the whole line of work above.
+    - Included: cited (bibliographically) in the working note.
+    - Downloaded: no — not found freely available; Stockholm University's DiVA portal didn't
+      surface a direct link in the time spent searching.
+    - Summary: not read directly, only via her later papers' self-citations.
+13. *Hreinsdóttir (1998)*, /The Koszul Dual of the Ring of Commuting Matrices/, Communications in
+    Algebra 26(11), 3807–3819.
+    - Relevance: medium — companion structural result (Koszul duality of $R$) to the syzygy/
+      Betti-number work above.
+    - Downloaded: no — Taylor & Francis, paywalled.
+14. *Hreinsdóttir (2000)*, /The Koszul dual of the ring of three commuting matrices/, Mathematica
+    Scandinavica 87(2), 161–199.
+    - Relevance: *high* — the natural three-matrix generalization (all of $X,Y,Z$ pairwise
+      commuting, a genuinely different object from this project's $[[A,B],C]=0$ — see the working
+      note for the distinction). Shows the Koszul dual is the enveloping algebra of a nilpotent Lie
+      algebra for $n\ge3$.
+    - Downloaded: no — journal states articles $>5$ years old are open access, but the specific
+      article/DOI (10.7146/math.scand.a-14304) resolved to a broken/mismatched entry after a
+      platform migration (mscand.dk → journals.msp.org); not obtained despite several attempts.
+15. *Hreinsdóttir (2006)*, /Miscellaneous results and conjectures on the ring of commuting
+    matrices/, Analele Științifice ale Universității "Ovidius" Constanța, Ser. Mat. 14(2), 45–60.
+    - Relevance: medium. Downloaded: no — not located as a direct PDF.
+16. *Hreinsdóttir (2006)*, /An improved term ordering for the ideal of commuting matrices/, J.
+    Symbolic Computation 41(9), 999–1003.
+    - Relevance: medium (computational technique, not structural). Downloaded: no — Elsevier,
+      paywalled.
+17. *Motzkin & Taussky (1955)*, /Pairs of matrices with property L. II/, Trans. Amer. Math. Soc.
+    80, 387–401.
+    - Relevance: *high* — one of the two classical sources (with Gerstenhaber below) proving the
+      ordinary commuting variety $\{(X,Y)\in M_n\times M_n:XY=YX\}$ is irreducible.
+    - Downloaded: no — not found freely available (old AMS Transactions issue).
+18. *Gerstenhaber (1961)*, /On dominance and varieties of commuting matrices/, Ann. of Math. 73,
+    324–348.
+    - Relevance: *high* — the other classical irreducibility source, and origin of the
+      $\dim_k k[X,Y]\le n$ bound for the algebra generated by two commuting $n\times n$ matrices
+      (the "Gerstenhaber Problem" for triples, below, asks whether this extends to three).
+    - Downloaded: no — Annals of Mathematics, JSTOR-gated, not found freely available.
+19. *Knutson (2003)*, /Some Schemes Related to the Commuting Variety/, arXiv:math/0306275.
+    - Relevance: high — proves the off-diagonal entries of $XY-YX$ form a regular sequence (cited
+      by Hreinsdóttir 2005 above); studies minimal primes of the corresponding ideal.
+    - Downloaded: yes — =knutson2003_schemes-related-to-commuting-variety.pdf= (arXiv, open
+      access). Not read beyond the abstract/Hreinsdóttir's citation of it yet.
+20. *Cherny, Satriano & Song (2024)*, /On the algebra generated by three commuting matrices:
+    combinatorial cases/, arXiv:2402.16334.
+    - Relevance: high — recent, active-research extension of Gerstenhaber's theorem to *triples* of
+      pairwise-commuting matrices (the "Gerstenhaber Problem"), a different three-matrix
+      generalization from this project's own $[[A,B],C]$ but a useful point of comparison.
+    - Downloaded: yes — =cherny-satriano-song2024_algebra-three-commuting-matrices.pdf= (arXiv,
+      open access). Not read in depth yet.
+21. *Holbrook & O'Meara (2020)*, /A computing strategy and programs to resolve the Gerstenhaber
+    Problem for commuting triples of matrices/, arXiv:2006.08588.
+    - Relevance: medium — companion computational-search paper to the above, looking for a
+      counterexample to the triples generalization of Gerstenhaber's bound.
+    - Downloaded: yes — =gerstenhaber-problem-computing-strategy2020.pdf= (arXiv, open access). Not
+      read in depth yet.
+
+22. *Artin & Hochster*, unpublished/attributed conjecture: for $I$ the ideal generated by entries
+    of $XY-YX$, $\mathrm{Spec}(R/I)$ is reduced and Cohen-Macaulay.
+    - Relevance: *high* — this is precisely the open conjecture Hreinsdóttir's papers (entries
+      9–14) are chipping away at case-by-case ($n=3,4$); ties the whole cluster together.
+    - Found 2026-08-16 after Jan asked whether Hochster (or Artin) first studied this in the
+      1940s. *Correction*: no 1940s source exists — this is *Michael* Artin (algebraic geometer,
+      b. 1934, son of Emil Artin, not Emil himself) and Melvin Hochster (commutative algebraist,
+      b. 1943, PhD 1967), so nothing by either could predate roughly the late 1960s at the very
+      earliest; searching turned up no single dateable original publication at all — it appears to
+      circulate purely as an attributed conjecture (oral/informal), cited as "Conjecture 1.1
+      (M. Artin, M. Hochster)" with no bracket-reference in Majidi-Zolbanin & Snapp below, i.e. not
+      traced to a specific paper even by the people citing it.
+    - Downloaded: no (nothing to download — not a paper).
+23. *Majidi-Zolbanin & Snapp*, /A note on the variety of pairs of matrices whose product is
+    symmetric/ (undated preprint).
+    - Relevance: high — the source that states the Artin–Hochster conjecture precisely (as
+      "Conjecture 1.1"), and situates it among Motzkin–Taussky, Gerstenhaber, Guralnick (1992,
+      not obtained), and Hreinsdóttir's own 1994 paper. Studies a related but different variety
+      (pairs whose *product* is symmetric, not pairs that commute), proving it irreducible, reduced,
+      and a complete intersection — by contrast with the commuting variety's Cohen–Macaulayness
+      still being open in general.
+    - Included: cited in this entry.
+    - Downloaded: yes — =majidi-zolbanin-snapp_variety-matrices-symmetric-product.pdf= (self-hosted
+      on the Ohio State University math department's own web space, standard academic
+      self-archiving).
+    - Summary: read in full. Also references C. Mueller's 2007 Michigan PhD thesis (advisor
+      Hochster) on the closely related "product is symmetric" variety, self-archived at
+      =math.lsa.umich.edu/~hochster/mueller.thesis.pdf= — not fetched (that specific host didn't
+      resolve when tried), a candidate for a future pass if this thread gets picked up again.
+
+24. *Chau (2024)*, /The $F$-regularity of algebraic sets related to commutator matrices/, Journal
+    of Algebra 652, 52–66.
+    - Relevance: *high* — Jan found this one himself (dropped in =INBOX/=, 2026-08-16) while
+      thinking through the Artin–Hochster/Hochster attribution question above; directly continues
+      that thread with real, recent (2024) results.
+    - Included: cited in this entry.
+    - Downloaded: yes, but *not open access* — =literature/subscription/
+      chau2024_f-regularity-commutator-matrices.pdf=. Confirmed closed via Unpaywall
+      (=is_oa: false=, no OA locations) before filing; obtained through Jan's own LiU institutional
+      access, hence =subscription/= not the main =literature/= directory, per the top-level
+      =CLAUDE.md= convention.
+    - Summary: read in full. Studies the commutator matrix $C=XY-YX$ of two generic $n\times n$
+      matrices and three associated ideals: $\mathfrak d$ (diagonal entries), $\mathfrak a$
+      (anti-diagonal), $\mathfrak c=\mathfrak d+\mathfrak a$ (cross-diagonal). Proves $k[X,Y]/
+      \mathfrak c$ is $F$-regular for every $n$, and $k[X,Y]/\mathfrak a$ is $F$-regular exactly
+      when $n\ne2$ — settling conjectures of Kadyrsizova and Yerlanov (2018, 2022, neither
+      obtained yet — see below). Gives a **genuinely dateable correction** to the Artin–Hochster
+      question above: states in the introduction, again with no bracketed citation to an actual
+      paper, "Hochster (1984) conjectured that these algebraic sets are reduced" — a distinct,
+      solo Hochster conjecture (about reducedness, not Cohen–Macaulayness), attached to a real year
+      (1984) even though still not traced to an actual publication. Much closer to what Jan
+      half-remembered than the 1940s — plausibly the actual source of the recollection.
+
+25. *Aramova, Crona & De Negri (2000)*, /Bigeneric initial ideals, diagonal subalgebras and
+    bigraded Hilbert functions/, J. Pure Appl. Algebra 150(3), 215–235.
+    - Relevance: *medium, personal* — see entry 24's note on why Jan asked about Crona at all.
+      Introduces "bigeneric initial ideals" to answer a question about diagonal subalgebras and
+      bound the regularity of bistable ideals.
+    - Included: not cited yet.
+    - Downloaded: yes — =literature/subscription/aramova-crona-denegri2000_bigeneric-initial-
+      ideals.pdf=, obtained 2026-08-16 via Jan's LiU access from home (Elsevier/ScienceDirect
+      works from home; confirmed closed access otherwise via Unpaywall, =is_oa: false=).
+    - Summary: not read in depth yet — Jan's own framing (2026-08-16): the multi-projective
+      connection is expected to stay an aside to this project, not its main thrust, so no deep
+      read planned unless that changes.
+26. *Crona (2006)*, /Standard Bigraded Hilbert Functions/, Comm. Algebra 34(2), 425–462.
+    - Relevance: *medium, personal* — Jan asked specifically about Kristina Crona, a fellow
+      Stockholm University PhD student of his and Hreinsdóttir's (Crona's advisor: Jan-Erik
+      Björk), who worked on multigraded rings and multiprojective varieties — directly the same
+      neighborhood as the multi-projective structure found in
+      =working-notes/varieties-of-triple-commutators.org= (2026-08-16), though — per Jan's own
+      later framing — expected to stay an aside, not the main thrust of this project. Now a
+      professor at American University, working in mathematical evolutionary biology
+      (antimicrobial resistance) — a real career change, her commutative-algebra papers aren't
+      even listed on her current homepage.
+    - Included: not cited yet.
+    - Downloaded: no — Taylor & Francis; Jan has LiU access but it requires his work computer, not
+      available from home (unlike the Elsevier paper above). Confirmed closed via Unpaywall
+      (=is_oa: false=) and not self-archived on her current AU homepage either.
+    - Summary: not read, bibliographic only. Develops the theory of which bigraded Hilbert
+      functions actually occur ("standard" ones) — squarely in the multigraded-commutative-algebra
+      territory adjacent to Jan's math/0305214 pointer (Maclagan & Smith, /Multigraded
+      Castelnuovo-Mumford Regularity/, Crelle 571 (2004) — confirmed not by Crona herself, but
+      genuinely close in the citation graph as Jan expected, same subfield).
+
+** Not yet found / to search for
+
+- *Kadyrsizova (2018)*, /Nearly commuting matrices/, J. Algebra 497, 199–218, and
+  *Kadyrsizova & Yerlanov (2022)*, /Algebraic sets defined by the commutator matrix/, J. Algebra
+  589, 29–50 — the two papers whose $F$-purity/$F$-regularity conjectures Chau (2024) settles;
+  natural next things to check for open-access copies if this thread continues.
+- Melvin Hochster's own /Foundations of tight closure theory/ lecture notes (2007),
+  self-hosted at =math.lsa.umich.edu/~hochster/711F07/fndtc.pdf= (cited by Chau) — likely
+  legitimately open access (author self-archived lecture notes), not yet fetched (that specific
+  host didn't resolve on an earlier attempt this session; worth retrying).
+
+- The actual full text of Lim & Ye (2020) and Mirwald (1985) — both currently known only via Bari's
+  citations of their specific theorems, not read directly. Lim–Ye especially would be worth reading
+  in full if this project's asymptotic-exponent framing (see the working note) becomes a serious
+  thread, since it's the actual proof, not just the headline statement.
+- A DOE/OSTI technical-report version of Gustafson & Aluru (1996) — Ames Laboratory is a DOE
+  national lab, and DOE-funded work commonly has an open OSTI report version even when the journal
+  version is paywalled; not checked yet.
+- Reproducing or improving on Bari's Appendix A rank-18/20 decomposition of $T_{\mathfrak{sl}_3}$
+  ourselves (see the working note's "n=3 and n=4" section) — a concrete next computational step,
+  not a literature-search item, but noted here since it would directly extend this reading.
