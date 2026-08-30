@@ -35,12 +35,115 @@ Toolchain Lean 4.33.1 / lake 5.0.0; mathlib fetched from cache and **the project
 | declaration | status |
 |---|---|
 | `homogeneousComponent_mul_of_isHomogeneous` | **PROVED** — 20 lines of tactic proof |
-| `mem_span_of_mem_ideal_span` | `sorry` — follows from the above |
+| `mem_span_of_mem_ideal_span` | **PROVED** (2026-08-30, second session) — 12 lines |
 | `not_mem_ideal_span_others` | **proved** |
 | `three_generators_minimal` | **proved** |
 
-So Lean has checked the *reduction* of the article's lemma to one genuinely missing
-ingredient, even though that ingredient is still open.
+**No `sorry` remains in the file.** All four declarations verified with `lean_verify`: axioms are
+exactly `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`.
+
+So the article's *generic* lemma (`lem-mingens-generic`, "independent same-degree generators are
+minimal") is now fully formalized, for `MvPolynomial σ F`. What Theorem 6 still needs from the
+article is the *specific* input: the independence (`lem-mingens-indep`) — and, a point the first
+pass did not notice, the *homogeneity* of the three components of `w_k`, which
+`three_generators_minimal` also takes as a hypothesis (`hhom`). See "What Theorem 6 still needs"
+below.
+
+## Closing `mem_span_of_mem_ideal_span` — second session, 2026-08-30
+
+Twelve lines, about fifteen minutes, one wrong turn. The shape is exactly the one the plan
+predicted: pull a finite representation out of the ideal membership, apply `homogeneousComponent d`
+to both sides, and let the already-proved graded step collapse every polynomial coefficient to its
+constant term.
+
+```
+obtain ⟨t, hts, c, hc⟩ := (Submodule.mem_span_image_iff_exists_fun _).mp hmem
+x = homogeneousComponent d x            -- homogeneousComponent_eq_self
+  = homogeneousComponent d (∑ i : t, c i • g i)
+  = ∑ i : t, homogeneousComponent d (c i • g i)      -- map_sum
+  = ∑ i : t, coeff 0 (c i) • g i        -- the graded step, then smul_eq_C_mul
+then Submodule.sum_mem / smul_mem / subset_span
+```
+
+**Which mathlib lemma to use.** Of the three candidates considered,
+`Submodule.mem_span_image_iff_exists_fun` is the right one:
+
+```
+x ∈ span R (v '' s) ↔ ∃ t : Finset α, ↑t ⊆ s ∧ ∃ c : t → R, ∑ i, c i • v i = x
+```
+
+It is stated for `v '' s` — an *image*, which is exactly how the generating set is written here —
+and it hands back a `Finset` of the index type together with the proof that it sits inside `S`, so
+the final `subset_span` step is one `Set.mem_image_of_mem`. `Finsupp.mem_span_image_iff_linearCombination`
+also exists and is the underlying lemma, but returns a `Finsupp` and a `linearCombination`, which
+would have to be unfolded to a sum by hand. `Ideal.mem_span_image_iff_exists_fun` does **not**
+exist (checked); `Ideal.span` is defeq to `Submodule.span` over the ring itself and the `Submodule`
+lemma applies to it directly with no rewriting.
+
+**Wrong turn (a fifth for the collection).** `Submodule.mem_span_image_iff_exists_fun.mp hmem`
+fails with `Unknown constant Submodule.mem_span_image_iff_exists_fun.mp` — a misleading message,
+because the constant *does* exist. The cause: the ring `R` is an **explicit leading argument** of
+that lemma (it is stated under `variable (R : Type*)`), so the bare name elaborates to a `∀`-type,
+not to an `Iff`, and Lean cannot use generalized field notation on it; it then falls back to
+reading the whole dotted string as a constant name and reports that failure instead of the real
+one. Writing `(Submodule.mem_span_image_iff_exists_fun _).mp hmem` fixes it. **Heuristic: an
+"Unknown constant `Foo.bar.mp`" where `Foo.bar` is known to exist means `Foo.bar` has explicit
+arguments before the `Iff`, not that the name is wrong.**
+
+## What Theorem 6 still needs — a costed estimate, not an attempt
+
+Task (2) of the second session was the article's `lem-mingens-indep`. It was **not** attempted:
+scoping it made clear it is a day's work, not an hour's, and the instruction was to cost it rather
+than half-build it. The cost breakdown below is the deliverable.
+
+### First, two corrections to how the job was described going in
+
+1. **The twist is not `diag(-1,-1,1)`.** The article's `τ` (Step 4, and `def-wk`) is
+   `τ(a,b,c) := (b,a,2c)` — a transposition of the first two coordinates *and* a doubling of the
+   third. Anything built on `diag(-1,-1,1)` would formalize a different object. The `2` is also
+   why the article carries the standing hypothesis **char `FF` ≠ 2** (stated at `def-wk`'s
+   follow-up and in the notation table): it is needed exactly for `τ` to be invertible, and
+   `τ`-invertibility is what the independence argument leans on.
+2. **Homogeneity is a third missing ingredient, not counted in the original two.**
+   `three_generators_minimal` needs `hhom : ∀ j, (g j).IsHomogeneous d` as well as `hind`. For the
+   real `w_k` that is `(w_k)ⱼ` homogeneous of degree `k`, which is its own induction
+   (`w₂ = v₁ × v₂` is degree 2; each step adds one via `IsHomogeneous.mul`/`.sub`). Cheap, but
+   nobody had listed it.
+
+### The mathematical argument, worked out (the article's proof sketch is not quite complete)
+
+Write `u := τ(w_{k-1})` (and `u := v₁` at `k = 2`), so `w_k = u ⨯₃ v_k` with `v_k` a block of
+three *fresh* variables not occurring in `u`. A relation `∑ aᵢ (w_k)ᵢ = 0` with `aᵢ ∈ F`, read off
+coefficient-wise in the three fresh variables, is exactly `a ⨯₃ u = 0`.
+
+The article says this "would force `τ(w_{k-1})` itself to be a constant vector". That is not what
+it forces, and the gap matters for formalization: it forces the three components of `u` to be
+pairwise `F`-proportional, i.e. to span an `F`-subspace of dimension ≤ 1. The induction therefore
+has to carry *linear independence of `w_{k-1}`'s components* (which gives dimension 3 ≥ 2), not
+non-vanishing. `lem-nondeg`'s non-degeneracy, which the article's sketch cites here, is a strictly
+weaker statement and does not close this step on its own. The induction does go through with the
+stronger hypothesis, and `τ`-invertibility (char ≠ 2) is what transports independence from
+`w_{k-1}` to `u`.
+
+### What that costs in Lean
+
+| piece | cost | notes |
+|---|---|---|
+| ring setup: `MvPolynomial (ℕ × Fin 3) F`, one ring for all `k` | small | using one ring for every `k` avoids all `R_{k-1} → R_k` coercion pain; the article's per-`k` rings would be much worse |
+| cross product | **free** | `Mathlib.LinearAlgebra.CrossProduct`: `crossProduct`/`⨯₃` over any `CommRing`, with `cross_apply`, `cross_self`, `cross_anticomm` |
+| `τ` and its invertibility | small | needs `[NeZero (2 : F)]` or `ringChar F ≠ 2`; a `LinearEquiv` is worth building rather than a bare function, since independence has to be transported along it |
+| the recursion `w : ℕ → (Fin 3 → MvPolynomial (ℕ × Fin 3) F)` | small–medium | `Nat.rec` with the `k = 2` base; the awkward part is that the article indexes from 2, so either an offset or junk values at 0, 1 |
+| **the freshness lemma**: `(k, j) ∉ (w m i).vars` for `m ≤ k` | **medium — the main cost** | an induction over the recursion, pushing `vars` through `⨯₃` (which unfolds to products and differences: `vars_mul`, `vars_sub_subset`, `vars_add_subset`, `vars_X`). This is the step with no shortcut, and `vars` reasoning in mathlib is workable but verbose |
+| coefficient extraction `∑ aᵢ (w_k)ᵢ = 0 ⟹ a ⨯₃ u = 0` | medium | cleanest via `pderiv (k, j)` rather than `coeff`: `pderiv` is a derivation, `pderiv_mul` plus `pderiv_eq_zero_of_notMem_vars` (which is exactly what the freshness lemma feeds) makes each of the three equations a two-line computation |
+| `a ⨯₃ u = 0`, `a ≠ 0` constant, `u` components independent ⟹ ⊥ | small | pick `aᵢ ≠ 0`, get a nontrivial `F`-relation between two components of `u`, contradict independence via `Fintype.linearIndependent_iff'` |
+| base case `k = 2`: independence of the 2×2 minors of a generic 2×3 matrix | medium | provable by evaluating `coeff` at three well-chosen monomials; fiddly rather than deep |
+| homogeneity of `w_k` (item 2 above) | small | induction, `IsHomogeneous.mul` and `.sub` |
+
+**Estimate: 250–400 lines, one focused day**, dominated by the freshness/`vars` lemma and the base
+case. Nothing in it needs infrastructure mathlib lacks — unlike the Serre's-criterion and
+determinantal-ideal blocks in `lean-formalization-plan.org`, this is all present-day mathlib, just
+not short. The `crossProduct` file being there in full generality (any `CommRing`, so polynomial
+entries are fine) is the single biggest cost saving and was not anticipated in the plan.
 
 ## The calibration signal — which is what this trial was for
 

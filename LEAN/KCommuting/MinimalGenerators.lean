@@ -50,11 +50,21 @@ survives into degree `d` — but it is real work, and it is the kind of thing th
 will recur throughout this article, whose arguments lean on degree bookkeeping
 constantly.
 
-Below, step 1 is isolated as the single `sorry` and the rest is proved from it,
-so Lean has checked the *reduction* even though the leaf is open.
+Both steps are now done and **nothing in this file is `sorry`**.  Step 1 is
+`homogeneousComponent_mul_of_isHomogeneous`; `mem_span_of_mem_ideal_span` feeds
+it a finite ideal-membership representation obtained from
+`Submodule.mem_span_image_iff_exists_fun`, and `not_mem_ideal_span_others` /
+`three_generators_minimal` follow immediately.
+
+What Theorem 6 still needs from the article is not in this file: the *specific*
+input that the three components of `w_k` are `F`-linearly independent
+(`lem-mingens-indep`) **and** homogeneous of degree `k` — the latter is the
+`hhom` hypothesis below, and is a requirement the first pass overlooked.
+`../README.md` costs both out.
 -/
 import Mathlib.RingTheory.MvPolynomial.Homogeneous
 import Mathlib.LinearAlgebra.LinearIndependent.Defs
+import Mathlib.LinearAlgebra.Finsupp.LinearCombination
 import Mathlib.RingTheory.Ideal.Span
 
 open MvPolynomial
@@ -107,7 +117,19 @@ theorem mem_span_of_mem_ideal_span
     (hhom : ∀ j, (g j).IsHomogeneous d) (S : Set ι) {x : MvPolynomial σ F}
     (hx : x.IsHomogeneous d) (hmem : x ∈ Ideal.span (g '' S)) :
     x ∈ Submodule.span F (g '' S) := by
-  sorry
+  classical
+  obtain ⟨t, hts, c, hc⟩ := (Submodule.mem_span_image_iff_exists_fun _).mp hmem
+  have key : x = ∑ i : t, coeff 0 (c i) • g i := by
+    calc x = homogeneousComponent d x := (homogeneousComponent_eq_self hx).symm
+      _ = homogeneousComponent d (∑ i : t, c i • g i) := by rw [hc]
+      _ = ∑ i : t, homogeneousComponent d (c i • g i) := by rw [map_sum]
+      _ = ∑ i : t, coeff 0 (c i) • g i := by
+          refine Finset.sum_congr rfl fun i _ => ?_
+          rw [smul_eq_mul, homogeneousComponent_mul_of_isHomogeneous d _ _ (hhom i),
+            smul_eq_C_mul]
+  rw [key]
+  refine Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)
+  exact Set.mem_image_of_mem g (hts i.2)
 
 /-- **Minimality of independent same-degree generators** — the article's lemma.
 
