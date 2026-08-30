@@ -28,8 +28,42 @@ That costs nothing — the article only ever applies it to `R_k = ℚ[v_1,…,v_
 deal, because mathlib's `IsHomogeneous` / `homogeneousComponent` API is much better developed than
 its general `GradedAlgebra` one.
 
-## Status
+## Status, 2026-08-30
 
-- toolchain: Lean 4.33.1, lake 5.0.0 (`lean-toolchain` pins v4.33.0)
-- mathlib: fetching
-- `not_mem_span_others_of_linearIndependent`: **stated, `sorry`ed** — proof not yet attempted
+Toolchain Lean 4.33.1 / lake 5.0.0; mathlib fetched from cache and **the project builds**.
+
+| declaration | status |
+|---|---|
+| `homogeneousComponent_mul_of_isHomogeneous` | `sorry` — **not in mathlib, has to be built** |
+| `mem_span_of_mem_ideal_span` | `sorry` — follows from the above |
+| `not_mem_ideal_span_others` | **proved** |
+| `three_generators_minimal` | **proved** |
+
+So Lean has checked the *reduction* of the article's lemma to one genuinely missing
+ingredient, even though that ingredient is still open.
+
+## The calibration signal — which is what this trial was for
+
+The article's proof is one sentence: *a polynomial-coefficient combination reproducing one generator
+from the others, while staying in the same degree, can only use degree-0 coefficients.*
+
+Formally that is two very unequal steps:
+
+1. **the graded step** — for `φ` homogeneous of degree `d` and arbitrary `c`, the degree-`d`
+   component of `c * φ` is `C (constant term of c) * φ`;
+2. **the linear-algebra step** — conclude from `LinearIndependent`.
+
+Step 2 is a single mathlib lemma, `LinearIndependent.notMem_span`. **Step 1 is not in mathlib.**
+Searched by type pattern and by exact name: mathlib has `homogeneousComponent_eq_self`,
+`homogeneousComponent_isHomogeneous`, `homogeneousComponent_of_mem`, `IsHomogeneous.mul`, and — the
+near miss — `homogeneousComponent_C_mul`, which is exactly this statement for a coefficient that is
+*already constant*. The general case must be built.
+
+**That is the finding.** It is not hard mathematics — decompose `c` by degree, note `c_e * φ` is
+homogeneous of degree `e + d`, so only `e = 0` survives into degree `d` — but it is real work of
+perhaps 30–80 lines with the degree bookkeeping, for a step the article dispatches in a subordinate
+clause. And degree bookkeeping of exactly this kind recurs throughout the article, so this is a
+representative cost, not a one-off.
+
+Nothing here argues against formalizing; it prices it. The plan's instruction not to commit to the
+full formalization on the strength of one trial still stands.
