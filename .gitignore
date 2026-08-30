@@ -9,3 +9,10 @@
 *.fdb_latexmk
 .auctex-auto/
 /tmp/
+
+# Lean build artefacts and fetched dependencies. .lake holds ~1.3 GB of cloned
+# packages (mathlib, batteries, aesop, ...) each with its own .git, so committing
+# it both bloats the repo and creates embedded repositories git cannot handle.
+# lake-manifest.json + lean-toolchain are what actually pin the build.
+LEAN/.lake/
+.lake/
