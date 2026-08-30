@@ -54,7 +54,33 @@ which split the markers and silently halved the conversion rate (`--wrap=none`);
 marker needs a **stack**, not a regex, since `⟦END⟧` does not say what it closes — hence
 `markers2env.py` rather than more `sed`.
 
-### Known cosmetic residue, mechanical to fix
+### Status 2026-08-30, end of first session
+
+**The full complete manuscript now converts and compiles: 0 LaTeX errors, 17 pages**, against the
+new `article/preamble.tex`, with all 39 boxed environments, the coloured theorem styling, and the
+11-entry bibliography. Four real bugs were found and fixed by building rather than by reading:
+
+1. pandoc **line-wraps at ~72 columns** by default, splitting the markers and silently halving the
+   conversion rate. `--wrap=none`.
+2. Closing a marker needs a **stack**, not a regex.
+3. tcolorbox's third argument is a label **suffix** and always prepends a colon, so
+   `\begin{thm}{t}{foo}` defines `:foo`. Putting an ordinary `\label` in the body instead does
+   *not* help -- it captures the *section* counter, rendering "Proof of Section 1".
+4. **A theorem title can itself contain brackets.** One remark's title holds
+   `\hyperref[def-wk]{...}`, so a regex ending the optional argument at the first `]` split the
+   title mid-command and produced `Incomplete \iffalse; Emergency stop`. The label slot is now a
+   sentinel filled without ever re-parsing the title.
+
+### Known residue, all bounded
+
+- **Cross-references render as `??` (108 of them).** Diagnosed but not fixed: the labels *are*
+  defined (`\newlabel{:def-wk}`, 136 of them) and *are* referenced under matching names
+  (`\cref{:def-wk}`, 12 times), so this is a cleveref type-resolution problem with tcolorbox
+  labels, not a naming mismatch. One step, not a redesign.
+- `#bcite` keys arrive bare; they want `\cite{}` against `literature/references.bib`.
+- The 11 bibliography entries are wrapped in a `thebibliography` but still hold Typst-era text.
+
+### Older notes, kept
 
 - `\hyperref[x]{{[}x{]}}` should become `\cref{x}` — one pass.
 - labels land *after* `\end{...}` and want moving inside.

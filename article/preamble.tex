@@ -1,0 +1,92 @@
+% preamble.tex -- ALL typography for the manuscript lives here.
+%
+% Changelog (reverse-chronological)
+%   2026-08-30  Created, porting the Typst theorion/cosmos.fancy look to LaTeX.
+%
+% The point of this file, per Jan: submitting to a journal should be a ONE-FILE
+% swap.  Nothing about fonts, colours, box geometry or theorem styling appears
+% in the manuscript body -- the body uses only \begin{theorem}...\end{theorem}
+% and friends, which every journal class already provides.
+%
+% To retarget:  set \documentclass to the journal's, delete the tcolorbox block
+% below, and the body compiles unchanged with the class's own theorem styles.
+
+% ---- class -------------------------------------------------------------
+% KOMA (scrartcl) rather than amsart: better control of headings and margins,
+% and it is not a journal class, so nothing here pretends to be a submission
+% format.  An amsart variant is kept at preamble-amsart.tex.
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{fontspec}                 % xelatex
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{booktabs}
+% pandoc emits longtable for every table, plus these helpers; without them the
+% build dies with "Environment longtable undefined" and a cascade of
+% "Misplaced \noalign".
+\usepackage{longtable,array,calc}
+\usepackage{graphicx}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{theorems}
+
+% ---- the coloured boxed theorem style ---------------------------------
+% NOTE the empty {} prefix on every \newtcbtheorem below.  tcolorbox otherwise
+% prefixes labels ("prp:foo"), which silently breaks every \cref carried over
+% from the Typst source, where labels are bare ("foo").  Symptom: "Proof of ??".
+% Reproduces theorion's cosmos.fancy: a tinted body, a saturated title bar,
+% rounded corners, a coloured left rule.
+\definecolor{clrThm}{HTML}{2F6FAF}
+\definecolor{clrDef}{HTML}{1F7A5A}
+\definecolor{clrRem}{HTML}{8A6D1F}
+\definecolor{clrExa}{HTML}{6B4C9A}
+
+\newtcbtheorem[number within=section]{theorem}{Theorem}{%
+  enhanced, breakable, colback=clrThm!4, colframe=clrThm, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrThm, arc=1pt}}{}
+
+% proposition/lemma share the theorem colour and counter
+\newtcbtheorem[use counter from=theorem]{proposition}{Proposition}{%
+  enhanced, breakable, colback=clrThm!4, colframe=clrThm, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrThm, arc=1pt}}{}
+\newtcbtheorem[use counter from=theorem]{lemma}{Lemma}{%
+  enhanced, breakable, colback=clrThm!4, colframe=clrThm, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrThm, arc=1pt}}{}
+\newtcbtheorem[use counter from=theorem]{definition}{Definition}{%
+  enhanced, breakable, colback=clrDef!4, colframe=clrDef, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrDef, arc=1pt}}{}
+\newtcbtheorem[use counter from=theorem]{remark}{Remark}{%
+  enhanced, breakable, colback=clrRem!4, colframe=clrRem, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrRem, arc=1pt}}{}
+\newtcbtheorem[use counter from=theorem]{example}{Example}{%
+  enhanced, breakable, colback=clrExa!4, colframe=clrExa, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrExa, arc=1pt}}{}
+
+% proof stays plain -- a boxed proof reads badly at this density
+\renewcommand{\qedsymbol}{$\square$}
+
+% ---- notation ----------------------------------------------------------
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\AAA}{\mathbb{A}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\vek}[1]{\overline{#1}}
+\newcommand{\enc}{\operatorname{enc}}
+\newcommand{\red}{\operatorname{red}}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\pd}{pd}
