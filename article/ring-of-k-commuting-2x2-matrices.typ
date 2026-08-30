@@ -637,11 +637,44 @@ codimension, not the determinantal-structure theorem above, not any external cit
 ] <lem-mingens-indep>
 
 #proof[Proof of @lem-mingens-indep][
-  Checked directly (coefficient-matrix rank 3) at $k=2,dots,6$. Structurally: a nontrivial constant
-  linear relation among the components of $vek(w)_k = D(vek(w)_(k-1)) times vek(v)_k$ would force
-  $D(vek(w)_(k-1))$ itself to be a constant vector, which it is not for $k >= 3$ (@lem-nondeg's
-  non-degeneracy, $D$ invertible) nor for $k=2$ ($vek(v)_1$ is a free variable block, not a constant).
+  By induction on $k$, and the induction hypothesis must be *independence* itself; see
+  @rem-nondeg-insufficient for why the weaker non-degeneracy of @lem-nondeg does not suffice.
+
+  *Base case $k=2$.* The three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$ are the $2 times 2$
+  minors of the generic $2 times 3$ matrix with rows $vek(v)_1,vek(v)_2$, displayed in
+  @ex-wk-signed. Each contains a monomial the other two do not --- $v_(1,2)v_(2,3)$ occurs only in
+  the first, $v_(1,3)v_(2,1)$ only in the second, $v_(1,1)v_(2,2)$ only in the third --- so no
+  nontrivial constant relation is possible.
+
+  *Induction step.* Suppose the components of $vek(w)_(k-1)$ are linearly independent over $FF$, and
+  let $c in FF^3$ satisfy $c dot vek(w)_k = 0$. Writing $a := D(vek(w)_(k-1))$, the scalar triple
+  product identity gives
+  $ 0 = c dot (a times vek(v)_k) = (c times a) dot vek(v)_k . $
+  The variables $vek(v)_k$ are a *fresh* block, occurring in neither $a$ nor $c$, and the
+  right-hand side is linear in them; so each of its three coefficients vanishes separately, i.e.
+  $ c times a = 0 . $
+
+  Suppose $c eq.not 0$. Then $c times a = 0$ forces $a = f dot c$ for a single polynomial $f$ ---
+  over the fraction field $c times a = 0$ says $a$ lies in the line spanned by $c$, and $f = a_i\/c_i$
+  is a polynomial for any index with $c_i eq.not 0$. But then $a$'s three components are pairwise
+  proportional, hence linearly *dependent* over $FF$ (any $d$ with $d dot c = 0$ gives
+  $d dot a = (d dot c) f = 0$, and such a nonzero $d$ exists since $c$ spans only a line in $FF^3$).
+  Since $D$ is invertible, the components of $vek(w)_(k-1) = D^(-1)(a)$ are then linearly dependent
+  too, contradicting the induction hypothesis. Hence $c = 0$.
+
+  Corroborated computationally: the coefficient matrix has rank 3 at $k=2,dots,6$
+  (#text(style: "italic")[code/verify\_generator\_independence.sage]).
 ]
+
+#remark[why non-degeneracy is not enough here][
+  It is tempting to argue instead that a constant relation would force $D(vek(w)_(k-1))$ to be a
+  *constant vector*, and to rule that out by @lem-nondeg. That argument is not valid. The relation
+  forces only $c times D(vek(w)_(k-1)) = 0$, which makes the components of $D(vek(w)_(k-1))$
+  pairwise proportional --- not constant. A vector such as $(f,2f,3f)$ with $f eq.not 0$ is
+  nonvanishing, so @lem-nondeg does not exclude it, yet its components are visibly dependent.
+  Non-degeneracy is strictly weaker than what the step needs, which is why the induction above
+  carries linear independence itself.
+] <rem-nondeg-insufficient>
 
 #theorem[$I_k$ has exactly 3 minimal generators][
   For every $k >= 2$: $I_k$ has exactly 3 minimal generators.

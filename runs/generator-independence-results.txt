@@ -1,0 +1,9 @@
+k   #vars  deg  #monomials  rank   independent?
+----------------------------------------------------
+2   6      2    6           3      yes
+3   9      3    12          3      yes
+4   12     4    24          3      yes
+5   15     5    48          3      yes
+6   18     6    96          3      yes
+
+All k checked: rank 3 throughout, so no nontrivial constant relation exists.
