@@ -96,6 +96,53 @@ def fix_references(text):
                   text)
 
 
+GREEK = ("alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi "
+         "pi rho sigma tau upsilon phi chi psi omega "
+         "Gamma Delta Theta Lambda Xi Pi Sigma Upsilon Phi Psi Omega").split()
+
+
+def fix_symbols(text):
+    """Typst writes Greek letters as bare identifiers (`tau`, `Phi`), and
+    pandoc has no way to know they are Greek, so they arrive as `tau` and would
+    typeset as italic t-a-u.  Restore the backslashes, and translate the few
+    non-ASCII symbols pandoc passes through verbatim.
+
+    Label names are masked out first.  They are hyphenated words, so
+    `rem-red-tau-omitted` contains a bare `tau` that the loop below would
+    cheerfully turn into `rem-red-\\tau-omitted`, silently breaking the
+    cross-reference.  Found by looking at the output, not by reasoning about it.
+    """
+    store = []
+
+    def stash(s):
+        """Park a literal string and return its placeholder."""
+        store.append(s)
+        return "\x00%d\x00" % (len(store) - 1)
+
+    text = re.sub(r"\\(?:label|cref|ref|eqref|bibitem|cite)\{[^}]*\}",
+                  lambda m: stash(m.group(0)), text)
+    # The tcolorbox label suffix, i.e. the SECOND brace group.  Stash only that
+    # group -- an earlier version stashed m.group(0), the whole match, and then
+    # re-emitted group(1) alongside it, which both duplicated text and swallowed
+    # large spans.  Symptom: Greek substitution silently stopped happening and
+    # the build went from 0 to 106 errors.
+    text = re.sub(r"(\\begin\{(?:" + BOXED + r")\}\{.*?\})(\{[^}]*\})",
+                  lambda m: m.group(1) + stash(m.group(2)), text, flags=re.S)
+
+    for g in GREEK:
+        text = re.sub(r"(?<![\\A-Za-z])" + g + r"(?![A-Za-z])", "\\\\" + g, text)
+
+    text = re.sub("\x00(\\d+)\x00", lambda m: store[int(m.group(1))], text)
+    # Single backslashes.  An earlier version had r"\\coloneqq" here, which is a
+    # LITERAL double backslash -- inside a table that is a row separator, so the
+    # Notation table exploded with "Missing $ inserted" and "Bad math environment
+    # delimiter".  Six errors from one stray backslash.
+    for uni, tex in ((chr(0x2254), r"\coloneqq "), ("\u00a7", r"\S{}"),
+                     (chr(0x2193), r"\downarrow ")):
+        text = text.replace(uni, tex)
+    return text
+
+
 def wrap_bibliography(text):
     """The 11 \\bibitem come from Typst's hand-rolled bibentry blocks and land
     outside any list environment -- 11 "Lonely \\item", 11 "Undefined control
@@ -115,6 +162,7 @@ if __name__ == "__main__":
     s = sys.stdin.read()
     s = markers_to_environments(s)
     s = attach_labels(s)
-    s = fix_references(s)
+    s = fix_references(s)   # must precede fix_symbols: turns \hyperref into
+    s = fix_symbols(s)      # \cref, which fix_symbols knows to mask
     s = wrap_bibliography(s)
     sys.stdout.write(s)

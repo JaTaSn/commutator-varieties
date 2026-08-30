@@ -71,6 +71,30 @@ new `article/preamble.tex`, with all 39 boxed environments, the coloured theorem
    title mid-command and produced `Incomplete \iffalse; Emergency stop`. The label slot is now a
    sentinel filled without ever re-parsing the title.
 
+### Converter, later the same session
+
+Added a symbol pass, which was needed and which cost more than it looked. Typst writes Greek as bare
+identifiers, so `tau`, `Phi`, `lambda`, `pi` arrived unescaped (66, 30, 21, 12 occurrences) and would
+have typeset as italic *t-a-u*. Restoring the backslashes then exposed three further bugs, each found
+by looking at output rather than by reasoning:
+
+- the substitution fired **inside label names** — `rem-red-tau-omitted` became
+  `rem-red-\tau-omitted`, silently breaking a cross-reference. Labels are now masked first, and
+  `fix_references` runs *before* `fix_symbols` so cross-refs are already `\cref{...}` and get masked
+  by the same rule;
+- the masking helper stashed `m.group(0)` — the whole match — while the caller re-emitted group 1
+  alongside it, duplicating text and swallowing spans. Greek substitution silently stopped and the
+  build went 0 → 106 errors;
+- `≔` was mapped to `r"\coloneqq"`, a **literal double backslash**, which inside a table is a row
+  separator. Six errors from one stray backslash.
+
+Also worth recording: a run of "errors" turned out to be TeX choking on a **stale `.aux`** left by the
+corrupted build, not on the current source. Delete auxiliaries before believing an error count.
+
+**Current state: 8 errors, 17 pages.** Greek renders (τ, Φ, λ, π all present), labels are intact,
+and cross-references resolve — "Definition 3.2", "Theorem 4.1", "Lemma 4.3" appear correctly in the
+PDF. The remaining 8 are `Missing $` / `Extra }` in specific spots, not a structural failure.
+
 ### Known residue, all bounded
 
 - **Cross-references render as `??` (108 of them).** Diagnosed but not fixed: the labels *are*
