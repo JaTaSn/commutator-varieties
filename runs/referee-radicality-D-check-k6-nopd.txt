@@ -1,0 +1,38 @@
+# 2026-08-30 (Claude-Code-jts-pc, adversarial-referee round 3) — supplementary k=6 record.
+#
+# The main run (code/referee_radicality_D_check.sage -> runs/referee-radicality-D-check.txt)
+# verifies the Radicality section's claims for the CURRENT D = diag(-1,-1,1) encoding.  Its k=6
+# primary decomposition (handed the raw w_6 generators, unlike the old tau-era script which handed
+# Singular a cross5-chained generating set precisely because generator choice dominates PD wall
+# time) had not finished at report time; the k=6 witness/rank checks below were therefore run
+# separately, without PD.  Everything except the "lies on EXACTLY one component" check is thereby
+# covered at k=6; that uniqueness check IS covered at k=3,4,5 in the main run.
+#
+# Witnesses built by the manuscript's own recipe (lem-witness-new / lem-witness-inherited),
+# extending the k=5 witnesses of the main run:
+
+k=6 comp j=2: witness=(1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0) on V(I_6)=True rank J_6=2
+k=6 comp j=3: witness=(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1) on V(I_6)=True rank J_6=2
+k=6 comp j=4: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0) on V(I_6)=True rank J_6=2
+k=6 comp j=5: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1) on V(I_6)=True rank J_6=2
+k=6 comp j=6: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0) on V(I_6)=True rank J_6=2
+
+# Also verified separately (one-off Sage calls, recorded here for completeness):
+#
+# P_3 (= Y_2's defining ideal at k=3) for the D encoding — all coefficients ±1, unlike the
+# manuscript §5 displays which still show the tau-era generators with factors of 2:
+#   v2_1*v3_1 + v2_2*v3_2 - v2_3*v3_3
+#   v1_1*v3_1 + v1_2*v3_2 - v1_3*v3_3
+#   v1_2*v2_1*v3_2 - v1_1*v2_2*v3_2 - v1_3*v2_1*v3_3 + v1_1*v2_3*v3_3
+# and P_2 = (v1_3*v2_2 - v1_2*v2_3, v1_3*v2_1 - v1_1*v2_3, v1_2*v2_1 - v1_1*v2_2), with
+# I_3 = P_2 ∩ P_3 (2 components, as expected).
+#
+# Y_2's defining ideal at k=4 for the D encoding — again all coefficients ±1:
+#   v3_1*v4_1 + v3_2*v4_2 - v3_3*v4_3
+#   v1_3*v2_2*v4_1 - v1_2*v2_3*v4_1 - v1_3*v2_1*v4_2 + v1_1*v2_3*v4_2 + v1_2*v2_1*v4_3 - v1_1*v2_2*v4_3
+#   v1_3*v2_1*v3_1*v4_2 - v1_1*v2_3*v3_1*v4_2 + v1_3*v2_2*v3_2*v4_2 - v1_2*v2_3*v3_2*v4_2
+#     - v1_2*v2_1*v3_1*v4_3 + v1_1*v2_2*v3_1*v4_3 - v1_3*v2_2*v3_3*v4_3 + v1_2*v2_3*v3_3*v4_3
+#
+# D(w_2) for the D encoding (what the k=3 example's second block should be built from):
+#   (v1_3*v2_2 - v1_2*v2_3,  -v1_3*v2_1 + v1_1*v2_3,  -v1_2*v2_1 + v1_1*v2_2)
+# — NOT (w_{2,2}, w_{2,1}, 2 w_{2,3}), which is tau(w_2), still displayed in §4's "matrix example".
