@@ -1108,23 +1108,23 @@ component count to a genuine primary decomposition.
   Write $J_k$ for the $3 times 3k$ Jacobian of $vek(w)_k$, $[u]_times$ for the skew matrix with
   $[u]_times v = u times v$, and $D$ for the matrix of $D$. Then
   $J_2 = [ -[vek(v)_2]_times mid(|) [vek(v)_1]_times ]$, and for $k >= 3$,
-  $ J_k = [ -[vek(v)_k]_times T J_(k-1) mid(|) [D(vek(w)_(k-1))]_times ]. $
+  $ J_k = [ -[vek(v)_k]_times D J_(k-1) mid(|) [D(vek(w)_(k-1))]_times ]. $
 ] <lem-jacrecursion>
 
 #proof[Proof of @lem-jacrecursion][
   For the second block, $vek(w)_k = D(vek(w)_(k-1)) times vek(v)_k = [D(vek(w)_(k-1))]_times vek(v)_k$ is linear in
   $vek(v)_k$ with coefficient matrix free of $vek(v)_k$. For the first, differentiating
   $vek(w)_k = D(vek(w)_(k-1)) times vek(v)_k$ with respect to any variable $t$ among $vek(v)_1,dots,vek(v)_(k-1)$ gives
-  $∂_t vek(w)_k = (T ∂_t vek(w)_(k-1)) times vek(v)_k = -[vek(v)_k]_times T ∂_t vek(w)_(k-1)$, using
+  $∂_t vek(w)_k = (T ∂_t vek(w)_(k-1)) times vek(v)_k = -[vek(v)_k]_times D ∂_t vek(w)_(k-1)$, using
   $a times b = -[b]_times a$; assembling columns gives the stated product.
 ]
 
 #example[$J_3$, explicitly][
   With variables ordered $v_(1,1),v_(1,2),v_(1,3),v_(2,1),v_(2,2),v_(2,3),v_(3,1),v_(3,2),v_(3,3)$,
   the $3 times 9$ Jacobian of $vek(w)_3$ (the three generators of $I_3$ from the earlier example),
-  column-blocked to match @lem-jacrecursion's formula $J_3 = [ -[vek(v)_3]_times T J_2 mid(|)
+  column-blocked to match @lem-jacrecursion's formula $J_3 = [ -[vek(v)_3]_times D J_2 mid(|)
   [D(vek(w)_2)]_times ]$ -- shown here as the two blocks separately, since side by side the full
-  $3 times 9$ matrix does not fit the page width. First, $-[vek(v)_3]_times T J_2$ ($3 times 6$):
+  $3 times 9$ matrix does not fit the page width. First, $-[vek(v)_3]_times D J_2$ ($3 times 6$):
   #text(size: 7pt)[
     $ mat(
         -2v_(2,2)v_(3,2), 2v_(2,1)v_(3,2)+v_(2,3)v_(3,3), -v_(2,2)v_(3,3),
@@ -1161,7 +1161,7 @@ component count to a genuine primary decomposition.
 
 #proof[Proof of @lem-witness-new][
   By @lem-jacrecursion, $J_k(p,0) = [ 0 mid(|) [D(vek(w)_(k-1)(p))]_times ]$ since
-  $-[0]_times T J_(k-1)(p) = 0$; and $D(vek(w)_(k-1)(p)) eq.not 0$ since $vek(w)_(k-1)(p) eq.not 0$
+  $-[0]_times D J_(k-1)(p) = 0$; and $D(vek(w)_(k-1)(p)) eq.not 0$ since $vek(w)_(k-1)(p) eq.not 0$
   (@lem-nondeg) and $D$ is invertible. For $u eq.not 0$,
   $ker [u]_times = {v : u times v = 0} = FF u$ (a cross product vanishes exactly on linearly
   dependent pairs), so $[D(vek(w)_(k-1)(p))]_times$ has rank 2, giving $"rank" J_k(p,0) = 2$.
@@ -1174,10 +1174,10 @@ component count to a genuine primary decomposition.
 ] <lem-witness-inherited>
 
 #proof[Proof of @lem-witness-inherited][
-  Let $W := T dot "im" J_(k-1)(q)$, a 2-dimensional subspace of $FF^3$ since $D$ is invertible and
+  Let $W := D dot "im" J_(k-1)(q)$, a 2-dimensional subspace of $FF^3$ since $D$ is invertible and
   $"rank" J_(k-1)(q)=2$. Since $e_1,e_2,e_3$ span $FF^3$ and $W eq.not FF^3$, some $e_i in.not W$;
   fix such an $i$. Since $q in V(I_(k-1))$, $vek(w)_(k-1)(q)=0$, so @lem-jacrecursion gives
-  $J_k(q,e_i) = [ -[e_i]_times T J_(k-1)(q) mid(|) 0 ] $, of rank $dim([e_i]_times W)$ since
+  $J_k(q,e_i) = [ -[e_i]_times D J_(k-1)(q) mid(|) 0 ] $, of rank $dim([e_i]_times W)$ since
   $T J_(k-1)(q)$ has image exactly $W$. As $ker [e_i]_times = FF e_i$ and $W inter FF e_i = 0$
   (else $e_i in W$), $[e_i]_times$ is injective on $W$, so $dim([e_i]_times W) = 2$.
 ]
