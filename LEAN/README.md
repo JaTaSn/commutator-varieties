@@ -34,7 +34,7 @@ Toolchain Lean 4.33.1 / lake 5.0.0; mathlib fetched from cache and **the project
 
 | declaration | status |
 |---|---|
-| `homogeneousComponent_mul_of_isHomogeneous` | `sorry` — **not in mathlib, has to be built** |
+| `homogeneousComponent_mul_of_isHomogeneous` | **PROVED** — 20 lines of tactic proof |
 | `mem_span_of_mem_ideal_span` | `sorry` — follows from the above |
 | `not_mem_ideal_span_others` | **proved** |
 | `three_generators_minimal` | **proved** |
@@ -59,11 +59,39 @@ Searched by type pattern and by exact name: mathlib has `homogeneousComponent_eq
 near miss — `homogeneousComponent_C_mul`, which is exactly this statement for a coefficient that is
 *already constant*. The general case must be built.
 
-**That is the finding.** It is not hard mathematics — decompose `c` by degree, note `c_e * φ` is
-homogeneous of degree `e + d`, so only `e = 0` survives into degree `d` — but it is real work of
-perhaps 30–80 lines with the degree bookkeeping, for a step the article dispatches in a subordinate
-clause. And degree bookkeeping of exactly this kind recurs throughout the article, so this is a
-representative cost, not a one-off.
+**That is the finding.** It is not hard mathematics — but it had to be built.
+
+**Now proved, and the estimate was too pessimistic.** I guessed 30–80 lines; the finished proof is
+**20 lines of tactic script**, verified by `lean_verify` to depend on nothing but `propext`,
+`Classical.choice` and `Quot.sound` — no `sorryAx`. It went coefficient-wise rather than by
+decomposing `c` into homogeneous components, which is what the sketch above proposed and would
+indeed have been longer:
+
+```
+ext m; rw [coeff_homogeneousComponent, coeff_C_mul]
+by_cases on whether deg m = d
+  · coeff_mul turns the product into a sum over the antidiagonal, and
+    Finset.sum_eq_single (0, m) kills every term: if deg x.2 = d then
+    deg x.1 = 0, so x.1 = 0 and x.2 = m; otherwise φ's coefficient vanishes.
+  · both sides are 0, by IsHomogeneous.coeff_eq_zero.
+```
+
+**Four wrong turns, all cheap, all worth recording** — they are what a formalization session
+actually costs:
+
+1. `coeff_mul` needs `DecidableEq σ`; `classical` supplies it.
+2. The antidiagonal lemma is `Finset.mem_antidiagonal`, not `Finsupp.mem_antidiagonal`.
+3. **There is no `Finsupp.degree_add`** — and there needn't be: `degree` is a bundled
+   `AddMonoidHom`, so additivity is plain `map_add`. Ten minutes lost looking for a lemma that
+   should not exist.
+4. Destructuring the antidiagonal element with `rintro ⟨p, q⟩` left `(0, q).2` unreduced in a
+   hypothesis, which then defeated `zero_add`. Working with `x.1`/`x.2` instead avoided it.
+
+**Revised signal.** One representative degree-bookkeeping step, the kind this article leans on
+constantly, cost about 20 lines and four small false starts — an hour's work, not a day's. That is
+considerably more encouraging than the first estimate, and it is a measurement rather than a guess.
+The plan's refusal to commit to the full formalization on one data point still stands, but the data
+point is now favourable.
 
 Nothing here argues against formalizing; it prices it. The plan's instruction not to commit to the
 full formalization on the strength of one trial still stands.
