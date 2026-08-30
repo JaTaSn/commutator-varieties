@@ -530,12 +530,34 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
 ] <ex-wk-signed>
 
 Stated over $QQ$, but every result below holds over an arbitrary field
-$FF$ of characteristic $eq.not 2$ (needed only for $"enc"$'s own invertibility as a map on matrices
--- see Step 2 above; $D$ itself is invertible, in fact $det D = 1$, in *every* characteristic,
-though this article does not pursue whether the ring-theoretic results below could be extended to
-characteristic 2 by some other route -- flagged as a genuinely open question, not investigated
-here, prompted purely by the observation that every formula in @ex-wk-signed above is already free
-of any numeric coefficient besides $plus.minus 1$).
+$FF$ of characteristic $eq.not 2$. Where that hypothesis is actually spent is not where one first
+expects, and the answer leaves a question we are happy to hand on:
+
+#problem[characteristic 2][
+  The hypothesis is *not* spent on $D$. Since $det D = 1$, the twist is invertible over every
+  field, and @rem-why-D's "an invertible change of generators does not change the ideal" needs no
+  hypothesis whatsoever. Under the naive reshuffle it would: $det tau = -2$, so $tau$ is singular
+  in characteristic 2 precisely.
+
+  It is spent in *Step 1*, earlier than Step 2's division by $2$ and more seriously. In
+  characteristic 2 one has $"tr"(c I) = 2c = 0$, so *scalar matrices are themselves traceless*.
+  The splitting $A = ("tr"(A)\/2)I + A_0$ then has no meaning at all: the scalars do not sit
+  beside a complement, they sit *inside* the traceless matrices.
+
+  The bracket is unbothered --- scalars are central in every characteristic --- so $[dot,dot]$
+  still descends to the three-dimensional quotient $frak(g l)_2 \/ (FF dot I)$. The question is
+  whether the rest of the article descends with it.
+
+  *Question.* Over a field of characteristic 2, is there a linear isomorphism
+  $frak(g l)_2 \/ (FF dot I) tilde.equiv FF^3$ carrying the induced bracket to a twisted cross
+  product $E(dot times dot)$ for some invertible $E$? And if so, do @thm-codim, @thm-mingens,
+  @thm-cm, @thm-radical and @thm-primarydecomp hold verbatim?
+
+  What makes this more than idle curiosity: *every polynomial displayed in @ex-wk-signed has
+  coefficients $plus.minus 1$ only*. No $2$ appears anywhere in the output. Whatever the
+  obstruction is, it lives entirely in the setup and not in the ideal --- which is exactly the
+  situation in which a different setup might dissolve it.
+] <prob-char2>
 
 
 = The determinantal structure and the generator count

@@ -16,3 +16,4 @@
 // pass can turn the whole run into a thebibliography or a .bib-driven list.
 #let bibentry(key, body) = [ ⟦BIB|#key⟧ #body ⟦END⟧ ]
 #let bibnum = (:)
+#let problem(..a) = { let p = a.pos(); [ ⟦PRB|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }

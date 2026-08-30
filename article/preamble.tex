@@ -76,6 +76,13 @@
   attach boxed title to top left={xshift=6pt,yshift=-2mm},
   boxed title style={colback=clrExa, arc=1pt}}{}
 
+\definecolor{clrPrb}{HTML}{A0522D}
+\newtcbtheorem[use counter from=theorem]{problem}{Problem}{%
+  enhanced, breakable, colback=clrPrb!4, colframe=clrPrb, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrPrb, arc=1pt}}{}
+
 % proof stays plain -- a boxed proof reads badly at this density
 \renewcommand{\qedsymbol}{$\square$}
 

@@ -26,14 +26,15 @@ import re
 import sys
 
 ENV = {"THM": "theorem", "PRP": "proposition", "LEM": "lemma", "REM": "remark",
-       "DEF": "definition", "EXA": "example", "PRF": "proof", "BIB": "bibitem"}
+       "DEF": "definition", "EXA": "example", "PRF": "proof", "BIB": "bibitem",
+       "PRB": "problem"}
 
 OPEN = re.compile(r"\u27e6(" + "|".join(ENV) + r")(?:\\textbar\s*|\|)?([^\u27e7]*)\u27e7")
 CLOSE = "\u27e6END\u27e7"
 ANY = re.compile(re.escape(CLOSE) + "|" + OPEN.pattern)
 
 # environments that carry a tcolorbox label suffix (proof does not)
-BOXED = "theorem|proposition|lemma|remark|definition|example"
+BOXED = "theorem|proposition|lemma|remark|definition|example|problem"
 
 
 def markers_to_environments(text):
