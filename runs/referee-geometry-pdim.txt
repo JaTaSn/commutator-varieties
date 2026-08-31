@@ -1,0 +1,4 @@
+k = 3   codim = 2   pdim(R/I) = 2   CM (pdim==codim==2): true
+k = 4   codim = 2   pdim(R/I) = 2   CM (pdim==codim==2): true
+k = 5   codim = 2   pdim(R/I) = 2   CM (pdim==codim==2): true
+k = 6   codim = 2   pdim(R/I) = 2   CM (pdim==codim==2): true

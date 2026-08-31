@@ -1,0 +1,38 @@
+PASS (A) enc([A,B]) == D(enc(A) x enc(B)) over ZZ
+PASS (A) enc([A,B]) == D(enc(A) x enc(B)) over GF(2)
+PASS (B) enc([A_1,...,A_3]) == D(w_3(enc(A_i))) 
+PASS (B) enc([A_1,...,A_4]) == D(w_4(enc(A_i))) 
+PASS (C) red([A,B]) == tau(red(A) x red(B))
+PASS (D) -enc1^2 - enc2^2 + enc3^2 == 4 det(A_0)
+PASS (E) raw([A0,B0]) == E(raw x raw), E = swap(2,3) * diag(1,2,2)
+PASS (F) manuscript w_2 display
+PASS (F) manuscript w_3 display (all three components)
+PASS (F) manuscript w_4 first component
+PASS (F) Thm6-example k=3 first row == D(w_2)
+PASS (F) Thm6-example k=4 first row, first entry == (D w_3)_1
+PASS (F) all coefficients of w_2,w_3,w_4 are +-1
+PASS (G) tau-twisted w_3 contains a coefficient +-2
+PASS (H) k=2: ideal(2x2 minors of [row1; v_k]) == I_k
+PASS (H) k=3: ideal(2x2 minors of [row1; v_k]) == I_k
+PASS (H) k=4: ideal(2x2 minors of [row1; v_k]) == I_k
+PASS (H) k=5: ideal(2x2 minors of [row1; v_k]) == I_k
+PASS (H) k=6: ideal(2x2 minors of [row1; v_k]) == I_k
+PASS (I) k=2: coefficient matrix rank == 3
+PASS (I) k=2: components homogeneous of degree k
+PASS (I) k=3: coefficient matrix rank == 3
+PASS (I) k=3: components homogeneous of degree k
+PASS (I) k=4: coefficient matrix rank == 3
+PASS (I) k=4: components homogeneous of degree k
+PASS (I) k=5: coefficient matrix rank == 3
+PASS (I) k=5: components homogeneous of degree k
+PASS (I) k=6: coefficient matrix rank == 3
+PASS (I) k=6: components homogeneous of degree k
+PASS (I) base case: each private monomial occurs in exactly its own component
+PASS (J) tau^2 == diag(1,1,4)
+PASS (J) det tau == -2
+PASS (J) D^2 == I and det D == 1
+PASS (K) over GF(3) (-1 NOT a square) the two forms ARE equivalent (T found)
+    witness T = [(0, 0, 1), (1, 1, 0), (1, 2, 0)]
+    -1 a square in GF(3)? False
+
+TOTAL: 34 checks, 0 failed

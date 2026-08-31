@@ -134,8 +134,8 @@ w3_tau = crossk(tau3*ws[2], vs[2])
 has2 = any(abs(c) == 2 for poly in w3_tau for c in poly.coefficients())
 check("(G) tau-twisted w_3 contains a coefficient +-2", has2)
 
-# ---------- (H) thm-determinantal: minors ideal == I_k, k=2..5 ----------
-for k in range(2,6):
+# ---------- (H) thm-determinantal: minors ideal == I_k, k=2..6 ----------
+for k in range(2,7):
     Rk, vs, ws, Dm, crossk = build(k)
     if k == 2:
         row1 = vs[0]

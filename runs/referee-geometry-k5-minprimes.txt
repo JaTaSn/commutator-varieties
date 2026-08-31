@@ -1,0 +1,9 @@
+computing minimal primes of I_5 (15 variables) ...
+count: 4 (expect 4)
+dims : [13, 13, 13, 13] (expect all 13)
+minimal primes == {P_2..P_5} as ideals: True
+P_2 involves exactly blocks 1..2: True [1, 2]
+P_3 involves exactly blocks 1..3: True [1, 2, 3]
+P_4 involves exactly blocks 1..4: True [1, 2, 3, 4]
+P_5 involves exactly blocks 1..5: True [1, 2, 3, 4, 5]
+VERDICT k=5: PASS

@@ -414,7 +414,7 @@ scalar part, so from here on only the traceless remainder matters.
 
 *Step 2: encode the traceless remainder.* A traceless matrix $mat(x,y;z,-x)$ has three free entries.
 Rather than reading them off directly ($x,y,z$ themselves -- shown in @rem-why-D below to be a
-strictly *worse* choice, needing two separate factors of 2), take
+strictly *worse* choice, forcing a swap *and* two separate factors of 2), take
 $ "enc"(A) := (a_11-a_22,\ a_12+a_21,\ a_12-a_21) in FF^3, $
 the traceless $(1,1)$-entry doubled (the quantity $d_a$ of Step 1), and $A$'s two off-diagonal
 entries replaced by their sum and difference. As with the naive encoding $"red"$ of @rem-why-D, no division
@@ -425,13 +425,14 @@ article already carries, not a new one.
 
 *Step 3: form the commutator.* Given traceless $A_0=mat(x,y;z,-x)$ and $B_0=mat(u,v;w,-u)$, the
 ordinary matrix commutator $[A_0,B_0]=A_0 B_0-B_0 A_0$ is again traceless automatically
-($"tr"(P Q)="tr"(Q P)$ for any $P,Q$, so $"tr"([P,Q])=0$ always), hence again encodable by $"red"$.
+($"tr"(P Q)="tr"(Q P)$ for any $P,Q$, so $"tr"([P,Q])=0$ always), hence again encodable by $"enc"$.
 
 
 *Step 4: the encoded bracket is the cross product, up to one fixed sign twist.*
 
 #theorem[the basic identity][
-  For traceless $2 times 2$ matrices $A_0,B_0$ over $FF$ ($"char" FF eq.not 2$),
+  For traceless $2 times 2$ matrices $A_0,B_0$ over $FF$, with *no* hypothesis on the
+  characteristic --- the article's standing $"char" FF eq.not 2$ is deliberately not used here ---
   $ "enc"([A_0,B_0]) = D("enc"(A_0) times "enc"(B_0)), quad D := mat(-1,0,0;0,-1,0;0,0,1). $
 ] <thm-basic-identity>
 
@@ -439,7 +440,10 @@ ordinary matrix commutator $[A_0,B_0]=A_0 B_0-B_0 A_0$ is again traceless automa
   A direct computation, carried out symbolically over generic entries $a_11,dots,b_22$ (not merely
   checked at sampled points) in
   #text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]: both sides, expanded in
-  the 8 free entries, agree term by term.
+  the 8 free entries, agree term by term. Both sides are integer polynomials in those entries, so
+  the identity descends to every commutative ring; it was checked over $ZZ$ and, separately, over
+  $FF_2$ -- where it still holds -- precisely to confirm that this step is not one of the places
+  where $"char" FF eq.not 2$ is spent (see @prob-char2).
 ]
 
 #remark[why this particular twist, and not some other one][
@@ -465,24 +469,37 @@ ordinary matrix commutator $[A_0,B_0]=A_0 B_0-B_0 A_0$ is again traceless automa
     bookkeeping accident. (Lie-theoretically: $frak(s l)_2(RR) tilde.equiv frak(s o)(2,1)$, the
     Lorentz algebra, not the compact $frak(s o)(3)$ one gets only after adjoining $i$ -- classical,
     not cited to a specific source here, the same way this article leaves certain folklore
-    facts uncited rather than inventing a citation.) By Sylvester's law of inertia the signature of
-    a quadratic form is an invariant of the form itself, not of the coordinates chosen to express
-    it -- so no linear re-encoding over a field where $-1$ is not a square of $1$ (in particular no
-    real or rational one) can ever remove this sign entirely; $D$'s single-sign twist is, in this
-    precise sense, already the simplest one achievable, not merely simpler than $tau$ by luck.
-  See #text(style: "italic")[working-notes/alternative-encodings-musings.org] for the fuller
-  discussion, including why the "obvious" un-permuted reading of the matrix entries is actually
-  *worse* than either encoding (needs a swap *and* two separate factors of 2), and a remark on why
-  the field-extension route to a literal, untwisted cross product ($i in FF$, giving
-  $frak(s u)(2) tilde.equiv frak(s o)(3)$ instead) is a real alternative but a strictly narrower one.
+    facts uncited rather than inventing a citation.) Over $RR$, or over any formally real field such
+    as $QQ$, that sign cannot be removed by *any* invertible linear re-encoding: $-x^2-y^2+z^2$ is
+    isotropic, vanishing at $(1,0,1)$, whereas $x^2+y^2+z^2$ is anisotropic, since over a formally
+    real field a sum of squares vanishes only when every term does -- and isotropy is manifestly
+    preserved by invertible linear substitution. (This is the content of Sylvester's law of inertia
+    in the case at hand; the law itself is a statement about $RR$.) In that precise sense $D$'s
+    single-sign twist is already the simplest one achievable, not merely simpler than $tau$ by luck.
+
+    Over a general field the claim genuinely fails, and it fails already in the smallest interesting
+    case, so the restriction above is not idle caution: over $FF_3$, where $-1$ is *not* a square,
+    $"diag"(-1,-1,1)$ is nevertheless congruent to the identity form, via
+    $T = mat(0,0,1;1,1,0;1,2,0)$ (of determinant $1$) with
+    $T^tack.b T = "diag"(2,2,1) = "diag"(-1,-1,1)$. So "$-1$ is not a square" is *not* the right
+    criterion; formal reality is.
+  The "obvious" un-permuted reading of the matrix entries, $"raw"(A) := (x,y,z)$, is worse than
+  either encoding: the twist it forces is $"swap"(2,3) dot "diag"(1,2,2)$ -- a coordinate swap
+  *and* two separate factors of $2$. A different escape, adjoining $i$ to get a literal untwisted
+  cross product ($frak(s u)(2) tilde.equiv frak(s o)(3)$ in place of $frak(s o)(2,1)$), is a genuine
+  alternative but a strictly narrower one, since it constrains the field.
 ] <rem-why-D>
 
 
 #definition[reduced iterated commutator, signed encoding][
   $ vek(w)_2 := vek(v)_1 times vek(v)_2, quad vek(w)_j := D(vek(w)_(j-1)) times vek(v)_j quad (j=3,dots,k). $
   Let $R_k := QQ[vek(v)_1,dots,vek(v)_k]$ ($vek(v)_i in QQ^3$, $3k$ variables) and $I_k subset R_k$ the ideal
-  generated by the three components of $vek(w)_k$ -- the vanishing ideal of $[A_1,dots,A_k]=0$ in
-  reduced coordinates.
+  generated by the three components of $vek(w)_k$ -- the ideal cutting out $[A_1,dots,A_k]=0$ in
+  reduced coordinates. Two deliberate understatements here. First, $I_k$ is at this point only the
+  *generated* ideal; that it is also the full vanishing ideal of that locus is @thm-radical, three
+  sections below, and is not to be assumed before then. Second, the encoded bracket is strictly
+  $D(vek(w)_k)$, not $vek(w)_k$ -- but $D$ merely negates two of three coordinates, so the two
+  triples generate the same ideal, and it is cleaner to carry the untwisted one.
 ] <def-wk>
 
 To spell out exactly what this means: "$R_k := QQ[vek(v)_1,dots,vek(v)_k]$" is shorthand for *the
@@ -512,7 +529,7 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
   hand-derived. At $k=2$, the three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
   $ v_(1,2)v_(2,3)-v_(1,3)v_(2,2), quad v_(1,3)v_(2,1)-v_(1,1)v_(2,3), quad
     v_(1,1)v_(2,2)-v_(1,2)v_(2,1). $
-  (Identical to the $"red"$ display -- the two encodings agree exactly at the very
+  (This is what $"red"$ would give at this stage too -- the two encodings agree exactly at the very
   first stage, since neither $tau$ nor $D$ is applied yet.) At $k=3$, the three components of
   $vek(w)_3 = D(vek(w)_2) times vek(v)_3$ -- now with *every coefficient equal to $plus.minus 1$*, no
   factor of 2 anywhere, unlike the $tau$-twisted $vek(w)_3$ that $"red"$ produces:
@@ -575,10 +592,15 @@ expects, and the answer leaves a question we are happy to hand on:
 #proof[Proof of @thm-determinantal][
   Immediate from the fact that the three components of a cross product $a times b$ are (up to sign)
   exactly the $2 times 2$ minors of the $2 times 3$ matrix with rows $a,b$, combined with
-  @def-wk's recursion -- and checked independently: comparing an independent implementation of the
-  $D$/cross-product recursion against the ideal actually produced by the chained bilinear formula
-  gives the *exact same ideal* (Gröbner-basis containment both ways) at $k=2,dots,6$
-  (#text(style: "italic")[code/verify\_determinantal\_structure\_all\_k.sage]); the underlying
+  @def-wk's recursion -- and checked independently at $k=2,dots,6$ in
+  #text(style: "italic")[code/verify\_determinantal\_structure\_all\_k.sage], in two separate ways.
+  First, $I_k$ and the ideal of the displayed minors are shown equal by reducing each ideal's
+  generators to zero against the other's Gröbner basis, in *both* directions, rather than by
+  containment one way. Second -- and this is what makes "independent" mean something here -- the
+  recursion itself is checked against honest $2 times 2$ matrix multiplication: the $A_i$ are
+  reconstructed from their $"enc"$-coordinates, the iterated commutator is formed by repeated
+  matrix products, and the result encoded and compared against $D(vek(w)_k)$. The two routes share
+  no code. The underlying
   polynomial identity $"enc"([A,B]) = D("enc"(A) times "enc"(B))$ of @thm-basic-identity makes this a two-line induction
   valid for *every* $k$, not merely a pattern checked at small $k$
   (#text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]).
@@ -757,7 +779,8 @@ matters for a possible future Lean formalization of this article).
     V(I_(k-1)) times AA^3$ (identifying $AA^(3(k-1)) times AA^3 tilde.equiv AA^(3k)$) and
     $Y_2 := overline(Phi(AA^(3k-2)))$, $Phi$'s image ($Phi$ shown mapping in from above, into
     $Y_2$ specifically -- $Y_1$ is not part of $Phi$'s image). The two overlap (not disjoint,
-    Propositions 17-18 rule out either containing the other): $Phi(p,0)=(p,0)$ for *every* $p$, so
+    @prop-y2-not-in-y1 and @prop-y1-not-in-y2 rule out either containing the other):
+    $Phi(p,0)=(p,0)$ for *every* $p$, so
     the whole zero-section $\{(p,0)\}$ lies in $Y_2$, and its intersection with $Y_1$ is
     $V(I_(k-1)) times \{0\}$, of dimension $3k-5$ -- properly smaller than either stratum's own
     dimension $3k-2$.]
@@ -796,13 +819,25 @@ matters for a possible future Lean formalization of this article).
     v_(1,1) v_(3,1) + v_(1,2) v_(3,2) - v_(1,3) v_(3,3), $
   $ v_(1,2) v_(2,1) v_(3,2) - v_(1,1) v_(2,2) v_(3,2) - v_(1,3) v_(2,1) v_(3,3)
     + v_(1,1) v_(2,3) v_(3,3) $
-  -- notably, two of the three generators are *linear* in $vek(v)_3$ (exactly the two components of the
-  "proportionality" condition $vek(v)_3 prop D(vek(w)_2)$), and only the third, not involving $vek(v)_3$ at all,
-  carries the full complexity of $D(vek(w)_2)$ itself. *This ideal is a proper factor of $I_3$, not
+  -- and these three repay a careful reading, because their shape is not the one the
+  parametrization first suggests. *All three* are linear in the new block $vek(v)_3$; what separates
+  them is total degree, $2,2,3$. The two quadratic ones are, up to sign, the incidence conditions
+  $ vek(v)_1 dot D(vek(v)_3) = 0, quad vek(v)_2 dot D(vek(v)_3) = 0. $
+  These are *consequences* of the proportionality $vek(v)_3 prop D(vek(w)_2)$, not its components:
+  substituting $vek(v)_3 = lambda D(vek(w)_2)$ and using $D^2 = I$ turns them into
+  $lambda (vek(v)_i dot vek(w)_2) = 0$, which holds because $vek(w)_2 = vek(v)_1 times vek(v)_2$ is
+  orthogonal to both of its factors. (The components of $vek(v)_3 times D(vek(w)_2)$, which *are* the
+  proportionality condition, are cubic, and none of them appears above.) The third generator, of
+  degree 3, is verbatim the first component of $vek(w)_3$. Note that no generator of this ideal
+  could avoid $vek(v)_3$ altogether: $Y_2$ projects dominantly onto $AA^6$, so the elimination ideal
+  meets $R_2$ in $0$. *This ideal is a proper factor of $I_3$, not
   equal to it* -- $I_3$ is the intersection of this ideal with a second prime (the "$Y_1$" piece,
   where the $k=2$ bracket already vanishes); see the component-count example after @thm-componentcount
-  below, where this exact ideal reappears as one of $I_3$'s two primary components. At $k=4$, by the
-  same pattern, two of the three generators are linear in $vek(v)_4$ and the third is not, now degree 4:
+  below, where this exact ideal reappears as one of $I_3$'s two primary components. At $k=4$ the
+  same pattern repeats one degree higher, the three generators now having degrees $2,3,4$ and again
+  all three linear in the new block $vek(v)_4$. The first two are once more incidence conditions
+  forced by $vek(w)_3 perp D(vek(w)_2), vek(v)_3$, namely $vek(v)_3 dot D(vek(v)_4) = 0$ and
+  $vek(w)_2 dot vek(v)_4 = 0$; the third is the negative of $vek(w)_4$'s first component:
   $ v_(3,1) v_(4,1) + v_(3,2) v_(4,2) - v_(3,3) v_(4,3), $
   $ v_(1,3) v_(2,2) v_(4,1) - v_(1,2) v_(2,3) v_(4,1) - v_(1,3) v_(2,1) v_(4,2)
     + v_(1,1) v_(2,3) v_(4,2) + v_(1,2) v_(2,1) v_(4,3) - v_(1,1) v_(2,2) v_(4,3), $
@@ -931,7 +966,7 @@ matters for a possible future Lean formalization of this article).
 
 This gives $I_k$'s minimal primes and their count, but not yet that $I_k$ is radical (so not yet
 that these are literally the components of a *primary* decomposition of $I_k$ itself, as opposed to
-of $sqrt(I_k)$) -- that is closed in §6, after Cohen-Macaulayness is available.
+of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
 
 #definition[the components $P_j$][
   For $k >= 2$ and $j=2,dots,k$, write $P_j$ for the vanishing ideal of the component of $V(I_k)$
@@ -946,14 +981,15 @@ of $sqrt(I_k)$) -- that is closed in §6, after Cohen-Macaulayness is available.
 ] <def-primecomponents>
 
 #example[a suitable point of $Y_2$, concretely, at $k=3$][
-  Rather than only the defining ideal (Example 24 below), a single explicit point: take
+  Rather than only the defining ideal (@ex-components-k3 below), a single explicit point: take
   $vek(v)_1=(1,0,0)$, $vek(v)_2=(0,1,0)$ (so $vek(v)_1 in U_2$, @lem-nondeg), giving
   $vek(w)_2=vek(v)_1 times vek(v)_2=(0,0,1)$ and $D(vek(w)_2)=(0,0,1)$. Taking $lambda=1$ in
   @def-y1y2's $Phi$, i.e. $vek(v)_3 := D(vek(w)_2)=(0,0,1)$, gives the point
   $ (vek(v)_1,vek(v)_2,vek(v)_3) = ((1,0,0),(0,1,0),(0,0,1)) in Y_2 subset AA^9. $
-  Directly: $vek(w)_3 = D(vek(w)_2) times vek(v)_3 = (0,0,2) times (0,0,2) = 0$ (a vector crossed
+  Directly: $vek(w)_3 = D(vek(w)_2) times vek(v)_3 = (0,0,1) times (0,0,1) = 0$ (a vector crossed
   with itself), confirming this point lies in $V(I_3)$, as any point of the form $Phi(p,lambda)$
-  must (@def-y1y2). This is also, concretely, a point of the largest-dimension inherited case: it
+  must (@def-y1y2). The point lies on the *new* component $P_3$, not on the inherited $P_2$ --
+  $vek(v)_1$ and $vek(v)_2$ are independent here, so the $k=2$ bracket does not already vanish. It
   is *not* a rank-2 witness in @lem-witness-new's sense (that witness uses $lambda=0$, not
   $lambda=1$) -- it illustrates $Y_2$ itself, not the radicality argument's own witness points.
 ]
@@ -965,7 +1001,9 @@ of $sqrt(I_k)$) -- that is closed in §6, after Cohen-Macaulayness is available.
   where $Phi_j$ is $Phi$ (@def-y1y2) run at parameter $j$ in @def-primecomponents' sense (at $j=2$,
   $Phi_2(p,lambda):=(p,lambda p)$, matching @thm-determinantal's own base-case convention), and $q$
   fills the remaining free blocks $vek(v)_(j+1),dots,vek(v)_k$. This map is moreover *birational* onto the
-  component: it is injective over $U_(j-1) times AA^1 times AA^(3(k-j))$, by the same argument as
+  component: it is injective over $U_(j-1) times AA^1 times AA^(3(k-j))$ -- where, at $j=2$, the
+  symbol $U_1$ is to be read as $\{vek(v)_1 eq.not 0\}$, since @lem-nondeg defines $U_j$ only for
+  $j >= 2$ and $vek(w)_1$ does not exist -- by the same argument as
   @lem-y2-dim, applied at parameter $j$.
 ] <prop-rational>
 
@@ -1011,7 +1049,7 @@ of $sqrt(I_k)$) -- that is closed in §6, after Cohen-Macaulayness is available.
     - The third, $P_4$, is the new "$Y_2$" stratum -- exactly the $k=4$ row of the earlier
       $Y_2$-defining-ideal example (generators omitted here to avoid repeating that display; same
       growth pattern, quartic with up to 8 terms per generator).
-]
+] <ex-components-k3>
 
 = Cohen-Macaulayness
 
@@ -1269,7 +1307,7 @@ radicality (§7) together, neither sufficient alone:
   "primary" beyond "prime" is needed, and primality of each $P_j$ is exactly @lem-y2-irred (applied
   at the appropriate parameter, via @thm-radical's own induction). Irredundancy -- no $P_j$ can be
   omitted, i.e. no $P_j$ contains $inter_(i eq.not j) P_i$ -- is exactly @thm-componentcount's own
-  no-containment conclusion (Proposition 17 and Proposition 18, applied at every level of that
+  no-containment conclusion (@prop-y2-not-in-y1 and @prop-y1-not-in-y2, applied at every level of that
   theorem's induction), not a fact needing any further proof here.
 ]
 
