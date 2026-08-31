@@ -71,6 +71,8 @@ exactly `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`.
 | `w_linearIndependent_succ` — the inductive step | **PROVED** (2026-08-31), `lean_verify` clean |
 | `w_linearIndependent` — **`lem-mingens-indep`** | **PROVED** (2026-08-31), `lean_verify` clean |
 | `w_minimal_generators` — **Theorem 12 for the real `w k`** | **PROVED** (2026-08-31), in `KCommuting/Theorem12.lean`, `lean_verify` clean |
+| `enc_commutator` — **`thm-basic-identity`** | **PROVED** (2026-08-31), in `KCommuting/BasicIdentity.lean`, `lean_verify` clean |
+| `lorentzian_enc`, `Dm_det`, `Dm_involution`, `taum_det`, `taum_sq` | **PROVED** (2026-08-31), same file |
 
 **`Independence.lean` now contains no `sorry`.** `lake build` completes over 1709 jobs with only
 pre-existing mathlib deprecation warnings; no `declaration uses 'sorry'` line anywhere.
@@ -334,3 +336,48 @@ point is now favourable.
 
 Nothing here argues against formalizing; it prices it. The plan's instruction not to commit to the
 full formalization on the strength of one trial still stands.
+
+## Survey of remaining formalization targets, ranked by cost (2026-08-31)
+
+Made at Jan's request, explicitly ranking by **ease** rather than by how much each would add to
+confidence in the article's main results.
+
+### Done, and they were the cheap ones
+
+`KCommuting/BasicIdentity.lean` closes §3's computational claims — everything in the Setup section
+that is a closed-form computation rather than an argument:
+
+- `enc_commutator` (`thm-basic-identity`), the identity the whole article rests on. Three lines:
+  `funext; fin_cases; simp; ring`. **Stated more generally than the article states it** — no
+  traceless hypothesis is needed, since `enc` is already blind to the scalar part and
+  `[A,B] = [A₀,B₀]` regardless. The article's traceless form is an immediate instance.
+- `lorentzian_enc`, the Sylvester/Killing computation `-enc₁² - enc₂² + enc₃² = 4 det A₀`. Here the
+  traceless hypothesis *is* used.
+- `Dm_det`, `Dm_involution`, `taum_det`, `taum_sq` — `rem-why-D`'s arithmetic: `det D = 1` and
+  `D² = 1` against `det τ = -2` and `τ² = diag(1,1,4)`. These are what "invertible in every
+  characteristic" rests on, and they are one `simp` each.
+
+All over an arbitrary `CommRing`, with a `ZMod 2` instance pinning `prob-char2`'s claim that the
+characteristic obstruction lives in the setup and not in the identity.
+
+### Still easy, not yet done
+
+- **Cross-product orthogonality** — `w₂ ⊥ v₁, v₂`, used implicitly where the `P₃` generators are
+  identified as incidence conditions. mathlib has `dot_self_cross` / `cross_dot_self`; near-free.
+- **The `Y₂` incidence conditions** — that substituting `v₃ = λ·D(w₂)` makes `v₁ · D(v₃)` and
+  `v₂ · D(v₃)` vanish. Polynomial identities in nine variables; `ring` after unfolding.
+- **`ker [u]ₓ = F·u` for `u ≠ 0`** — the kernel computation inside `lem-witness-new`. Ordinary
+  linear algebra, moderate rather than free.
+
+### Not easy, and worth knowing why before anyone starts
+
+- **`lem-jacrecursion`** (the Jacobian's own recursion) — needs `pderiv` over vectors of polynomials
+  and skew-matrix bookkeeping. Doable, a real afternoon.
+- **`lem-cotangent` / `lem-localdim`** — dimension theory: catenary affine domains, local dimension
+  at a rational point. mathlib has pieces but not the shape used here.
+- **`thm-cm`** — rests on Eagon–Northcott / perfect ideals of maximal minors. mathlib has no
+  determinantal-ideal theory to speak of; this is a project, not a target.
+- **`thm-radical`, `thm-primarydecomp`, `thm-codim`, `thm-componentcount`** — Serre's criterion,
+  primary decomposition, and the geometric component count. Out of reach without substantial new
+  library, and the Nullstellensatz-flavoured steps would additionally need the base-field care that
+  `rem-base-field` handles informally in the article.
