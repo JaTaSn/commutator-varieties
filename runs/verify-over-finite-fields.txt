@@ -1,0 +1,34 @@
+field   k    codim    indep rank radical   pd      
+------------------------------------------------------------
+QQ      2    2        3/3        yes       n/a     
+QQ      3    2        3/3        yes       n/a     
+QQ      4    2        3/3        yes       n/a     
+QQ      5    2        3/3        yes       n/a     
+GF(2)   2    2        3/3        yes       n/a     
+GF(2)   3    2        3/3        yes       n/a     
+GF(2)   4    2        3/3        yes       n/a     
+GF(2)   5    2        3/3        yes       n/a     
+GF(3)   2    2        3/3        yes       n/a     
+GF(3)   3    2        3/3        yes       n/a     
+GF(3)   4    2        3/3        yes       n/a     
+GF(3)   5    2        3/3        yes       n/a     
+GF(5)   2    2        3/3        yes       n/a     
+GF(5)   3    2        3/3        yes       n/a     
+GF(5)   4    2        3/3        yes       n/a     
+GF(5)   5    2        3/3        yes       n/a     
+GF(7)   2    2        3/3        yes       n/a     
+GF(7)   3    2        3/3        yes       n/a     
+GF(7)   4    2        3/3        yes       n/a     
+GF(7)   5    2        3/3        yes       n/a     
+GF(4)   2    2        3/3        yes       n/a     
+GF(4)   3    2        3/3        yes       n/a     
+GF(4)   4    2        3/3        yes       n/a     
+GF(4)   5    2        3/3        yes       n/a     
+GF(9)   2    2        3/3        yes       n/a     
+GF(9)   3    2        3/3        yes       n/a     
+GF(9)   4    2        3/3        yes       n/a     
+GF(9)   5    2        3/3        yes       n/a     
+
+============================================================
+rows deviating from (codim 2, rank 3, radical): none
+============================================================

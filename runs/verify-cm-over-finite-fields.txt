@@ -1,0 +1,22 @@
+field    k   codim   pd   CM?
+-----------------------------------
+GF(2)   2   2       2    yes
+GF(2)   3   2       2    yes
+GF(2)   4   2       2    yes
+GF(2)   5   2       2    yes
+GF(3)   2   2       2    yes
+GF(3)   3   2       2    yes
+GF(3)   4   2       2    yes
+GF(3)   5   2       2    yes
+GF(5)   2   2       2    yes
+GF(5)   3   2       2    yes
+GF(5)   4   2       2    yes
+GF(5)   5   2       2    yes
+GF(4)   2   2       2    yes
+GF(4)   3   2       2    yes
+GF(4)   4   2       2    yes
+GF(4)   5   2       2    yes
+QQ   2   2       2    yes
+QQ   3   2       2    yes
+QQ   4   2       2    yes
+QQ   5   2       2    yes
