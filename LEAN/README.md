@@ -63,8 +63,25 @@ exactly `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`.
 | `exists_dot_eq_zero` (step 3, division-free) | **PROVED** |
 | `isHomogeneous_v` / `isHomogeneous_D` / `isHomogeneous_cross` | **PROVED** (2026-08-31) |
 | `isHomogeneous_w`, `isHomogeneous_w'` — the `hhom` obligation | **PROVED** (2026-08-31), `lean_verify` clean |
-| `vars_w_lt` (freshness) | `sorry` |
-| `cross_eq_zero_of_dot_v_eq_zero` | `sorry` |
+| `vars_mul_sub_mul_subset`, `vars_cross_subset`, `vars_D_subset`, `vars_v_subset` | **PROVED** (2026-08-31) |
+| `vars_w_subset`, `vars_w_lt` — **freshness** | **PROVED** (2026-08-31), `lean_verify` clean |
+| `cross_eq_zero_of_dot_v_eq_zero` | **PROVED** (2026-08-31), `lean_verify` clean |
+
+**`Independence.lean` now contains no `sorry`.** `lake build` completes over 1708 jobs with only
+pre-existing mathlib deprecation warnings; no `declaration uses 'sorry'` line anywhere.
+
+Freshness was the piece the cost table below called *"medium — the main cost"*, and that estimate
+was fair: it needed the containment form `vars (w n i) ⊆ {blocks < n}`, which inducts where the
+membership form does not, plus four helper lemmas to carry it through the constructors the recursion
+uses. Two mathlib imports had to be added — `Algebra.MvPolynomial.CommRing` for `vars_neg` and
+`vars_sub_subset`, which are genuinely *not* reachable through `Algebra.MvPolynomial.Variables`
+despite the name, and `Algebra.MvPolynomial.PDeriv`.
+
+**The statement had to be corrected before it could be proved.** The `sorry`'d version was written
+against the pre-fix `w` and excluded only blocks `≥ n+1`, missing block `n` itself — which is the
+one the argument needs, since `w (k+1) = D (w k) ⨯₃ v k` crosses with block `k`. It was true but
+unusable. The corrected form, and a regression `example` pinning the load-bearing instance, are in
+the file.
 
 So homogeneity — item 2 of "two corrections" below, the ingredient nobody had listed — is now
 discharged, and it came in at the "small" the cost table predicted: about 35 lines including the
@@ -80,11 +97,29 @@ so the same slip cannot recur silently. Nothing proved earlier depended on it, s
 proved declarations mention `w`.
 
 So the article's *generic* lemma (`lem-mingens-generic`, "independent same-degree generators are
-minimal") is now fully formalized, for `MvPolynomial σ F`. What Theorem 12 still needs from the
-article is the *specific* input: the independence (`lem-mingens-indep`) — and, a point the first
-pass did not notice, the *homogeneity* of the three components of `w_k`, which
-`three_generators_minimal` also takes as a hypothesis (`hhom`). See "What Theorem 12 still needs"
-below.
+minimal") is fully formalized, for `MvPolynomial σ F`.
+
+## What is still missing — read this before claiming Theorem 12 is formalized
+
+**Every ingredient is proved. The assembly is not.** As of 2026-08-31 `Independence.lean` contains
+no `sorry`, and that is easy to misread. What it holds is the *parts*:
+
+- freshness (`vars_w_lt`) and its consequence (`cross_eq_zero_of_dot_v_eq_zero`);
+- the division-free step 3 (`exists_dot_eq_zero`);
+- the twist's behaviour (`D_D`, `dot_D`);
+- homogeneity (`isHomogeneous_w'`), the `hhom` input to `three_generators_minimal`.
+
+What it does **not** contain is any statement of the form
+
+```lean
+theorem w_linearIndependent {k : ℕ} (hk : 2 ≤ k) : LinearIndependent F (w (F := F) k)
+```
+
+— `LinearIndependent` does not occur in the file at all. The induction on `k` that chains the four
+parts above into `lem-mingens-indep`, and the base case at `k = 2` (independence of the three
+`2 × 2` minors of a generic `2 × 3` matrix, which the cost table below rates *medium — fiddly rather
+than deep*) both remain to be written. Until they are, Theorem 12 is formalized for an abstract
+generating set but not for the actual `w_k`.
 
 ## Closing `mem_span_of_mem_ideal_span` — second session, 2026-08-30
 

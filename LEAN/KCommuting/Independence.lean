@@ -63,14 +63,37 @@ is a nuisance.  It is avoidable: take `d := c ⨯₃ e` for a constant `e` with
 by `triple_product_permutation` and `cross_anticomm` alone.  No division, and no
 passage to the fraction field.
 
-**Step 2 is the cost**, exactly as predicted: it needs that no variable of block
+**Step 2 was the cost**, exactly as predicted: it needs that no variable of block
 `k` occurs in `w j` for `j ≤ k`, pushed through `vars_mul` / `vars_sub_subset`
-by induction.  It is isolated below as the single `sorry`, so the rest is
-machine-checked independently of it.
+by induction.
+
+### Closed 2026-08-31
+
+Both remaining `sorry`s are gone; the file contains none.
+
+* `vars_w_subset` / `vars_w_lt` — freshness.  The load-bearing step is the
+  containment `vars (w n i) ⊆ {blocks < n}`, which inducts where the membership
+  form does not.  Four small helpers carry it through the four constructors the
+  recursion uses.  The statement of `vars_w_lt` had to be corrected first; see
+  the restatement note at that lemma.
+* `cross_eq_zero_of_dot_v_eq_zero` — via `pderiv`, not `coeff`.  Freshness enters
+  as `pderiv_eq_zero_of_notMem_vars`.
+
+Two imports had to be added for this: `Mathlib.Algebra.MvPolynomial.CommRing`
+(for `vars_neg` and `vars_sub_subset`, which are *not* reachable through
+`Mathlib.Algebra.MvPolynomial.Variables`, contrary to what the names suggest)
+and `Mathlib.Algebra.MvPolynomial.PDeriv`.
 -/
 import Mathlib.LinearAlgebra.CrossProduct
 import Mathlib.RingTheory.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Variables
+-- `vars_neg` and `vars_sub_subset` live here, and are NOT reachable through any
+-- of the other imports (checked 2026-08-31: without this line both are "unknown
+-- constant", even with `Variables` and `RingTheory.MvPolynomial.Basic` present).
+import Mathlib.Algebra.MvPolynomial.CommRing
+-- `pderiv`, and `pderiv_eq_zero_of_notMem_vars`, which is what turns freshness
+-- into a usable statement in `cross_eq_zero_of_dot_v_eq_zero`.
+import Mathlib.Algebra.MvPolynomial.PDeriv
 import Mathlib.RingTheory.MvPolynomial.Homogeneous
 import Mathlib.LinearAlgebra.LinearIndependent.Defs
 
@@ -179,21 +202,168 @@ theorem isHomogeneous_w' {k : ℕ} (hk : 2 ≤ k) (j : Fin 3) :
   obtain ⟨n, rfl⟩ : ∃ n, k = n + 2 := ⟨k - 2, by omega⟩
   exact isHomogeneous_w n j
 
-/-- **The freshness lemma** — the one genuinely open piece.
+/-!
+### Freshness
 
-No variable of block `n + 1` occurs in `w n`: the recursion only ever consumes
-blocks strictly below its index.  Proved by induction through `vars_mul` and
-`vars_sub_subset`; see the header. -/
-theorem vars_w_lt (n : ℕ) (j i : Fin 3) (m : ℕ) (hm : n ≤ m) :
-    (j, m + 1) ∉ MvPolynomial.vars (w (F := F) n i) := by
-  sorry
+`w n` consumes exactly the blocks `0, …, n-1`, so every block `≥ n` is fresh for
+it.  The whole argument is the single containment `vars (w n i) ⊆ blocks < n`,
+pushed through the recursion; the four helper lemmas below are just that
+containment for the four constructors the recursion is built from (product minus
+product, cross product, sign twist, variable block).
+
+They are all phrased as `∀ x ∈ MvPolynomial.vars p, x ∈ S` for an ambient
+`S : Set (Fin 3 × ℕ)` rather than as `Finset` inclusions.  That is deliberate:
+`vars` is a `Finset`, so a `⊆` statement would force a `DecidableEq` on the
+index type into every statement and make the union bookkeeping in
+`vars_mul_sub_mul_subset` visible at every call site.  With a `Set` the
+side conditions become `omega` goals about `x.2`, which is what they actually
+are.
+
+### A restatement, 2026-08-31
+
+The `sorry`'d statement this replaces read
+
+    theorem vars_w_lt (n : ℕ) (j i : Fin 3) (m : ℕ) (hm : n ≤ m) :
+        (j, m + 1) ∉ MvPolynomial.vars (w (F := F) n i)
+
+which was written against the pre-fix `w` and never updated.  It is *true*, but
+too weak to be usable: with `n ≤ m` it excludes only blocks `≥ n + 1`, and the
+block the argument needs excluded is `n` itself — `w (k+1) = D (w k) ⨯₃ v k`
+crosses `w k` with block `k`, and freshness is exactly the claim that block `k`
+does not already occur in `w k`.  Under the old statement that instance would
+need `n = k, m = k - 1`, i.e. `k ≤ k - 1`, which is false.  The statement now
+says: for every `m ≥ n`, block `m` is absent from `w n`.
+-/
+
+/-- Variables of `p * q - r * s`: contained in the union of the four factors'.
+The one place where `vars_sub_subset` and `vars_mul` are used. -/
+lemma vars_mul_sub_mul_subset {S : Set (Fin 3 × ℕ)}
+    (p q r s : MvPolynomial (Fin 3 × ℕ) F)
+    (hp : ∀ x ∈ MvPolynomial.vars p, x ∈ S) (hq : ∀ x ∈ MvPolynomial.vars q, x ∈ S)
+    (hr : ∀ x ∈ MvPolynomial.vars r, x ∈ S) (hs : ∀ x ∈ MvPolynomial.vars s, x ∈ S) :
+    ∀ x ∈ MvPolynomial.vars (p * q - r * s), x ∈ S := by
+  classical
+  intro x hx
+  -- `vars_sub_subset` takes `p` and `q` as *explicit* section variables, so the
+  -- positional application `vars_sub_subset hx` misparses `hx` as a polynomial;
+  -- name them.
+  rcases Finset.mem_union.1
+      (MvPolynomial.vars_sub_subset (p := p * q) (q := r * s) hx) with h | h
+  · rcases Finset.mem_union.1 (MvPolynomial.vars_mul _ _ h) with h | h
+    · exact hp x h
+    · exact hq x h
+  · rcases Finset.mem_union.1 (MvPolynomial.vars_mul _ _ h) with h | h
+    · exact hr x h
+    · exact hs x h
+
+/-- Each component of `a ⨯₃ b` is a difference of two products of components, so
+a set containing every variable of every component of `a` and of `b` contains
+every variable of every component of `a ⨯₃ b`. -/
+lemma vars_cross_subset {a b : Fin 3 → MvPolynomial (Fin 3 × ℕ) F} {S : Set (Fin 3 × ℕ)}
+    (ha : ∀ j, ∀ x ∈ MvPolynomial.vars (a j), x ∈ S)
+    (hb : ∀ j, ∀ x ∈ MvPolynomial.vars (b j), x ∈ S) :
+    ∀ i, ∀ x ∈ MvPolynomial.vars ((a ⨯₃ b) i), x ∈ S := by
+  intro i
+  fin_cases i
+  · simpa [cross_apply] using
+      vars_mul_sub_mul_subset (a 1) (b 2) (a 2) (b 1) (ha 1) (hb 2) (ha 2) (hb 1)
+  · simpa [cross_apply] using
+      vars_mul_sub_mul_subset (a 2) (b 0) (a 0) (b 2) (ha 2) (hb 0) (ha 0) (hb 2)
+  · simpa [cross_apply] using
+      vars_mul_sub_mul_subset (a 0) (b 1) (a 1) (b 0) (ha 0) (hb 1) (ha 1) (hb 0)
+
+/-- `D` only flips signs, so it does not change any component's variables
+(`vars_neg`). -/
+lemma vars_D_subset {u : Fin 3 → MvPolynomial (Fin 3 × ℕ) F} {S : Set (Fin 3 × ℕ)}
+    (hu : ∀ j, ∀ x ∈ MvPolynomial.vars (u j), x ∈ S) :
+    ∀ j, ∀ x ∈ MvPolynomial.vars ((D u) j), x ∈ S := by
+  intro j
+  fin_cases j
+  · simpa [D] using hu 0
+  · simpa [D] using hu 1
+  · simpa [D] using hu 2
+
+/-- The only variable of `(v i) j` is `(j, i)` itself. -/
+lemma vars_v_subset {S : Set (Fin 3 × ℕ)} (i : ℕ) (h : ∀ j : Fin 3, (j, i) ∈ S) :
+    ∀ j, ∀ x ∈ MvPolynomial.vars ((v (F := F) i) j), x ∈ S := by
+  intro j x hx
+  simp only [v, MvPolynomial.vars_X, Finset.mem_singleton] at hx
+  subst hx
+  exact h j
+
+/-- **Freshness, in the form that inducts.**  Every variable occurring in any
+component of `w n` lies in a block strictly below `n`.
+
+The case split is the recursion's own: `n = 0, 1` are the junk value `0`, whose
+`vars` is empty; `n = 2` is `v 0 ⨯₃ v 1`, blocks `0` and `1`; and the step takes
+`w (n+2)` — blocks `< n+2` by the inductive hypothesis, unchanged by `D` — and
+crosses it with block `n+2`, giving blocks `< n+3`. -/
+lemma vars_w_subset (n : ℕ) :
+    ∀ i, ∀ x ∈ MvPolynomial.vars (w (F := F) n i), x.2 < n := by
+  match n with
+  | 0 => intro i x hx; simp [w] at hx
+  | 1 => intro i x hx; simp [w] at hx
+  | (n + 2) =>
+    induction n with
+    | zero =>
+        exact vars_cross_subset (S := {y : Fin 3 × ℕ | y.2 < 0 + 2})
+          (vars_v_subset 0 fun _ => show (0 : ℕ) < 0 + 2 by omega)
+          (vars_v_subset 1 fun _ => show (1 : ℕ) < 0 + 2 by omega)
+    | succ n ih =>
+        exact vars_cross_subset (S := {y : Fin 3 × ℕ | y.2 < n + 1 + 2})
+          (vars_D_subset fun j x hx => show x.2 < n + 1 + 2 from by
+            have := ih j x hx; omega)
+          (vars_v_subset (n + 2) fun _ => show n + 2 < n + 1 + 2 by omega)
+
+/-- **The freshness lemma.**  For every `m ≥ n`, no variable of block `m` occurs
+in `w n` — in particular none of block `n`, which is the instance the
+independence argument consumes.  See the restatement note above. -/
+theorem vars_w_lt {n m : ℕ} (hm : n ≤ m) (i j : Fin 3) :
+    (j, m) ∉ MvPolynomial.vars (w (F := F) n i) := fun h =>
+  absurd (vars_w_subset n i (j, m) h) (Nat.not_lt.2 hm)
+
+/-- **The instance the independence argument consumes**: block `k` is fresh for
+`w k`, so `w (k+1) = D (w k) ⨯₃ v k` is linear in a block absent from its own
+coefficient.
+
+Kept as a regression test rather than left implicit, because it is exactly the
+instance the pre-2026-08-31 statement of `vars_w_lt` could *not* produce — under
+that version it required `k ≤ k - 1`.  If a future edit weakens the lemma back
+in that direction, this line stops compiling. -/
+example (k : ℕ) (i j : Fin 3) : (j, k) ∉ MvPolynomial.vars (w (F := F) k i) :=
+  vars_w_lt (le_refl k) i j
 
 /-- Consequence of freshness: a polynomial identity linear in block `k`, with
-coefficients free of block `k`, forces the coefficients to vanish. -/
+coefficients free of block `k`, forces the coefficients to vanish.
+
+Proved by differentiation rather than by extracting coefficients.  `pderiv (j,k)`
+is a derivation, so it passes through the sum and each product by the Leibniz
+rule; freshness kills `pderiv (j,k) (a i)` outright via
+`pderiv_eq_zero_of_notMem_vars`, leaving `∑ i, a i * pderiv (j,k) (X (i,k))`,
+and `pderiv_X` collapses that sum to its single surviving term `a j`.  Reading
+off a coefficient instead would have required naming the monomial and arguing
+that the `a i` contribute nothing to it — the same content, with bookkeeping.
+
+One ordering constraint: the three `pderiv_eq_zero_of_notMem_vars` rewrites must
+fire *before* `fin_cases j`.  Afterwards the `j` in `hfresh j i` has become
+`⟨0, ⋯⟩` while the goal carries the literal `0`, and `simp` no longer matches the
+two, so a single combined `fin_cases j <;> simpa [...]` leaves the derivative
+terms standing. -/
 theorem cross_eq_zero_of_dot_v_eq_zero {a : Fin 3 → MvPolynomial (Fin 3 × ℕ) F} {k : ℕ}
     (hfresh : ∀ j : Fin 3, ∀ i : Fin 3, (j, k) ∉ MvPolynomial.vars (a i))
     (h : a ⬝ᵥ v k = 0) : a = 0 := by
-  sorry
+  classical
+  funext j
+  show a j = 0
+  have h3 : a 0 * X (0, k) + a 1 * X (1, k) + a 2 * X (2, k) = (0 : MvPolynomial (Fin 3 × ℕ) F) := by
+    simpa [dotProduct, Fin.sum_univ_three, v] using h
+  have hd := congrArg (pderiv ((j, k) : Fin 3 × ℕ)) h3
+  simp only [map_add, pderiv_mul,
+    pderiv_eq_zero_of_notMem_vars (hfresh j 0),
+    pderiv_eq_zero_of_notMem_vars (hfresh j 1),
+    pderiv_eq_zero_of_notMem_vars (hfresh j 2),
+    zero_mul, zero_add, map_zero] at hd
+  fin_cases j <;> simpa [pderiv_X, Prod.ext_iff] using hd
 
 /-- **Step 3, division-free.**  If `c ⨯₃ a = 0` for a nonzero constant `c`, then
 some nonzero constant `d` annihilates `a`. -/
