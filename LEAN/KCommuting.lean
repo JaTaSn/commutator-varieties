@@ -1,2 +1,3 @@
 import KCommuting.MinimalGenerators
 import KCommuting.Independence
+import KCommuting.Theorem12

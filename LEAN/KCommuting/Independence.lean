@@ -401,4 +401,175 @@ theorem exists_dot_eq_zero {c : Fin 3 → F} (hc : c ≠ 0) {a : Fin 3 → MvPol
     simp [h]
   rw [hzero, dotProduct_zero]
 
+/-!
+### The assembly: `lem-mingens-indep`
+
+Everything above is a part; this section chains them.  The induction is on `k`,
+starting at `2`, and the step is exactly the four-line argument in this file's
+header.
+
+Two small pieces of glue come first.
+
+`linearIndependent_iff_dot` restates `LinearIndependent F u` for a `Fin 3`-indexed
+family in the `dotProduct` language the rest of the file speaks.  Mathlib's
+`Fintype.linearIndependent_iff` gives `∀ g, ∑ i, g i • u i = 0 → ∀ i, g i = 0`;
+`smul_eq_C_mul` turns the scalar action into multiplication by a constant
+polynomial and `Fin.sum_univ_three` turns the sum into the dot product.  Doing
+this once, as an `Iff`, keeps `smul`/`C`-juggling out of both the base case and
+the step.
+
+`eq_zero_of_dot_v_eq_zero` is the degenerate instance of
+`cross_eq_zero_of_dot_v_eq_zero`: a *constant* vector annihilating a variable
+block is zero.  Constants are trivially free of every block (`vars_C` is `∅`), so
+freshness is free here, and `C_eq_zero` drops back to `F`.  It is what terminates
+the base case.
+-/
+
+/-- `LinearIndependent F u`, for `u : Fin 3 → MvPolynomial (Fin 3 × ℕ) F`, said
+with `dotProduct` and constant polynomials instead of `•` and `∑`. -/
+lemma linearIndependent_iff_dot {u : Fin 3 → MvPolynomial (Fin 3 × ℕ) F} :
+    LinearIndependent F u ↔
+      ∀ g : Fin 3 → F, (fun j => (C (g j) : MvPolynomial (Fin 3 × ℕ) F)) ⬝ᵥ u = 0 → g = 0 := by
+  rw [Fintype.linearIndependent_iff]
+  constructor
+  · intro h g hg
+    funext j
+    exact h g (by simpa [dotProduct, Fin.sum_univ_three, MvPolynomial.smul_eq_C_mul] using hg) j
+  · intro h g hg i
+    exact congrFun
+      (h g (by simpa [dotProduct, Fin.sum_univ_three, MvPolynomial.smul_eq_C_mul] using hg)) i
+
+/-- A constant vector annihilating the variable block `v m` is zero.  The
+degenerate case of `cross_eq_zero_of_dot_v_eq_zero`: constants have no variables
+at all, so its freshness hypothesis is discharged by `vars_C`. -/
+lemma eq_zero_of_dot_v_eq_zero {d : Fin 3 → F} {m : ℕ}
+    (h : (fun j => (C (d j) : MvPolynomial (Fin 3 × ℕ) F)) ⬝ᵥ v m = 0) : d = 0 := by
+  have hC : (fun j => (C (d j) : MvPolynomial (Fin 3 × ℕ) F)) = 0 :=
+    cross_eq_zero_of_dot_v_eq_zero (fun _ _ => by simp [MvPolynomial.vars_C]) h
+  funext j
+  have hj : (C (d j) : MvPolynomial (Fin 3 × ℕ) F) = 0 := congrFun hC j
+  simpa using MvPolynomial.C_eq_zero.1 hj
+
+/-- **Steps 1–3, packaged.**  A nonzero constant relation on `a ⨯₃ v m`, where `a`
+is free of block `m`, yields a nonzero constant relation on `a` itself.
+
+This is the whole engine of the induction, and it is used *twice*: at `k = 2` with
+`a = v 0`, `m = 1`, and at each successor step with `a = D (w k)`, `m = k`.  That
+the base case is an instance of the same lemma — rather than the coefficient
+extraction at three hand-picked monomials that the cost table anticipated — is why
+the base case is four lines here.  `v 0 ⨯₃ v 1` is *also* a cross product with a
+fresh block; nothing about it needs the minors written out.
+
+The proof is the header's steps 1–3 verbatim:
+`triple_product_permutation` moves `v m` out of the cross product and into the
+dot product; `vars_cross_subset` (over the ambient set `{y | y.2 ≠ m}`, with
+`vars_C = ∅` covering the constant argument) shows the resulting coefficient
+vector is still free of block `m`; `cross_eq_zero_of_dot_v_eq_zero` then kills it,
+and `exists_dot_eq_zero` converts that into the relation on `a`. -/
+lemma exists_dot_eq_zero_of_cross_v {a : Fin 3 → MvPolynomial (Fin 3 × ℕ) F} {m : ℕ}
+    (hfresh : ∀ j i : Fin 3, ((j, m) : Fin 3 × ℕ) ∉ MvPolynomial.vars (a i))
+    {g : Fin 3 → F} (hg : g ≠ 0)
+    (h : (fun j => (C (g j) : MvPolynomial (Fin 3 × ℕ) F)) ⬝ᵥ (a ⨯₃ v m) = 0) :
+    ∃ d : Fin 3 → F, d ≠ 0 ∧ (fun j => (C (d j) : MvPolynomial (Fin 3 × ℕ) F)) ⬝ᵥ a = 0 := by
+  classical
+  have hperm : ((fun j => (C (g j) : MvPolynomial (Fin 3 × ℕ) F)) ⨯₃ a) ⬝ᵥ v m = 0 := by
+    rw [dotProduct_comm, triple_product_permutation]
+    exact h
+  have hfresh' : ∀ j i : Fin 3, ((j, m) : Fin 3 × ℕ) ∉
+      MvPolynomial.vars (((fun j => (C (g j) : MvPolynomial (Fin 3 × ℕ) F)) ⨯₃ a) i) := by
+    intro j i hmem
+    -- `{y | y.2 ≠ m}` rather than `{y | y.2 < m}`: the hypothesis available here is
+    -- membership-shaped (`hfresh`), and `≠` is all the conclusion needs.
+    exact vars_cross_subset (S := {y : Fin 3 × ℕ | y.2 ≠ m})
+      (a := fun j => (C (g j) : MvPolynomial (Fin 3 × ℕ) F)) (b := a)
+      (fun _ _ hx => by simp [MvPolynomial.vars_C] at hx)
+      (fun j x hx => by
+        -- destructure `x` *before* `rintro rfl`, or the substitution has nothing
+        -- to rewrite in and `hfresh` will not apply.
+        obtain ⟨x1, x2⟩ := x
+        rintro (rfl : x2 = m)
+        exact hfresh x1 j hx)
+      i (j, m) hmem rfl
+  exact exists_dot_eq_zero hg (cross_eq_zero_of_dot_v_eq_zero hfresh' hperm)
+
+/-- **The base case.**  The three `2 × 2` minors of a generic `2 × 3` matrix — the
+components of `w 2 = v 0 ⨯₃ v 1` — are linearly independent over `F`.
+
+No monomial bookkeeping: block `1` is fresh for `v 0`, so
+`exists_dot_eq_zero_of_cross_v` applies with `a = v 0`, `m = 1` and returns a
+nonzero constant `d` with `d ⬝ᵥ v 0 = 0`, which `eq_zero_of_dot_v_eq_zero`
+immediately contradicts. -/
+theorem w_two_linearIndependent : LinearIndependent F (w (F := F) 2) := by
+  rw [linearIndependent_iff_dot]
+  intro g hg
+  by_contra hne
+  rw [show (w (F := F) 2) = (v 0 ⨯₃ v 1 : Fin 3 → MvPolynomial (Fin 3 × ℕ) F) from rfl] at hg
+  obtain ⟨d, hd0, hdd⟩ := exists_dot_eq_zero_of_cross_v (a := (v (F := F) 0)) (m := 1)
+    (fun _ _ => by simp [v, MvPolynomial.vars_X, Prod.ext_iff]) hne hg
+  exact hd0 (eq_zero_of_dot_v_eq_zero hdd)
+
+/-- **The inductive step.**  Independence of `w k` gives independence of
+`w (k+1) = D (w k) ⨯₃ v k`.
+
+Block `k` is fresh for `D (w k)` (`vars_w_subset`, unchanged by `vars_D_subset`),
+so `exists_dot_eq_zero_of_cross_v` produces a nonzero constant `d` with
+`d ⬝ᵥ D (w k) = 0`.  Step 4 is then `dot_D`, which moves the twist onto `d`:
+`D` sends the constant vector `(C d₀, C d₁, C d₂)` to `(C (-d₀), C (-d₁), C d₂)`,
+still constant and still nonzero, so the induction hypothesis applies and forces
+`(-d₀, -d₁, d₂) = 0`, hence `d = 0`. -/
+theorem w_linearIndependent_succ {k : ℕ} (hk : 2 ≤ k)
+    (ih : LinearIndependent F (w (F := F) k)) : LinearIndependent F (w (F := F) (k + 1)) := by
+  obtain ⟨n, rfl⟩ : ∃ n, k = n + 2 := ⟨k - 2, by omega⟩
+  rw [linearIndependent_iff_dot] at ih ⊢
+  intro g hg
+  by_contra hne
+  rw [show (w (F := F) (n + 2 + 1)) = D (w (n + 2)) ⨯₃ v (n + 2) from rfl] at hg
+  have hfresh : ∀ j i : Fin 3, ((j, n + 2) : Fin 3 × ℕ) ∉
+      MvPolynomial.vars ((D (w (F := F) (n + 2))) i) := fun j i hmem =>
+    absurd (vars_D_subset (S := {y : Fin 3 × ℕ | y.2 < n + 2}) (u := w (F := F) (n + 2))
+      (vars_w_subset (n + 2)) i (j, n + 2) hmem) (by simp)
+  obtain ⟨d, hd0, hdd⟩ := exists_dot_eq_zero_of_cross_v hfresh hne hg
+  rw [dot_D, show D (fun j => (C (d j) : MvPolynomial (Fin 3 × ℕ) F))
+      = fun j => (C ((![-d 0, -d 1, d 2] : Fin 3 → F) j) : MvPolynomial (Fin 3 × ℕ) F) from by
+        funext j; fin_cases j <;> simp [D]] at hdd
+  have he := ih _ hdd
+  refine hd0 (funext fun j => ?_)
+  -- Same ordering trap as in `cross_eq_zero_of_dot_v_eq_zero`: read the three
+  -- components off `he` *before* `fin_cases j`, or the literals no longer match.
+  have h0 := congrFun he 0
+  have h1 := congrFun he 1
+  have h2 := congrFun he 2
+  simp at h0 h1 h2
+  fin_cases j <;> simp_all
+
+/-- **`lem-mingens-indep`.**  For every `k ≥ 2` the three components of `w k` are
+linearly independent over the base field `F`.
+
+Together with `isHomogeneous_w'` this supplies both hypotheses of
+`three_generators_minimal` in `MinimalGenerators.lean`, completing Theorem 12
+(`thm-mingens`) for the actual `w k` rather than for an abstract generating set. -/
+theorem w_linearIndependent {k : ℕ} (hk : 2 ≤ k) :
+    LinearIndependent F (w (F := F) k) := by
+  obtain ⟨n, rfl⟩ : ∃ n, k = n + 2 := ⟨k - 2, by omega⟩
+  -- `hk` now reads `2 ≤ n + 2` and mentions `n`, so it must go before `induction n`.
+  clear hk
+  induction n with
+  | zero => exact w_two_linearIndependent
+  | succ n ih => exact w_linearIndependent_succ (by omega) ih
+
+/-- **Tightness of the hypothesis `2 ≤ k`.**
+
+`w 0` and `w 1` are junk (`0`), so independence genuinely fails there: a family
+with a zero member is dependent.  Kept as a regression test because
+`w_linearIndependent` would otherwise be indistinguishable, from the outside,
+from a statement that happened to hold for every `k` — and a reader checking
+whether the `2 ≤ k` is real should not have to reconstruct this. -/
+example : ¬ LinearIndependent F (w (F := F) 1) := by
+  intro h
+  exact h.ne_zero 0 (by simp [w])
+
+example : ¬ LinearIndependent F (w (F := F) 0) := by
+  intro h
+  exact h.ne_zero 0 (by simp [w])
+
 end KCommuting

@@ -66,9 +66,41 @@ exactly `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`.
 | `vars_mul_sub_mul_subset`, `vars_cross_subset`, `vars_D_subset`, `vars_v_subset` | **PROVED** (2026-08-31) |
 | `vars_w_subset`, `vars_w_lt` — **freshness** | **PROVED** (2026-08-31), `lean_verify` clean |
 | `cross_eq_zero_of_dot_v_eq_zero` | **PROVED** (2026-08-31), `lean_verify` clean |
+| `linearIndependent_iff_dot`, `eq_zero_of_dot_v_eq_zero`, `exists_dot_eq_zero_of_cross_v` | **PROVED** (2026-08-31, assembly session) |
+| `w_two_linearIndependent` — the base case `k = 2` | **PROVED** (2026-08-31), `lean_verify` clean |
+| `w_linearIndependent_succ` — the inductive step | **PROVED** (2026-08-31), `lean_verify` clean |
+| `w_linearIndependent` — **`lem-mingens-indep`** | **PROVED** (2026-08-31), `lean_verify` clean |
+| `w_minimal_generators` — **Theorem 12 for the real `w k`** | **PROVED** (2026-08-31), in `KCommuting/Theorem12.lean`, `lean_verify` clean |
 
-**`Independence.lean` now contains no `sorry`.** `lake build` completes over 1708 jobs with only
+**`Independence.lean` now contains no `sorry`.** `lake build` completes over 1709 jobs with only
 pre-existing mathlib deprecation warnings; no `declaration uses 'sorry'` line anywhere.
+
+### The composite is a checked declaration, not a claim in a report
+
+`KCommuting/Theorem12.lean` exists solely to *compose* the two halves —
+`isHomogeneous_w'` and `w_linearIndependent` into `three_generators_minimal` — and so to put
+Theorem 12 for the real `w k` into the repository as something Lean has checked. Two halves living
+in separate files, with "and therefore the theorem follows" left to prose, is exactly the situation
+in which the last step goes unverified indefinitely. It is a separate module so that
+`Independence` need not import `MinimalGenerators`; the two are otherwise independent.
+
+### Three regression tests guard against silent weakening
+
+Cheap, and each pins something a future edit could quietly break:
+
+- two `rfl` checks under `def w`, pinning the base case at 2 (the bug that made every `w k` wrong);
+- an `example` after `vars_w_lt` pinning the load-bearing freshness instance, block `k` fresh for
+  `w k` — the instance the *pre*-correction statement could not produce;
+- two `example`s after `w_linearIndependent` showing independence genuinely **fails** at `k = 0, 1`,
+  where `w` is junk. Without these, `2 ≤ k` is indistinguishable from a hypothesis carried out of
+  habit, and the theorem indistinguishable from one that holds for all `k` for uninteresting
+  reasons.
+
+Independently checked, 2026-08-31, rather than taken from the session that produced it: rebuilt from
+clean, re-ran `lean_verify` on the headline declarations, confirmed the diff to `Independence.lean`
+contains **zero deletions** (so nothing previously proved was weakened to make room), and confirmed
+`w 2` is genuinely nonzero — evaluating to 1 at an explicit point — so the freshness and
+independence statements constrain a polynomial that actually has variables.
 
 Freshness was the piece the cost table below called *"medium — the main cost"*, and that estimate
 was fair: it needed the containment form `vars (w n i) ⊆ {blocks < n}`, which inducts where the
@@ -99,27 +131,46 @@ proved declarations mention `w`.
 So the article's *generic* lemma (`lem-mingens-generic`, "independent same-degree generators are
 minimal") is fully formalized, for `MvPolynomial σ F`.
 
-## What is still missing — read this before claiming Theorem 12 is formalized
+## The assembly — closed 2026-08-31 (this section previously said it was missing)
 
-**Every ingredient is proved. The assembly is not.** As of 2026-08-31 `Independence.lean` contains
-no `sorry`, and that is easy to misread. What it holds is the *parts*:
+For most of 2026-08-31 this section read *"Every ingredient is proved. The assembly is not"*, and
+listed the parts — freshness (`vars_w_lt`) and its consequence
+(`cross_eq_zero_of_dot_v_eq_zero`), the division-free step 3 (`exists_dot_eq_zero`), the twist's
+behaviour (`D_D`, `dot_D`), homogeneity (`isHomogeneous_w'`) — against the observation that
+`LinearIndependent` did not occur in the file at all. That is no longer true, and the section is
+rewritten rather than deleted so the gap and its closing both stay on the record.
 
-- freshness (`vars_w_lt`) and its consequence (`cross_eq_zero_of_dot_v_eq_zero`);
-- the division-free step 3 (`exists_dot_eq_zero`);
-- the twist's behaviour (`D_D`, `dot_D`);
-- homogeneity (`isHomogeneous_w'`), the `hhom` input to `three_generators_minimal`.
-
-What it does **not** contain is any statement of the form
+`Independence.lean` now contains
 
 ```lean
 theorem w_linearIndependent {k : ℕ} (hk : 2 ≤ k) : LinearIndependent F (w (F := F) k)
 ```
 
-— `LinearIndependent` does not occur in the file at all. The induction on `k` that chains the four
-parts above into `lem-mingens-indep`, and the base case at `k = 2` (independence of the three
-`2 × 2` minors of a generic `2 × 3` matrix, which the cost table below rates *medium — fiddly rather
-than deep*) both remain to be written. Until they are, Theorem 12 is formalized for an abstract
-generating set but not for the actual `w_k`.
+together with the two halves it inducts over, `w_two_linearIndependent` and
+`w_linearIndependent_succ`. All three verify with axioms exactly `propext`, `Classical.choice`,
+`Quot.sound`. So `lem-mingens-indep` is formalized, and with `isHomogeneous_w'` both hypotheses of
+`three_generators_minimal` are discharged for the actual `w k` — Theorem 12 (`thm-mingens`) is
+formalized for the real object, not only for an abstract generating set. (Checked by elaborating the
+composite `three_generators_minimal k (w k) (isHomogeneous_w' hk) (w_linearIndependent hk) i`; the
+composite itself is deliberately *not* added to `Independence.lean`, which would mean importing
+`MinimalGenerators` into it.)
+
+**The base case was cheaper than costed, and for a reason worth keeping.** The cost table below
+rates `k = 2` — independence of the three `2 × 2` minors of a generic `2 × 3` matrix — as *medium,
+fiddly rather than deep*, on the assumption that it would be done by evaluating `coeff` at three
+hand-picked private monomials (`X₍₁,₀₎X₍₂,₁₎`, `X₍₂,₀₎X₍₀,₁₎`, `X₍₀,₀₎X₍₁,₁₎`). None of that was
+needed. `w 2 = v 0 ⨯₃ v 1` is *itself* a cross product with a fresh variable block, so it is an
+instance of the same engine the inductive step uses: block `1` is fresh for `v 0`, so steps 1–3 run
+unchanged and return a nonzero constant `d` with `d ⬝ᵥ v 0 = 0`, which the degenerate case of
+`cross_eq_zero_of_dot_v_eq_zero` (constants have empty `vars`) contradicts at once. The base case is
+five lines.
+
+The generalization that made this work is `exists_dot_eq_zero_of_cross_v`: steps 1–3 packaged for an
+arbitrary coefficient vector `a` free of block `m`, rather than written out twice. It is invoked with
+`a = v 0, m = 1` at the base and `a = D (w k), m = k` at each step. **Estimate versus actual:** the
+table below priced the whole of `lem-mingens-indep` at 250–400 lines and one focused day; the
+assembly on top of the already-proved parts came to about 60 lines of tactic script, with the base
+case being the part that collapsed.
 
 ## Closing `mem_span_of_mem_ideal_span` — second session, 2026-08-30
 
