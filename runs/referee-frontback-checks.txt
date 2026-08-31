@@ -1,0 +1,15 @@
+# 2026-08-31 -- referee round 5 (front/back matter): output of code/referee_frontback_checks.sage
+#
+[1] I_2 prime in R_2 over QQ (the j=2 case thm-primarydecomp needs, not covered by lem-y2-irred's k>=3 statement)
+    I_2.is_prime(): True
+[2] P_2 = I_2 extended to R_3 (v_3 free) still prime
+    P_2.is_prime() in R_3: True
+[3] I_3 = P_2 cap P_3 over QQ (k=3 instance of the PDT display)
+    I_3 == P_2 cap P_3: True
+    irredundant (neither P_j alone equals I_3): True
+[4/5] over GF(3) (char != 2, NOT algebraically closed; finite): PDT statement at k=3,4
+    k=3: radical=True, #components=2 (expected 2), all prime=True, dims=[7, 7] (expected all 7)
+    k=4: radical=True, #components=3 (expected 3), all prime=True, dims=[10, 10, 10] (expected all 10)
+[4/5] over GF(5) (char != 2, NOT algebraically closed; finite): PDT statement at k=3,4
+    k=3: radical=True, #components=2 (expected 2), all prime=True, dims=[7, 7] (expected all 7)
+    k=4: radical=True, #components=3 (expected 3), all prime=True, dims=[10, 10, 10] (expected all 10)
