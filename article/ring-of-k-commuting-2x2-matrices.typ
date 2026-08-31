@@ -232,6 +232,7 @@
   Hreinsdottir2005: 9,
   Knutson2003: 10,
   Youcis2014: 11,
+  Stacks031O: 12,
 )
 #let bcite(key, detail: none) = {
   let n = bibnum.at(key)
@@ -1065,32 +1066,42 @@ component count to a genuine primary decomposition.
   rings satisfy $S_n$ for every $n$: $"depth"(A_P) = dim A_P >= min(n,dim A_P)$ trivially, whatever
   $n$ is -- this needs nothing beyond the two definitions just given, standard for Serre's
   conditions in general (see e.g. Bruns and Vetter #bcite("BrunsVetter1988") or Eisenbud's
-  #emph[Commutative Algebra with a View Toward Algebraic Geometry]). In particular $S_1$. So, given
-  @thm-cm, radicality of $I_k$ is equivalent to $R_0$: regularity of $R_k \/ I_k$ at each of its
-  minimal primes.
+  #emph[Commutative Algebra with a View Toward Algebraic Geometry]). In particular $S_1$. Serre's
+  criterion for reducedness -- a Noetherian ring is reduced if and only if it satisfies $R_0$ and
+  $S_1$ #bcite("Stacks031O") -- then says that, given @thm-cm, radicality of $I_k$ is equivalent to
+  $R_0$ alone: regularity of $R_k \/ I_k$ at each of its minimal primes.
 ] <lem-serre>
 
-#lemma[Jacobian criterion: the rank bound][
-  Let $S=FF[x_1,dots,x_n]$, $I=(f_1,dots,f_m)$, $A=S\/I$ equidimensional of dimension $n-c$, and
-  $x in V(I)$ an $FF$-rational point with Jacobian $"Jac"(x) in FF^(m times n)$. Then
-  $"rank" "Jac"(x) <= c$.
-] <lem-jacobian-rankbound>
+The three lemmas that follow are the standard Jacobian criterion, split into its two genuinely
+separate ingredients -- one linear-algebraic (@lem-cotangent), one dimension-theoretic
+(@lem-localdim) -- before either is used. The order is deliberate: the rank bound and the
+regularity criterion each draw on *both* ingredients and on neither each other, which a single
+pair of mutually-citing lemmas (as in an earlier draft of this section) obscures.
 
-#proof[Proof of @lem-jacobian-rankbound][
-  $dim_FF frak(m)\/frak(m)^2 = n - "rank" "Jac"(x)$ always (linear algebra: the image of $I$ in
-  the cotangent space $frak(n)\/frak(n)^2 tilde.equiv FF^n$ is exactly the span of the linear parts
-  of generators of $I$, of dimension $"rank" "Jac"(x)$), and
-  $dim_FF frak(m)\/frak(m)^2 >= dim A_frak(m)$ in any Noetherian local ring, so it suffices that
-  $dim A_frak(m) = n-c$ -- which @lem-jacobian-regularity supplies.
+#lemma[the cotangent identity][
+  Let $S=FF[x_1,dots,x_n]$, $I=(f_1,dots,f_m)$, $A=S\/I$, and $x in V(I)$ an $FF$-rational point,
+  with $frak(n) subset S$ the maximal ideal at $x$ and $frak(m) = frak(n)\/I subset A$ its image.
+  Then
+  $ dim_FF frak(m)\/frak(m)^2 = n - "rank" "Jac"(x). $
+] <lem-cotangent>
+
+#proof[Proof of @lem-cotangent][
+  Linear algebra only; no hypothesis on $A$ is needed. Sending $g$ to its gradient at $x$
+  identifies the cotangent space $frak(n)\/frak(n)^2$ with $FF^n$. Under that identification the
+  image of $I$ is the span of the linear parts at $x$ of $f_1,dots,f_m$: a general element of $I$
+  is $sum_i g_i f_i$, whose linear part at $x$ is $sum_i g_i (x)$ times that of $f_i$, since every
+  $f_i$ vanishes at $x$. That span is the row space of $"Jac"(x)$, of dimension
+  $"rank" "Jac"(x)$. As $frak(m)\/frak(m)^2 tilde.equiv (frak(n)\/frak(n)^2) \/ "im"(I)$, the
+  claim follows.
 ]
 
-#lemma[Jacobian criterion: regularity at rank $=c$][
-  With hypotheses as in @lem-jacobian-rankbound: $dim A_frak(m) = n-c$. Consequently, if
-  $"rank" "Jac"(x) = c$, then $A_frak(m)$ is regular of dimension $n-c$; in particular $x$ lies on
-  a *unique* component of $V(I)$, whose local ring there is a field.
-] <lem-jacobian-regularity>
+#lemma[the local dimension at a rational point][
+  Let $S=FF[x_1,dots,x_n]$, $I=(f_1,dots,f_m)$, $A=S\/I$ equidimensional of dimension $n-c$, and
+  $x in V(I)$ an $FF$-rational point with maximal ideal $frak(m) subset A$ and Jacobian
+  $"Jac"(x) in FF^(m times n)$. Then $dim A_frak(m) = n-c$.
+] <lem-localdim>
 
-#proof[Proof of @lem-jacobian-regularity][
+#proof[Proof of @lem-localdim][
   $dim A_frak(m) = max{dim (A\/P)_frak(m) : P in "Min"(A), P subset.eq frak(m)}$, and each
   $A\/P = S\/tilde(P)$ is an affine domain over a field, for which
   $dim (S\/tilde(P))_frak(M) = dim S\/tilde(P)$ at *every* maximal ideal $frak(M)$ -- affine
@@ -1098,10 +1109,31 @@ component count to a genuine primary decomposition.
   Cor. 13.4; equivalently the Stacks Project, tag 00OS #bcite("Stacks00OS") -- a dimension formula
   for finitely generated field extensions, holding over an arbitrary field, not needing a
   perfect-field hypothesis by accident). By equidimensionality every such $dim S\/tilde(P)$ equals
-  $n-c$. If $"rank" "Jac"(x) = c$ then $dim_FF frak(m)\/frak(m)^2 = n-c = dim A_frak(m)$ by
-  @lem-jacobian-rankbound, the definition of regularity. A regular local ring is a domain, so
-  $frak(m)$ contains a unique minimal prime of $A$, and the local ring at that prime is a further
-  localization of a regular local ring at its own maximal ideal in dimension 0, hence a field.
+  $n-c$.
+]
+
+#lemma[Jacobian criterion: the rank bound][
+  Hypotheses as in @lem-localdim. Then $"rank" "Jac"(x) <= c$.
+] <lem-jacobian-rankbound>
+
+#proof[Proof of @lem-jacobian-rankbound][
+  $dim_FF frak(m)\/frak(m)^2 >= dim A_frak(m)$ in any Noetherian local ring. By @lem-cotangent the
+  left-hand side is $n - "rank" "Jac"(x)$, and by @lem-localdim the right-hand side is $n-c$;
+  rearranging gives $"rank" "Jac"(x) <= c$.
+]
+
+#lemma[Jacobian criterion: regularity at rank $=c$][
+  Hypotheses as in @lem-localdim. If $"rank" "Jac"(x) = c$, then $A_frak(m)$ is regular of
+  dimension $n-c$; in particular $x$ lies on a *unique* component of $V(I)$, whose local ring there
+  is a field.
+] <lem-jacobian-regularity>
+
+#proof[Proof of @lem-jacobian-regularity][
+  If $"rank" "Jac"(x) = c$ then $dim_FF frak(m)\/frak(m)^2 = n-c$ by @lem-cotangent, while
+  $dim A_frak(m) = n-c$ by @lem-localdim; equality of the two is the definition of regularity. A
+  regular local ring is a domain, so $frak(m)$ contains a unique minimal prime of $A$, and the
+  local ring at that prime is a further localization of a regular local ring at its own maximal
+  ideal in dimension 0, hence a field.
 ]
 
 #lemma[the Jacobian's own recursion][
@@ -1200,7 +1232,7 @@ component count to a genuine primary decomposition.
   @thm-componentcount. @lem-jacobian-regularity then gives $R_0$ at every one (and, by its
   "unique component" clause, confirms each witness lies only on its intended component -- an
   independent check on @thm-componentcount's count, not merely assumed); @lem-serre gives $S_1$,
-  using @thm-cm's Cohen-Macaulayness. Serre's criterion gives radicality.
+  using @thm-cm's Cohen-Macaulayness. Serre's criterion #bcite("Stacks031O") gives radicality.
 ]
 
 Verified independently in Sage, for the signed encoding, at every $k=2,dots,6$: the Jacobian
@@ -1208,8 +1240,8 @@ recursion (@lem-jacrecursion) checked as a polynomial identity, not just at poin
 witness confirmed to lie on $V(I_k)$ with $"rank" J_k = 2$
 (#text(style: "italic")[code/referee\_radicality\_D\_check.sage]). The sharper claim --- that each
 witness lies on *exactly* its intended component --- is confirmed by an independently-computed
-primary decomposition at $k=3,4,5$; at $k=6$ that decomposition did not terminate within the time
-budget, so this one case rests on the induction rather than on a machine check.
+primary decomposition at every $k=3,4,5,6$, which returns $k-1$ components in each case, in
+agreement with @thm-componentcount; the $k=6$ decomposition takes some hours.
 
 = The Primary Decomposition Theorem
 
@@ -1315,6 +1347,11 @@ in this article.
 #bibentry("Knutson2003")[A. Knutson, #emph[Some Schemes Related to the Commuting Variety],
   arXiv:math/0306275 (to appear in J. Algebraic Geom.). Open access at
   #link("https://arxiv.org/abs/math/0306275")[arxiv.org/abs/math/0306275].]
+#bibentry("Stacks031O")[#emph[The Stacks Project], tag 031O, Lemma 10.157.3 (Serre's criterion for
+  reducedness): "Let $R$ be a Noetherian ring. The following are equivalent: (1) $R$ is reduced,
+  and (2) $R$ has properties $(R_0)$ and $(S_1)$." Statement checked verbatim against the live
+  source, 2026-08-30. Open access at
+  #link("https://stacks.math.columbia.edu/tag/031O")[stacks.math.columbia.edu/tag/031O].]
 #bibentry("Youcis2014")[A. Youcis, answer to "What can we say about the image of a regular map?",
   Mathematics Stack Exchange, question 731178, answer 732415, 2014. States both the
   point-set-topology fact that the continuous image of an irreducible space is irreducible, and the

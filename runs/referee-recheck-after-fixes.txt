@@ -52,3 +52,12 @@
   k=5 comp j=4: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4]] (intended: first 4)
   k=5 comp j=5: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4, 5]] (intended: first 5)
     (k=5: 4 primary components found; expected 4)
+  k=6 comp j=2: witness=(1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2]] (intended: first 2)
+  k=6 comp j=3: witness=(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3]] (intended: first 3)
+  k=6 comp j=4: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4]] (intended: first 4)
+  k=6 comp j=5: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4, 5]] (intended: first 5)
+  k=6 comp j=6: witness=(1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0)  on V(I_k)=True  rank J_k=2  lies on 1 component(s), blocks [[1, 2, 3, 4, 5, 6]] (intended: first 6)
+    (k=6: 5 primary components found; expected 5)
+
+done.
+EXIT=0
