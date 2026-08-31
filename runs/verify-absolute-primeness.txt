@@ -1,0 +1,77 @@
+==============================================================================
+[A] P_j = ker(phi_j), and [B] primality, over several fields
+==============================================================================
+PASS  QQ     k=3 j=2 : ker(phi_j) is prime
+PASS  QQ     k=3 j=3 : ker(phi_j) is prime
+PASS  QQ     k=3      : I_k == P_2 cap ... cap P_k
+PASS  QQ     k=3      : the decomposition is irredundant
+PASS  QQ     k=4 j=2 : ker(phi_j) is prime
+PASS  QQ     k=4 j=3 : ker(phi_j) is prime
+PASS  QQ     k=4 j=4 : ker(phi_j) is prime
+PASS  QQ     k=4      : I_k == P_2 cap ... cap P_k
+PASS  QQ     k=4      : the decomposition is irredundant
+PASS  GF(2)  k=3 j=2 : ker(phi_j) is prime
+PASS  GF(2)  k=3 j=3 : ker(phi_j) is prime
+PASS  GF(2)  k=3      : I_k == P_2 cap ... cap P_k
+PASS  GF(2)  k=3      : the decomposition is irredundant
+PASS  GF(2)  k=4 j=2 : ker(phi_j) is prime
+PASS  GF(2)  k=4 j=3 : ker(phi_j) is prime
+PASS  GF(2)  k=4 j=4 : ker(phi_j) is prime
+PASS  GF(2)  k=4      : I_k == P_2 cap ... cap P_k
+PASS  GF(2)  k=4      : the decomposition is irredundant
+PASS  GF(3)  k=3 j=2 : ker(phi_j) is prime
+PASS  GF(3)  k=3 j=3 : ker(phi_j) is prime
+PASS  GF(3)  k=3      : I_k == P_2 cap ... cap P_k
+PASS  GF(3)  k=3      : the decomposition is irredundant
+PASS  GF(3)  k=4 j=2 : ker(phi_j) is prime
+PASS  GF(3)  k=4 j=3 : ker(phi_j) is prime
+PASS  GF(3)  k=4 j=4 : ker(phi_j) is prime
+PASS  GF(3)  k=4      : I_k == P_2 cap ... cap P_k
+PASS  GF(3)  k=4      : the decomposition is irredundant
+PASS  GF(5)  k=3 j=2 : ker(phi_j) is prime
+PASS  GF(5)  k=3 j=3 : ker(phi_j) is prime
+PASS  GF(5)  k=3      : I_k == P_2 cap ... cap P_k
+PASS  GF(5)  k=3      : the decomposition is irredundant
+PASS  GF(5)  k=4 j=2 : ker(phi_j) is prime
+PASS  GF(5)  k=4 j=3 : ker(phi_j) is prime
+PASS  GF(5)  k=4 j=4 : ker(phi_j) is prime
+PASS  GF(5)  k=4      : I_k == P_2 cap ... cap P_k
+PASS  GF(5)  k=4      : the decomposition is irredundant
+PASS  GF(9)  k=3 j=2 : ker(phi_j) is prime
+PASS  GF(9)  k=3 j=3 : ker(phi_j) is prime
+PASS  GF(9)  k=3      : I_k == P_2 cap ... cap P_k
+PASS  GF(9)  k=3      : the decomposition is irredundant
+PASS  GF(9)  k=4 j=2 : ker(phi_j) is prime
+PASS  GF(9)  k=4 j=3 : ker(phi_j) is prime
+PASS  GF(9)  k=4 j=4 : ker(phi_j) is prime
+PASS  GF(9)  k=4      : I_k == P_2 cap ... cap P_k
+PASS  GF(9)  k=4      : the decomposition is irredundant
+PASS  GF(25) k=3 j=2 : ker(phi_j) is prime
+PASS  GF(25) k=3 j=3 : ker(phi_j) is prime
+PASS  GF(25) k=3      : I_k == P_2 cap ... cap P_k
+PASS  GF(25) k=3      : the decomposition is irredundant
+PASS  GF(25) k=4 j=2 : ker(phi_j) is prime
+PASS  GF(25) k=4 j=3 : ker(phi_j) is prime
+PASS  GF(25) k=4 j=4 : ker(phi_j) is prime
+PASS  GF(25) k=4      : I_k == P_2 cap ... cap P_k
+PASS  GF(25) k=4      : the decomposition is irredundant
+
+==============================================================================
+[A'] the kernels agree with the minimal primes computed independently (QQ, k=3,4)
+==============================================================================
+PASS  k=3 : {ker phi_j} == Min(I_k)  (2 each)
+PASS  k=4 : {ker phi_j} == Min(I_k)  (3 each)
+
+==============================================================================
+[D] the two failure modes -- why 'prime' alone is not enough
+==============================================================================
+  (i)  (x^2+1) over QQ    : prime = True
+       (x^2+1) over QQ(i) : prime = False, factors = (x + (-i)) * (x + i)
+PASS  (i) prime over QQ but NOT after extension (so not absolutely prime)
+  (ii) x^3 - t over GF(3)(t)          : irreducible = True
+       its image over GF(3)(u), t=u^3 : x^3 - u^3 = (x + 2*u)^3
+PASS  (ii) irreducible, but its base change is a p-th power (extension not reduced)
+
+==============================================================================
+FAILURES: none
+==============================================================================
