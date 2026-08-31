@@ -55,6 +55,30 @@ Toolchain Lean 4.33.1 / lake 5.0.0; mathlib fetched from cache and **the project
 **No `sorry` remains in the file.** All four declarations verified with `lean_verify`: axioms are
 exactly `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`.
 
+## Status, 2026-08-31 — `KCommuting/Independence.lean`
+
+| declaration | status |
+|---|---|
+| `D_D`, `dot_D` | **PROVED** |
+| `exists_dot_eq_zero` (step 3, division-free) | **PROVED** |
+| `isHomogeneous_v` / `isHomogeneous_D` / `isHomogeneous_cross` | **PROVED** (2026-08-31) |
+| `isHomogeneous_w`, `isHomogeneous_w'` — the `hhom` obligation | **PROVED** (2026-08-31), `lean_verify` clean |
+| `vars_w_lt` (freshness) | `sorry` |
+| `cross_eq_zero_of_dot_v_eq_zero` | `sorry` |
+
+So homogeneity — item 2 of "two corrections" below, the ingredient nobody had listed — is now
+discharged, and it came in at the "small" the cost table predicted: about 35 lines including the
+three helper lemmas, with no wrong turns beyond re-hitting the `AddMonoidAlgebra` dot-notation trap
+already recorded in the file.
+
+**A defect found while doing it, worth more than the lemma.** The `w` recursion did not define the
+article's `w_k`. Written `| 0 => … | 1 => … | (n+2) => D (w (n+1)) ⨯₃ v (n+1)`, its `w 2` took the
+*recursive* branch, giving `D (w 1) ⨯₃ v 1` where the file's own docstring said `v 0 ⨯₃ v 1` — so
+every `w k` was off by one twisted cross product. Established by `rfl`-check, not by reading. Fixed
+by pinning the base case at 2; two `example … := rfl` regression tests now sit under the definition
+so the same slip cannot recur silently. Nothing proved earlier depended on it, since none of the
+proved declarations mention `w`.
+
 So the article's *generic* lemma (`lem-mingens-generic`, "independent same-degree generators are
 minimal") is now fully formalized, for `MvPolynomial σ F`. What Theorem 12 still needs from the
 article is the *specific* input: the independence (`lem-mingens-indep`) — and, a point the first
