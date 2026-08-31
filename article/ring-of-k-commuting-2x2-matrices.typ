@@ -590,6 +590,23 @@ are happy to hand on:
   coefficients $plus.minus 1$ only*. No $2$ appears anywhere in the output. Whatever the
   obstruction is, it lives entirely in the setup and not in the ideal --- which is exactly the
   situation in which a different setup might dissolve it.
+
+  *Computational evidence, bearing on the second half of the question only.* Nothing in @def-wk's
+  recursion needs a characteristic hypothesis: $vek(w)_2 = vek(v)_1 times vek(v)_2$ and
+  $vek(w)_j = D(vek(w)_(j-1)) times vek(v)_j$ define an ideal $I_k subset R_k$ over *any* field.
+  Taking that recursion as the definition and running the four results in characteristic 2 anyway,
+  for $k=2,dots,5$ over $FF_2$ and $FF_4$: the codimension is $2$, the three generators are
+  linearly independent over the base field, $I_k$ is radical, and $"pd"(R_k \/ I_k) = 2$, so
+  $R_k \/ I_k$ is Cohen-Macaulay --- in every case, with no deviation whatever from the
+  characteristic-zero behaviour (#text(style: "italic")[code/verify\_over\_finite\_fields.sage] and
+  #text(style: "italic")[code/verify\_cm\_over\_finite\_fields.m2]; the same runs also cover
+  $FF_3, FF_5, FF_7, FF_9$ and $QQ$). The *conclusions*, then, appear to survive characteristic 2
+  untouched --- which is evidence for the paragraph above, not against it.
+
+  What no computation of this kind can settle is the *first* half of the question: whether a
+  twisted-cross-product model of $frak(g l)_2 \/ (FF dot I)$ exists there at all, so that this
+  $I_k$ is once again the ideal of an iterated-commutator locus rather than merely a recursion that
+  happens to go on behaving well. That is where the exercise lies.
 ] <prob-char2>
 
 
@@ -985,15 +1002,28 @@ that these are literally the components of a *primary* decomposition of $I_k$ it
 of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
 
 #definition[the components $P_j$][
-  For $k >= 2$ and $j=2,dots,k$, write $P_j$ for the vanishing ideal of the component of $V(I_k)$
-  indexed $j$ in @thm-componentcount -- the one involving exactly the first $j$ coordinate blocks.
-  Explicitly, recursively in $j$:
-  - *Base case, $j=k$*: $P_k$ is $Y_2$'s own defining ideal at parameter $k$ (@lem-y2-irred).
-  - *Recursive case, $j<k$*: $P_j$ is that same ideal computed at parameter $j$ instead -- i.e.
-    $Y_2$'s defining ideal when the construction is run with $k=j$ -- viewed inside $R_k$ by
-    leaving $vek(v)_(j+1),dots,vek(v)_k$ free.
-  - *Consequence*: $P_j$ does not depend on which $k>=j$ it is viewed inside of -- it is the same
-    ideal, just embedded in a ring with more or fewer free variables.
+  For $k >= 2$ and $j=2,dots,k$, let $Phi_j$ be @def-y1y2's map $Phi$ run at parameter $j$ (with
+  the base convention $Phi_2(p,lambda) := (p,lambda p)$), and let
+  $ Psi_j : AA^(3(j-1)) times AA^1 times AA^(3(k-j)) -> AA^(3k), quad
+    (p,lambda,q) |-> (Phi_j (p,lambda),\ q) $
+  be $Phi_j$ with the remaining blocks $vek(v)_(j+1),dots,vek(v)_k$ carried along untouched. Since
+  $Psi_j$ is a polynomial map it *is*, read backwards, a homomorphism of $FF$-algebras
+  $ phi_j : R_k -> FF[p,lambda,q] = FF[t_1,dots,t_(3k-2)], $
+  sending each variable $v_(i,c)$ to the corresponding coordinate polynomial of $Psi_j$. Define
+  $ P_j := ker phi_j subset R_k. $
+  Two consequences come for free. $P_j$ is *prime*, being the kernel of a homomorphism into a
+  domain -- for every $j$ including $j=2$, with no case distinction and no appeal to
+  @lem-y2-irred, which is stated only for $k >= 3$. And $P_j$ does not depend on which $k >= j$ it
+  is viewed inside of: enlarging $k$ appends free variables to source and target alike.
+
+  *Why the kernel rather than the vanishing ideal.* It is tempting to define $P_j$ as the vanishing
+  ideal of the $j$-th component of $V(I_k)$, and over $overline(FF)$ the two agree --
+  @prop-rational identifies that component as the closure of $Psi_j$'s image. But over a *finite*
+  field "vanishing ideal" is the wrong notion outright: $V(I_k)(FF)$ is then a finite set of
+  points, and $x^q - x$ vanishes on all of $AA^1(FF_q)$ without being the zero polynomial. The
+  kernel is the right object over every field at once, is well defined with no convention attached,
+  and is what makes the base-change statement in @rem-base-field an identity rather than a
+  coincidence.
 ] <def-primecomponents>
 
 #example[a suitable point of $Y_2$, concretely, at $k=3$][
@@ -1011,22 +1041,25 @@ of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
 ]
 
 #proposition[rational parametrization of each component][
-  For $k >= 2$ and $j=2,dots,k$, the component of $V(I_k)$ indexed $j$ (@thm-componentcount) is a
-  *rational* variety: it is the closure of the image of the polynomial map
-  $ AA^(3(j-1)) times AA^1 times AA^(3(k-j)) -> AA^(3k), quad (p,lambda,q) |-> (Phi_j (p,lambda), q), $
-  where $Phi_j$ is $Phi$ (@def-y1y2) run at parameter $j$ in @def-primecomponents' sense (at $j=2$,
-  $Phi_2(p,lambda):=(p,lambda p)$, matching @thm-determinantal's own base-case convention), and $q$
-  fills the remaining free blocks $vek(v)_(j+1),dots,vek(v)_k$. This map is moreover *birational* onto the
-  component: it is injective over $U_(j-1) times AA^1 times AA^(3(k-j))$ -- where, at $j=2$, the
-  symbol $U_1$ is to be read as $\{vek(v)_1 eq.not 0\}$, since @lem-nondeg defines $U_j$ only for
-  $j >= 2$ and $vek(w)_1$ does not exist -- by the same argument as
-  @lem-y2-dim, applied at parameter $j$.
+  For $k >= 2$ and $j=2,dots,k$, the component of $V(I_k)$ indexed $j$ (@thm-componentcount, over
+  $overline(FF)$ per @rem-base-field) is exactly the closure of the image of @def-primecomponents'
+  map $Psi_j$; equivalently, $P_j = ker phi_j$ is its vanishing ideal. In particular that component
+  is a *rational* variety. The parametrization is moreover *birational* onto the component: $Psi_j$
+  is injective over $U_(j-1) times AA^1 times AA^(3(k-j))$ -- where, at $j=2$, the symbol $U_1$ is
+  to be read as $\{vek(v)_1 eq.not 0\}$, since @lem-nondeg defines $U_j$ only for $j >= 2$ and
+  $vek(w)_1$ does not exist.
 ] <prop-rational>
 
 #proof[Proof of @prop-rational][
-  By @def-primecomponents, $P_j$'s defining ideal is $Y_2$'s own defining ideal run at parameter
-  $j$ -- i.e. the component itself *is* $Y_2$ at parameter $j$, crossed with the free blocks
-  $vek(v)_(j+1),dots,vek(v)_k$. @lem-y2-dim's injectivity argument (over $U_(j-1)$, via @lem-nondeg at level
+  At parameter $j=k$ the map $Psi_k$ is $Phi$ itself, whose image closure is $Y_2$ (@def-y1y2), and
+  @thm-componentcount's induction identifies $Y_2$ with the component indexed $k$. For $j<k$ the
+  same construction run at parameter $j$ gives that level's $Y_2$, and appending the free blocks
+  $vek(v)_(j+1),dots,vek(v)_k$ crosses it with $AA^(3(k-j))$ -- which is exactly
+  @thm-componentcount's description of the inherited component indexed $j$. That the vanishing
+  ideal of the closure of a polynomial map's image is the kernel of the corresponding algebra
+  homomorphism is the standard identification, over $overline(FF)$.
+
+  For birationality, @lem-y2-dim's injectivity argument (over $U_(j-1)$, via @lem-nondeg at level
   $j-1$) applies verbatim at parameter $j$, and appending the free blocks $q$ unchanged does not
   affect injectivity.
 ]
@@ -1317,10 +1350,9 @@ because it is the hinge on which the statement's claimed generality turns.
 
   The conclusion nonetheless descends to $FF$ itself, so the theorem may be read over any field of
   characteristic $eq.not 2$, as stated. The reason is that each $P_j$ is not merely prime but
-  *absolutely* prime. By @prop-rational, the component indexed $j$ is the closure of the image of a
-  polynomial map defined over $FF$, so $P_j$ is the kernel of an $FF$-algebra homomorphism
-  $R_k -> FF[t_1,dots,t_m]$ into a polynomial ring, and $R_k \/ P_j$ embeds in that polynomial
-  ring. Since $overline(FF)$ is flat over $FF$, tensoring preserves the embedding:
+  *absolutely* prime. By @def-primecomponents, $P_j$ *is* the kernel of an $FF$-algebra
+  homomorphism $phi_j : R_k -> FF[t_1,dots,t_(3k-2)]$ into a polynomial ring, so $R_k \/ P_j$
+  embeds in that polynomial ring. Since $overline(FF)$ is flat over $FF$, tensoring preserves the embedding:
   $ overline(FF) ⊗_FF (R_k \/ P_j) arrow.r.hook overline(FF)[t_1,dots,t_m], $
   whose target is a domain, so the extension of $P_j$ to $overline(FF) ⊗_FF R_k$ is
   again prime. Formation of a finite intersection of ideals likewise commutes with the flat base
@@ -1349,12 +1381,11 @@ because it is the hinge on which the statement's claimed generality turns.
   $P_2,dots,P_k$ by @def-primecomponents. Substituting gives the displayed equation. Each $P_j$,
   being prime, is trivially its own primary-decomposition component ($P_j$-primary with associated
   prime $P_j$ itself) -- no separate argument for "primary" beyond "prime" is needed. For primality
-  itself, the uniform reason is the one already used in @rem-base-field, and it has the advantage
-  of covering $j=2$ as well: by @prop-rational each $P_j$ is the kernel of an $FF$-algebra
-  homomorphism from $R_k$ into a polynomial ring, and the kernel of a homomorphism into a domain is
-  prime. (@lem-y2-irred gives the same conclusion, but only for $j >= 3$ -- it is stated for
-  $k >= 3$ -- so it cannot be cited for $P_2$, which is $I_2$ itself, the ideal of maximal minors
-  of a generic $2 times 3$ matrix.) Extending $P_j$ from $R_j$ to $R_k$ by adjoining the free
+  itself, nothing is left to prove: @def-primecomponents *defines* $P_j$ as $ker phi_j$, and the
+  kernel of a homomorphism into a domain is prime. This covers $j=2$ along with the rest, at no
+  extra cost. (@lem-y2-irred gives the same conclusion for $j >= 3$ but not for $j=2$, being stated
+  for $k >= 3$; $P_2$ is $I_2$ itself, the ideal of maximal minors of a generic $2 times 3$ matrix,
+  classically prime. Neither route is needed now.) Extending $P_j$ from $R_j$ to $R_k$ by adjoining the free
   blocks $vek(v)_(j+1),dots,vek(v)_k$ preserves primality, since $R_k \/ P_j R_k$ is a polynomial
   ring over the domain $R_j \/ P_j$. Irredundancy -- no $P_j$ can be
   omitted, i.e. no $P_j$ contains $inter_(i eq.not j) P_i$ -- is exactly @thm-componentcount's own
