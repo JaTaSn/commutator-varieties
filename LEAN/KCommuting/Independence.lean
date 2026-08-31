@@ -3,7 +3,8 @@ Copyright (c) 2026 Jan Snellman. All rights reserved.
 
 # The three components of `w k` are linearly independent
 
-The second half of Theorem 6.  `MinimalGenerators.lean` proved the general
+The second half of Theorem 12 (`thm-mingens`; numbered Theorem 6 before the
+2026-08-30 merge).  `MinimalGenerators.lean` proved the general
 statement (independent same-degree generators are minimal); this file supplies
 the hypothesis for the actual `w k`.
 

@@ -8,7 +8,20 @@ Started 2026-08-30, following `lean-formalization-plan.org`'s own recommendation
 
 **This is a trial, not a commitment to formalizing the article.** The plan is explicit about that.
 
-## What Theorem 6 needs
+> **Two staleness notes, both 2026-08-31.**
+>
+> 1. **Numbering.** The quotation above says "Theorem 6", which is what the target result was
+>    numbered when the plan was written. The 2026-08-30 merge of the two source manuscripts
+>    renumbered it: it is now **Theorem 12**, and "Theorem 6" now names a *different* real result
+>    (the determinantal structure), so the stale reference was not merely out of date but actively
+>    misleading. Below, the target is written **Theorem 12 (`thm-mingens`)**. Cite the Typst label,
+>    not the number — the number has drifted once and will again.
+> 2. **The twist.** Everything in the "costed estimate" section below was written against the old
+>    manuscript's `τ(a,b,c) = (b,a,2c)`. The merge replaced `τ` throughout with the signed twist
+>    `D = diag(-1,-1,1)`, and the Lean sources in `KCommuting/` were written against `D` from the
+>    start. The estimate section has been corrected in place; see the marked paragraphs.
+
+## What Theorem 12 (`thm-mingens`) needs
 
 The article proves it from exactly two lemmas and nothing else — no codimension, no determinantal
 structure, no external citation:
@@ -43,10 +56,10 @@ Toolchain Lean 4.33.1 / lake 5.0.0; mathlib fetched from cache and **the project
 exactly `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`.
 
 So the article's *generic* lemma (`lem-mingens-generic`, "independent same-degree generators are
-minimal") is now fully formalized, for `MvPolynomial σ F`. What Theorem 6 still needs from the
+minimal") is now fully formalized, for `MvPolynomial σ F`. What Theorem 12 still needs from the
 article is the *specific* input: the independence (`lem-mingens-indep`) — and, a point the first
 pass did not notice, the *homogeneity* of the three components of `w_k`, which
-`three_generators_minimal` also takes as a hypothesis (`hhom`). See "What Theorem 6 still needs"
+`three_generators_minimal` also takes as a hypothesis (`hhom`). See "What Theorem 12 still needs"
 below.
 
 ## Closing `mem_span_of_mem_ideal_span` — second session, 2026-08-30
@@ -90,7 +103,7 @@ one. Writing `(Submodule.mem_span_image_iff_exists_fun _).mp hmem` fixes it. **H
 "Unknown constant `Foo.bar.mp`" where `Foo.bar` is known to exist means `Foo.bar` has explicit
 arguments before the `Iff`, not that the name is wrong.**
 
-## What Theorem 6 still needs — a costed estimate, not an attempt
+## What Theorem 12 (`thm-mingens`) still needs — a costed estimate, not an attempt
 
 Task (2) of the second session was the article's `lem-mingens-indep`. It was **not** attempted:
 scoping it made clear it is a day's work, not an hour's, and the instruction was to cost it rather
@@ -98,12 +111,21 @@ than half-build it. The cost breakdown below is the deliverable.
 
 ### First, two corrections to how the job was described going in
 
-1. **The twist is not `diag(-1,-1,1)`.** The article's `τ` (Step 4, and `def-wk`) is
-   `τ(a,b,c) := (b,a,2c)` — a transposition of the first two coordinates *and* a doubling of the
-   third. Anything built on `diag(-1,-1,1)` would formalize a different object. The `2` is also
-   why the article carries the standing hypothesis **char `FF` ≠ 2** (stated at `def-wk`'s
-   follow-up and in the notation table): it is needed exactly for `τ` to be invertible, and
-   `τ`-invertibility is what the independence argument leans on.
+1. ~~**The twist is not `diag(-1,-1,1)`.**~~ **Superseded 2026-08-31 — and now the reverse is
+   true.** As written on 2026-08-30 this item said the twist *was* `τ(a,b,c) := (b,a,2c)`, that
+   anything built on `diag(-1,-1,1)` "would formalize a different object", and that the standing
+   hypothesis char `FF` ≠ 2 existed exactly to make `τ` invertible. The merge of the two source
+   manuscripts settled the question the other way: the article now uses
+   **`D = diag(-1,-1,1)`** throughout, and `KCommuting/Independence.lean` was written against `D`
+   from the start, so the two agree and the warning above is inverted.
+
+   The consequence for the formalization is a real simplification, not just a renaming. `D` is an
+   involution with `det D = 1`, so it is invertible in **every** characteristic; `τ`, with
+   `det τ = -2` and `τ² = diag(1,1,4)`, was not. The independence argument leans on the twist's
+   invertibility, so under `τ` that step consumed char `FF` ≠ 2 and under `D` it consumes nothing —
+   no `[NeZero (2 : F)]`, no `ringChar F ≠ 2`, no side conditions to thread. The article's standing
+   char ≠ 2 is now spent solely on inverting `enc` in Step 1 (see `prob-char2`), which the
+   formalization never touches, since it works with `w_k` directly rather than with matrices.
 2. **Homogeneity is a third missing ingredient, not counted in the original two.**
    `three_generators_minimal` needs `hhom : ∀ j, (g j).IsHomogeneous d` as well as `hind`. For the
    real `w_k` that is `(w_k)ⱼ` homogeneous of degree `k`, which is its own induction
@@ -112,18 +134,22 @@ than half-build it. The cost breakdown below is the deliverable.
 
 ### The mathematical argument, worked out (the article's proof sketch is not quite complete)
 
-Write `u := τ(w_{k-1})` (and `u := v₁` at `k = 2`), so `w_k = u ⨯₃ v_k` with `v_k` a block of
+*(Rewritten 2026-08-31 for `D`; the argument is unchanged in shape, and one hypothesis lighter.)*
+
+Write `u := D(w_{k-1})` (and `u := v₁` at `k = 2`), so `w_k = u ⨯₃ v_k` with `v_k` a block of
 three *fresh* variables not occurring in `u`. A relation `∑ aᵢ (w_k)ᵢ = 0` with `aᵢ ∈ F`, read off
 coefficient-wise in the three fresh variables, is exactly `a ⨯₃ u = 0`.
 
-The article says this "would force `τ(w_{k-1})` itself to be a constant vector". That is not what
-it forces, and the gap matters for formalization: it forces the three components of `u` to be
-pairwise `F`-proportional, i.e. to span an `F`-subspace of dimension ≤ 1. The induction therefore
-has to carry *linear independence of `w_{k-1}`'s components* (which gives dimension 3 ≥ 2), not
-non-vanishing. `lem-nondeg`'s non-degeneracy, which the article's sketch cites here, is a strictly
-weaker statement and does not close this step on its own. The induction does go through with the
-stronger hypothesis, and `τ`-invertibility (char ≠ 2) is what transports independence from
-`w_{k-1}` to `u`.
+The article's original sketch said this "would force the twisted `w_{k-1}` itself to be a constant
+vector". That is not what it forces, and the gap matters for formalization: it forces the three
+components of `u` to be pairwise `F`-proportional, i.e. to span an `F`-subspace of dimension ≤ 1.
+The induction therefore has to carry *linear independence of `w_{k-1}`'s components* (which gives
+dimension 3 ≥ 2), not non-vanishing. `lem-nondeg`'s non-degeneracy, which the sketch cited here, is
+a strictly weaker statement and does not close this step on its own — the article now records that
+explicitly, in `rem-nondeg-insufficient`. The induction does go through with the stronger
+hypothesis, and invertibility of the twist is what transports independence from `w_{k-1}` to `u`.
+Under `D` that invertibility is free in every characteristic, so unlike the `τ` version this step
+carries no hypothesis at all.
 
 ### What that costs in Lean
 
@@ -131,7 +157,7 @@ stronger hypothesis, and `τ`-invertibility (char ≠ 2) is what transports inde
 |---|---|---|
 | ring setup: `MvPolynomial (ℕ × Fin 3) F`, one ring for all `k` | small | using one ring for every `k` avoids all `R_{k-1} → R_k` coercion pain; the article's per-`k` rings would be much worse |
 | cross product | **free** | `Mathlib.LinearAlgebra.CrossProduct`: `crossProduct`/`⨯₃` over any `CommRing`, with `cross_apply`, `cross_self`, `cross_anticomm` |
-| `τ` and its invertibility | small | needs `[NeZero (2 : F)]` or `ringChar F ≠ 2`; a `LinearEquiv` is worth building rather than a bare function, since independence has to be transported along it |
+| `D` and its invertibility | **smaller than costed** | under `τ` this needed `[NeZero (2 : F)]` or `ringChar F ≠ 2`; under `D` it needs nothing — `D` is a sign-flip involution, and `D_D : D (D u) = u` is `funext; fin_cases; simp`, already proved in `Independence.lean`. No `LinearEquiv` turned out to be necessary either: the transport is done by `dot_D`, a one-line `simp`, rather than by moving independence along an equivalence |
 | the recursion `w : ℕ → (Fin 3 → MvPolynomial (ℕ × Fin 3) F)` | small–medium | `Nat.rec` with the `k = 2` base; the awkward part is that the article indexes from 2, so either an offset or junk values at 0, 1 |
 | **the freshness lemma**: `(k, j) ∉ (w m i).vars` for `m ≤ k` | **medium — the main cost** | an induction over the recursion, pushing `vars` through `⨯₃` (which unfolds to products and differences: `vars_mul`, `vars_sub_subset`, `vars_add_subset`, `vars_X`). This is the step with no shortcut, and `vars` reasoning in mathlib is workable but verbose |
 | coefficient extraction `∑ aᵢ (w_k)ᵢ = 0 ⟹ a ⨯₃ u = 0` | medium | cleanest via `pderiv (k, j)` rather than `coeff`: `pderiv` is a derivation, `pderiv_mul` plus `pderiv_eq_zero_of_notMem_vars` (which is exactly what the freshness lemma feeds) makes each of the three equations a two-line computation |
