@@ -68,8 +68,19 @@ if [ "${1:-}" = "--check" ]; then
     exit $rc
 fi
 
-# Rebuild first, so the .pdf that ships is the one the .typ produces.
-( cd "$SRC_REPO" && typst compile "article/$STEM.typ" )
+# Rebuild only when the source is newer than the PDF.  Typst's output is NOT
+# byte-reproducible -- it embeds a build timestamp, so two compiles of identical
+# input differ -- and an unconditional rebuild would therefore mark article/
+# dirty on every single run, making the +dirty warning above cry wolf and lose
+# all its value.  Rebuild on demand instead.
+if [ "$SRC_REPO/article/$STEM.typ" -nt "$SRC_REPO/article/$STEM.pdf" ]; then
+    echo "source is newer than the PDF; rebuilding"
+    ( cd "$SRC_REPO" && typst compile "article/$STEM.typ" )
+    # The rebuild just changed tracked bytes, so re-derive the dirty flag.
+    if ! git -C "$SRC_REPO" diff --quiet -- article/; then
+        HASH="${HASH%+dirty}+dirty"
+    fi
+fi
 
 for ext in typ pdf; do
     cp -- "$SRC_REPO/article/$STEM.$ext" "$DEST/$STEM.$ext"
