@@ -1,0 +1,41 @@
+% fig-phi-y2.tex -- TikZ replacement for the one hand-drawn Typst figure.
+%
+% Changelog (reverse-chronological)
+%   2026-09-01  Created.
+%
+% The Typst original (<fig-phi-y2>, article/ring-of-k-commuting-2x2-matrices.typ
+% around line 782) is built from #place/#ellipse/#box primitives that pandoc's
+% Typst reader cannot translate: it flattened them to a run of stray braces and
+% loose maths, the only four LaTeX errors in the whole converted document.
+% This file reproduces the same picture in TikZ.  The CAPTION is not here --
+% that one part of the Typst figure converts correctly and is kept as pandoc
+% produced it.
+%
+% Geometry follows the Typst source directly (cm for cm), including the two
+% fill colours, which are Typst's rgb(90%,90%,100%,60%) and rgb(100%,90%,90%,60%).
+\begin{tikzpicture}[x=1cm, y=1cm, line join=round]
+  \definecolor{y1fill}{rgb}{0.90,0.90,1.00}
+  \definecolor{y2fill}{rgb}{1.00,0.90,0.90}
+
+  % --- the source of Phi, an ellipse floating above the ambient space -----
+  \node[draw, line width=0.6pt, ellipse, inner sep=7pt]
+       (src) at (0.95,4.45) {$\mathbb{A}^{3(k-1)}\times\mathbb{A}^{1}$};
+
+  % --- the ambient affine space -------------------------------------------
+  \draw[line width=0.6pt, rounded corners=1.25cm] (-3,-2.7) rectangle (3,2.7);
+  \node[anchor=north west, font=\small] at (-2.72,2.48) {$\mathbb{A}^{3k}$};
+
+  % --- the two strata, overlapping, dashed, tinted ------------------------
+  \draw[dashed, line width=0.5pt, fill=y1fill, fill opacity=0.6]
+       (-0.95,-0.20) ellipse [x radius=1.425cm, y radius=1.475cm];
+  \draw[dashed, line width=0.5pt, fill=y2fill, fill opacity=0.6]
+       ( 0.95,-0.45) ellipse [x radius=1.425cm, y radius=1.20cm];
+
+  \node[font=\footnotesize] at (-1.85, 0.75) {$Y_{1}$};
+  \node[font=\footnotesize] at ( 1.80,-1.25) {$Y_{2}$};
+
+  % --- Phi, mapping in from above, INTO Y_2 specifically ------------------
+  \draw[-{Stealth[length=3mm]}, line width=0.7pt]
+       (0.95,3.62) -- (0.95,0.25);
+  \node[anchor=east] at (0.80,2.10) {$\Phi$};
+\end{tikzpicture}

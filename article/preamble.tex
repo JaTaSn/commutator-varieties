@@ -1,6 +1,16 @@
 % preamble.tex -- ALL typography for the manuscript lives here.
 %
 % Changelog (reverse-chronological)
+%   2026-09-01  arXiv build.  (a) Dropped "number within=section" from the
+%               theorem counter: Typst numbers ALL theorem-like environments
+%               globally and continuously (Theorem 1, Remark 2, Definition 3,
+%               ...), and the section-scoped LaTeX numbering silently produced a
+%               different sequence from the one the article's own prose, the
+%               Lean sources and the project notes all cite.
+%               (b) Added tikz (for the one hand-drawn figure, which pandoc
+%               cannot translate) and a heading-less thebibliography, because
+%               the body already carries its own numbered "References" section
+%               heading converted from the Typst.
 %   2026-08-30  Created, porting the Typst theorion/cosmos.fancy look to LaTeX.
 %
 % The point of this file, per Jan: submitting to a journal should be a ONE-FILE
@@ -27,23 +37,70 @@
 % "Misplaced \noalign".
 \usepackage{longtable,array,calc}
 \usepackage{graphicx}
+% Converted prose is dense with unbreakable inline maths, which leaves TeX no
+% legal break in some lines; pandoc's own default template sets this for the
+% same reason.  Without it, a handful of lines run ~25pt into the margin.
+\setlength{\emergencystretch}{3em}
 \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \providecommand{\pandocbounded}[1]{#1}
 \usepackage[most]{tcolorbox}
 \tcbuselibrary{theorems}
+\usepackage{varwidth}                 % for tcolorbox's "varwidth boxed title"
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+
+% ---- bibliography without its own heading ------------------------------
+% The converted body already carries "\section{References}" (Typst's "=
+% References", numbered 10.).  Stock thebibliography would add a SECOND,
+% unnumbered "References" heading right under it.  This is the standard
+% article.cls environment with the \section*{\refname} line removed.
+\makeatletter
+\renewenvironment{thebibliography}[1]
+  {\list{\@biblabel{\@arabic\c@enumiv}}%
+        {\settowidth\labelwidth{\@biblabel{#1}}%
+         \leftmargin\labelwidth
+         \advance\leftmargin\labelsep
+         \@openbib@code
+         \usecounter{enumiv}%
+         \let\p@enumiv\@empty
+         \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+   \sloppy
+   \clubpenalty4000
+   \@clubpenalty \clubpenalty
+   \widowpenalty4000%
+   \sfcode`\.\@m}
+  {\def\@noitemerr
+    {\@latex@warning{Empty `thebibliography' environment}}%
+   \endlist}
+\providecommand{\@openbib@code}{}
+\makeatother
 
 % ---- the coloured boxed theorem style ---------------------------------
-% NOTE the empty {} prefix on every \newtcbtheorem below.  tcolorbox otherwise
-% prefixes labels ("prp:foo"), which silently breaks every \cref carried over
-% from the Typst source, where labels are bare ("foo").  Symptom: "Proof of ??".
+% NOTE the empty {} prefix on every \newtcbtheorem below.  It does NOT make the
+% labels bare -- tcolorbox prepends a colon unconditionally, so
+% \begin{definition}{t}{def-y1y2} defines ":def-y1y2" (checked in main.aux, not
+% assumed).  An empty prefix only shortens "prp:foo" to ":foo".  Cross-references
+% are therefore written by tools/markers2env.py as
+% \hyperref[:foo]{Definition~\ref*{:foo}}, which also supplies the environment
+% name -- every box here shares one counter, so cleveref could only ever call
+% all of them "Theorem".  See fix_references' docstring for the full argument.
 % Reproduces theorion's cosmos.fancy: a tinted body, a saturated title bar,
 % rounded corners, a coloured left rule.
+% An attached boxed title is a single unbreakable line by default, so a long
+% Typst title just runs off the paper: Remark 27's ("... component-by-component
+% is what Proposition 26 answers") was cut at "is what P", silently -- the rest
+% is in the page stream, outside the trim.  varwidth lets it wrap.
+\tcbset{varwidth boxed title*=-1cm}
+
 \definecolor{clrThm}{HTML}{2F6FAF}
 \definecolor{clrDef}{HTML}{1F7A5A}
 \definecolor{clrRem}{HTML}{8A6D1F}
 \definecolor{clrExa}{HTML}{6B4C9A}
 
-\newtcbtheorem[number within=section]{theorem}{Theorem}{%
+% NO "number within=section": Typst numbers every theorem-like environment from
+% one global, continuous counter (Theorem 1, Remark 2, Definition 3, Example 4,
+% Problem 5, Theorem 6, ...), and those numbers are cited by name elsewhere.
+\newtcbtheorem{theorem}{Theorem}{%
   enhanced, breakable, colback=clrThm!4, colframe=clrThm, coltitle=white,
   fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
   attach boxed title to top left={xshift=6pt,yshift=-2mm},
@@ -86,6 +143,35 @@
 % proof stays plain -- a boxed proof reads badly at this density
 \renewcommand{\qedsymbol}{$\square$}
 
+% ---- cross-references into the boxes -----------------------------------
+% \thmref{Definition}{def-y1y2}  ->  "Definition 14", hyperlinked.
+% The supplement is passed in because every box above shares ONE counter
+% (tcb@cnt@theorem), so cleveref has no way to tell a Lemma from a Remark; and
+% the ":" is tcolorbox's own, prepended to the third argument regardless of the
+% \newtcbtheorem prefix.
+% Deliberately NO square brackets in the call: an earlier version emitted
+% \hyperref[:foo]{...} directly, and amsthm builds its proof heading as
+% \item[...#1...], whose optional-argument scanner ends at the first "]" -- the
+% one inside \hyperref's own [..].  204 errors, all from that.
+\newcommand{\thmref}[2]{\hyperref[:#2]{#1~\ref*{:#2}}}
+
+% ---- displays that are wider than the measure --------------------------
+% Typst shrinks an over-wide display to fit (Example 38's 3x9 Jacobian, split
+% into a 3x6 block, is typeset visibly smaller there).  LaTeX instead lets it
+% run off the paper: 144pt of the matrix was outside the trim, with only an
+% Overfull \hbox in the log to say so.  \fitdisplay measures first and scales
+% ONLY when the content really is too wide, so ordinary displays are untouched.
+\makeatletter
+\newsavebox{\jts@fitbox}
+\newcommand{\fitdisplay}[1]{%
+  \sbox{\jts@fitbox}{\ensuremath{\displaystyle #1}}%
+  \ifdim\wd\jts@fitbox>\linewidth
+    \resizebox{\linewidth}{!}{\usebox{\jts@fitbox}}%
+  \else
+    \usebox{\jts@fitbox}%
+  \fi}
+\makeatother
+
 % ---- notation ----------------------------------------------------------
 \newcommand{\FF}{\mathbb{F}}
 \newcommand{\QQ}{\mathbb{Q}}
@@ -93,6 +179,13 @@
 \newcommand{\AAA}{\mathbb{A}}
 \newcommand{\PP}{\mathbb{P}}
 \newcommand{\vek}[1]{\overline{#1}}
+
+% Filenames like code/verify\_generator\_independence.sage occur in running
+% prose and have no legal break point, so TeX pushes 148pt of one into the
+% margin.  Allow a break after each underscore; \allowbreak sets nothing, so
+% the filename is unchanged, it just becomes breakable.
+\let\jtsOldUnderscore\_
+\renewcommand{\_}{\jtsOldUnderscore\allowbreak}
 \newcommand{\enc}{\operatorname{enc}}
 \newcommand{\red}{\operatorname{red}}
 \DeclareMathOperator{\tr}{tr}

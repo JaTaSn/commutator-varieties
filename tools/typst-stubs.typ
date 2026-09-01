@@ -5,7 +5,14 @@
 #let proof(..a) = { let p = a.pos(); [ ⟦PRF|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
 #let definition(..a) = { let p = a.pos(); [ ⟦DEF|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
 #let example(..a) = { let p = a.pos(); [ ⟦EXA|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
-#let bcite(key, detail: none) = [#key]
+// bcite: the real definition renders "[n]" (or "[n, detail]") and links to the
+// bibentry.  Emitting just [#key] -- what this stub used to do -- dropped the
+// citation entirely and left the bare BibTeX key sitting in the running prose
+// ("...classical determinantal theory BrunsVetter1988 gives..."), 14+ times.
+// Emit a marker instead; the second pass turns it into \cite / \cite[detail].
+#let bcite(key, detail: none) = {
+  if detail == none { [⟦CIT|#key⟧] } else { [⟦CIT|#key|#detail⟧] }
+}
 #let vek(x) = $overline(#x)$
 #let RR = $bb(R)$
 #let QQ = $bb(Q)$
