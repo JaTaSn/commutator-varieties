@@ -383,8 +383,23 @@ the section is rewritten rather than deleted so the estimate and its outcome sta
 
 ### Not easy, and worth knowing why before anyone starts
 
-- **`lem-jacrecursion`** (the Jacobian's own recursion) — needs `pderiv` over vectors of polynomials
-  and skew-matrix bookkeeping. Doable, a real afternoon.
+- ~~**`lem-jacrecursion`** (the Jacobian's own recursion)~~ — **DONE 2026-09-01**, in
+  `KCommuting/JacobianRecursion.lean`. Costed here as *"needs `pderiv` over vectors of polynomials
+  and skew-matrix bookkeeping — a real afternoon"*. Half of that was simply wrong: mathlib's
+  `crossProduct` is already a bilinear map, so `crossProduct u` **is** `[u]ₓ` and no skew-matrix
+  construction was needed at all. The `pderiv` half was real but small — Leibniz for the cross
+  product is one `fin_cases; simp; ring`. About 40 lines in total.
+
+  Stated **entrywise**, one column at a time, rather than as a `3 × 3k` matrix identity: blocks are
+  indexed by `ℕ` here (see `Independence.lean`'s header), so a Jacobian matrix would force a
+  `Fin (3k)` enumeration and a cast at every use — the exact pain that indexing choice avoids —
+  while adding nothing, since a matrix identity *is* the conjunction of its columns.
+  `jac_recursion` states both blocks as one `if`, which makes that last claim something Lean has
+  checked rather than something asserted in a comment.
+
+  Notable: the fresh-block case is where **freshness** (`vars_w_lt`) gets used for something other
+  than what it was proved for — the old-variable Leibniz term vanishes precisely because block
+  `n+2` does not occur in `w (n+2)`.
 - **`lem-cotangent` / `lem-localdim`** — dimension theory: catenary affine domains, local dimension
   at a rational point. mathlib has pieces but not the shape used here.
 - **`thm-cm`** — rests on Eagon–Northcott / perfect ideals of maximal minors. mathlib has no
