@@ -85,6 +85,19 @@ printf '  figure (tikzpicture) .. %s\n' "$(grep -c 'begin{tikzpicture}' main.tex
 printf '  overfull hboxes ....... %s\n' "$(grep -c 'Overfull \\hbox' main.log || true)"
 printf '  pages ................. %s\n' "$(pdfinfo main.pdf 2>/dev/null | awk '/^Pages/{print $2}')"
 
+# ---- pandoc semicolon-eating guard ---------------------------------------
+# pandoc's Typst reader treats a ";" directly after a #-expression as a
+# statement terminator and SILENTLY DROPS IT: "#emph[mathlib]; this" converts to
+# "\emph{mathlib} this".  A comma survives, a semicolon does not, and nothing
+# warns.  Cost one sentence in the Acknowledgements before it was noticed by
+# reading the rendered page.  Markup emphasis is immune, so write "_x_;".
+if grep -nE '#(emph|text|strong)\[[^]]*\];' "$SRC"; then
+  echo >&2
+  echo "FAIL: '#expr[...];' in the Typst -- pandoc drops the semicolon." >&2
+  echo "      Use markup emphasis instead: _x_;" >&2
+  exit 1
+fi
+
 # ---- internal-matter guard ------------------------------------------------
 # The front matter in article/frontmatter.tex is transcribed BY HAND from the
 # Typst, so it is a second copy and can drift -- it did, within a day of being

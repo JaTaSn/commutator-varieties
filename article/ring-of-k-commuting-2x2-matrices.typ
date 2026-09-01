@@ -1480,12 +1480,15 @@ is meant literally.
 #v(1.5em)
 = Acknowledgements
 
-Just as Geheimrat Goethe had the diligent Friedrich Wilhelm Riemer to help him write #emph[Die
-Wahlverwandtschaften], just as Grothendieck had Jean Dieudonné to help him complete EGA, I have
-Claude! What exactly that amounted to is set out in §10 and in the disclosure below.
+The author first learned of the ring of commuting matrices some thirty years ago from Professor
+Jan-Erik Roos, in a course he held on the then fledgling field of computer algebra. It is a
+pleasant debt to record here, given how much of what follows was found with a computer algebra
+system open beside the page.
 
 The computations were carried out in SageMath and Macaulay2, and the formalization in Lean 4 with
-#emph[mathlib]; this article would have a different and smaller content without them.
+_mathlib_; this article would have a different and smaller content without them. The nature
+and extent of the assistance from a large language model is set out in §10 and in the disclosure
+below.
 
 #v(1.5em)
 = Disclosure of AI assistance
