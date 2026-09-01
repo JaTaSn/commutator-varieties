@@ -266,17 +266,9 @@
   #block(width: 90%)[
     #text(size: 15pt, weight: "bold")[
       The coordinate ring of the $k$-fold iterated commutator locus for $2 times 2$ matrices
-      #footnote[Working draft, 2026-08-31. Uses the community "theorion" package for theorem
-      environments -- this project's standing default going forward, after a same-day side-by-side
-      comparison against hand-rolled macros; the retired hand-rolled version is kept, not deleted,
-      at #text(style: "italic")[/TRASH/fast-commutators-ring-of-k-commuting-2x2-matrices.typ] at
-      the workspace top level. *No result's proof depends on a later result* -- the dependency
-      order is strictly linear. Forward pointers do occur, but only in prose, examples and remarks,
-      and only to orient the reader; none carries logical weight. The fuller discussions this
-      article condenses are in the author's working notes
-      (#text(style: "italic")[proof-plan-conjectures.org], Steps 0, 4 and 5, and
-      #text(style: "italic")[topological-irreducibility-of-image.org]), kept in a separate working
-      repository and not distributed with this article.]
+      #footnote[*No result's proof depends on a later result* -- the dependency order is strictly
+      linear. Forward pointers do occur, but only in prose, examples and remarks, and only to
+      orient the reader; none carries logical weight.]
     ]
   ]
   #v(0.8em)
@@ -760,10 +752,7 @@ codimension, not the determinantal-structure theorem above, not any external cit
 ]
 
 This is purely topological -- continuity of $f$ is the only hypothesis used, nothing about $f$
-being a polynomial map or morphism of varieties #bcite("Youcis2014") (the author's working note
-#text(style: "italic")[topological-irreducibility-of-image.org], not distributed with this article,
-has the fuller discussion, including why this observation matters for a possible future Lean
-formalization).
+being a polynomial map or morphism of varieties #bcite("Youcis2014").
 
 #definition[the strata $Y_1$, $Y_2$][
   For $k >= 3$, write $pi$ for the projection *forgetting $vek(v)_k$*,

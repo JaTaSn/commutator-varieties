@@ -6,8 +6,11 @@
 % tools/typ2tex.sh strips everything before the first "= " heading (the Typst
 % preamble imports theorion, which pandoc's evaluator cannot run), and the title
 % block, author block, ORCID, affiliation, e-mail, abstract and title footnote
-% all live in that stripped region.  They are transcribed here verbatim from
-% article/ring-of-k-commuting-2x2-matrices.typ -- do not reword.  The
+% all live in that stripped region.  They are transcribed here BY HAND from
+% article/ring-of-k-commuting-2x2-matrices.typ, which makes this file a second
+% copy that can drift from the canonical source -- it did, within a day of being
+% written.  Edit the .typ first, then mirror the change here, and rely on
+% make-arxiv.sh's internal-matter check to catch what mirroring misses.  The
 % Acknowledgements paragraph is NOT here: it sits after the bibliography in the
 % Typst and survives the conversion on its own.
 
@@ -30,25 +33,14 @@
     \fontsize{15}{18}\selectfont\bfseries
     The coordinate ring of the $k$-fold iterated commutator locus for
     $2 \times 2$ matrices%
-    \footnote{Working draft, 2026-08-31. Uses the community ``theorion''
-      package for theorem environments -- this project's standing default going
-      forward, after a same-day side-by-side comparison against hand-rolled
-      macros; the retired hand-rolled version is kept, not deleted, at
-      \textit{/TRASH/fast-commutators-ring-of-k-commuting-2x2-matrices.typ} at
-      the workspace top level. \textbf{No result's proof depends on a later
-      result} -- the dependency order is strictly linear. Forward pointers do
-      occur, but only in prose, examples and remarks, and only to orient the
-      reader; none carries logical weight. The fuller discussions this article
-      condenses are in the author's working notes
-      (\textit{proof-plan-conjectures.org}, Steps 0, 4 and 5, and
-      \textit{topological-irreducibility-of-image.org}), kept in a separate
-      working repository and not distributed with this article.}\par
+    \footnote{\textbf{No result's proof depends on a later result} -- the dependency order
+is strictly linear.  Forward pointers do occur, but only in prose, examples and remarks,
+and only to orient the reader; none carries logical weight.}\par
 \endgroup
 
 \begingroup
 \centering
 \vspace{0.8em}
-
 {\fontsize{11}{13}\selectfont Jan Snellman\hspace{0.25em}%
   \orcidid{0009-0002-6676-5068}\par}
 

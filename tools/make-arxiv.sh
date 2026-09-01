@@ -85,6 +85,27 @@ printf '  figure (tikzpicture) .. %s\n' "$(grep -c 'begin{tikzpicture}' main.tex
 printf '  overfull hboxes ....... %s\n' "$(grep -c 'Overfull \\hbox' main.log || true)"
 printf '  pages ................. %s\n' "$(pdfinfo main.pdf 2>/dev/null | awk '/^Pages/{print $2}')"
 
+# ---- internal-matter guard ------------------------------------------------
+# The front matter in article/frontmatter.tex is transcribed BY HAND from the
+# Typst, so it is a second copy and can drift -- it did, within a day of being
+# written: the title footnote still advertised the "theorion" package (false in
+# this build, which uses tcolorbox), a /TRASH path inside Jan's workspace, and
+# pointers to working notes the reader cannot obtain.  Jan caught it by reading
+# page 1.
+#
+# Guarding the SOURCE would miss it, because the drift can live in either copy.
+# Guard the BUILT PDF instead: whatever the route in, internal scaffolding must
+# not reach a submission.  Comments in the sources are fine -- they do not
+# render -- which is why this greps the PDF text and not the .tex.
+INTERNAL='theorion|/TRASH|[Ww]orking draft|not distributed|workspace top level|working note'
+if pdftotext main.pdf - 2>/dev/null | grep -inE "$INTERNAL"; then
+  echo
+  echo "FAIL: internal working matter reached the built PDF (matches above)." >&2
+  echo "      Fix the .typ and mirror it into article/frontmatter.tex." >&2
+  exit 1
+fi
+printf '  internal matter ....... none\n'
+
 # Leave only what would actually be uploaded, plus the built PDF and the log.
 rm -f main.aux main.out .body-only
 echo
