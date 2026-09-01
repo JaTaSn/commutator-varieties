@@ -1,4 +1,5 @@
 import KCommuting.BasicIdentity
 import KCommuting.MinimalGenerators
 import KCommuting.Independence
+import KCommuting.CrossFacts
 import KCommuting.Theorem12

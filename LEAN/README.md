@@ -360,14 +360,26 @@ that is a closed-form computation rather than an argument:
 All over an arbitrary `CommRing`, with a `ZMod 2` instance pinning `prob-char2`'s claim that the
 characteristic obstruction lives in the setup and not in the identity.
 
-### Still easy, not yet done
+### Also done — `KCommuting/CrossFacts.lean`, 2026-09-01
 
-- **Cross-product orthogonality** — `w₂ ⊥ v₁, v₂`, used implicitly where the `P₃` generators are
-  identified as incidence conditions. mathlib has `dot_self_cross` / `cross_dot_self`; near-free.
-- **The `Y₂` incidence conditions** — that substituting `v₃ = λ·D(w₂)` makes `v₁ · D(v₃)` and
-  `v₂ · D(v₃)` vanish. Polynomial identities in nine variables; `ring` after unfolding.
-- **`ker [u]ₓ = F·u` for `u ≠ 0`** — the kernel computation inside `lem-witness-new`. Ordinary
-  linear algebra, moderate rather than free.
+The three items this section previously listed as *"still easy, not yet done"*. All three landed;
+the section is rewritten rather than deleted so the estimate and its outcome stay side by side.
+
+- **Cross-product orthogonality** — estimated *near-free*, and was: mathlib's `dot_self_cross` and
+  `dot_cross_self` supply it outright, and only the specialisation to the recursion's two branches
+  (`w 2 = v 0 ⨯₃ v 1`, and `w (n+3) = D (w (n+2)) ⨯₃ v (n+2)`) had to be written. Four one-line
+  lemmas.
+- **The `Y₂` incidence conditions** — estimated as *"polynomial identities; `ring` after
+  unfolding"*, which was the wrong shape but the right price. No unfolding is needed at all:
+  `dot_D_smul_D` proves the general statement (`u ⊥ p → u ⊥ D (λ • D p)`) in one `rw` chain from
+  `D² = 1` and `dotProduct_smul`, and the article's `k = 3` pair are instances. Being general in the
+  parameter, it also covers the later components for free, which the `ring` route would not have.
+- **`ker [u]ₓ = F·u` for `u ≠ 0`** — estimated *"moderate rather than free"*, and the estimate was
+  right for the wrong reason. The linear algebra is not the cost, because mathlib already has
+  `crossProduct_ne_zero_iff_linearIndependent`; the cost is that the dependence it hands back names
+  `u` as a multiple of `x`, and turning that around needs `x ≠ 0`, a case split, and a division.
+  Also stated as a set equality, `ker_cross_eq_span`, and accompanied by a check that `u ≠ 0` is
+  load-bearing — at `u = 0` the kernel is everything, not a line.
 
 ### Not easy, and worth knowing why before anyone starts
 
