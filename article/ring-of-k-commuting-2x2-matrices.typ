@@ -1411,11 +1411,97 @@ For every $k >= 2$, over any field $FF$ of characteristic $eq.not 2$:
   primary decomposition of the Primary Decomposition Theorem (@thm-primarydecomp):
   $I_k = P_2 inter dots.c inter P_k$.
 
-Nothing above is conjectural or checked only at small $k$: every statement is proven for *every*
-$k >= 2$, over an *arbitrary* field of the stated characteristic. The one running computational
-thread -- Sage verification of the determinantal identity, the Jacobian recursion, and the witness
-points, at $k=2,dots,6$ -- corroborates the general proofs; it is not a substitute for them anywhere
-in this article.
+#v(1.5em)
+= Methods
+
+This article was produced by a workflow that is not the usual one. Since the workflow bears on how
+some of the claims above should be read, it is set out here rather than left to be inferred.
+
+*Computer algebra, in two roles that should not be confused.* SageMath and Macaulay2 were used
+throughout, for two quite different purposes. The first is *conjecture*: the component count of
+@thm-componentcount, its block-involvement pattern, and the shape of the primary decomposition were
+found by computing primary decompositions of $I_k$ at small $k$ and reading off the pattern, well
+before any of it was proved. The second is *verification*: once proved, the general statements were
+checked against independent computation --- the determinantal structure of @thm-determinantal by
+Gröbner-basis equality in both directions and, separately, against ordinary $2 times 2$ matrix
+multiplication, the two routes sharing no code; the Jacobian recursion of @lem-jacrecursion as a
+polynomial identity rather than at sampled points; the witness points of @lem-witness-new and
+@lem-witness-inherited confirmed to lie on $V(I_k)$ with the stated Jacobian rank, and on exactly
+the intended component; and the decomposition itself recomputed at $k=3,4,5,6$.
+
+Because rank, dimension and radicality are *not* characteristic-independent --- a matrix of rank 3
+over $QQ$ may drop rank modulo $p$ --- computations over $QQ$ license nothing about $FF_p$, and the
+four main results were therefore re-run over $FF_2$, $FF_3$, $FF_4$, $FF_5$, $FF_7$ and $FF_9$ as
+well. No deviation appeared. The scripts are named at the point of use and are kept, with their
+output, alongside the source.
+
+Nothing in this article is conjectural, or checked only at small $k$: every statement is proven for
+*every* $k >= 2$, over an *arbitrary* field of the stated characteristic. The computational thread
+corroborates the general proofs; nowhere does it substitute for one.
+
+*Source of truth, and a partial formalization.* The manuscript is written in Typst, and that source
+is canonical: the LaTeX is generated from it mechanically, so the two cannot drift apart. The same
+source supplied the statements for a partial formalization in Lean 4 against #emph[mathlib].
+Machine-checked, with no proof gaps and depending on no axioms beyond the three that every
+#emph[mathlib] development uses: the basic identity (@thm-basic-identity), in the strengthened form
+that drops the traceless hypothesis; the minimal-generator theorem (@thm-mingens) for the actual
+$vek(w)_k$, together with the whole chain beneath it --- the general lemma that independent
+same-degree generators are minimal (@lem-mingens-generic), the homogeneity of $vek(w)_k$, the
+freshness of each new variable block, and the linear independence itself (@lem-mingens-indep); the
+Jacobian recursion (@lem-jacrecursion); and the smaller computational claims of §3 and §5,
+including the identity of @rem-why-D.
+
+*Not* formalized: everything resting on determinantal-ideal theory or on dimension theory --- the
+codimension (@thm-codim), Cohen-Macaulayness (@thm-cm), radicality (@thm-radical), the component
+count (@thm-componentcount) and the Primary Decomposition Theorem (@thm-primarydecomp) --- for
+which the necessary libraries do not presently exist. The formalization is therefore a *partial*
+guarantee, and is described as one: it should not be read as covering the article's main results.
+
+*Adversarial review.* The manuscript was put through five rounds of deliberately adversarial
+review, each instructed to find errors rather than to approve, and each required to verify by
+computation rather than by reading. This was not a formality. The rounds found: a genuine gap in
+the proof of @lem-mingens-indep, where non-degeneracy was doing work that only linear independence
+can do; explicit displays that had not been recomputed after a change of encoding, and so still
+showed the superseded values; a false statement about the state of the literature, contradicted by
+the very sources cited for it; a citation to the wrong tag of a reference work, made under an
+explicit assurance that it had been verified; a stretch of prose that described the formulas
+printed beside it incorrectly; and the gap in generality that @rem-base-field now closes. All are
+corrected above. The mention is not decorative: a reader is entitled to know what kind of error an
+adversarial pass actually catches, and to calibrate accordingly.
+
+*What this workflow is, and is not, good for.* Its strength is coverage of the mechanical: a
+recomputation notices a stale display, an inconsistent index or an unverified citation reliably,
+and does so at a scale and patience that re-reading does not sustain. Its weakness is that none of
+that establishes that the argument is *right*; every substantive correction above was found by an
+adversarial reading, not by a passing test. The machine checks and the Lean formalization narrow
+the space in which an error can hide; they do not empty it, and the responsibility statement below
+is meant literally.
+
+#v(1.5em)
+= Acknowledgements
+
+Just as Geheimrat Goethe had the diligent Friedrich Wilhelm Riemer to help him write #emph[Die
+Wahlverwandtschaften], just as Grothendieck had Jean Dieudonné to help him complete EGA, I have
+Claude! What exactly that amounted to is set out in §10 and in the disclosure below.
+
+The computations were carried out in SageMath and Macaulay2, and the formalization in Lean 4 with
+#emph[mathlib]; this article would have a different and smaller content without them.
+
+#v(1.5em)
+= Disclosure of AI assistance
+
+This manuscript was produced with substantial assistance from a large language model, Claude
+(Anthropic), and the extent of it is stated here rather than left to be inferred. The itemised
+account is §10: which results were machine-checked and which were not, what the computer algebra
+established and what it merely corroborated, and what the adversarial review found. Claude is not a
+co-author, and is not credited as one.
+
+Every computational claim has been checked along a route independent of the statement being tested,
+and the reference list has been checked against the sources cited --- with the one exception that
+where a source is a printed book outside this project's open-access policy, an independently
+verified equivalent is cited alongside it. The author has verified the results to the best of his
+ability, made the final edits, and assumes full responsibility for any errors, mistakes or gaps
+that remain.
 
 #v(1.5em)
 = References
@@ -1474,13 +1560,3 @@ in this article.
   $R_1 + S_2$, a different statement. Fetching 031O displays the whole section, this lemma
   included, so it is easy to confirm the quoted text on a page whose tag is nevertheless the wrong
   one -- which is exactly the error this entry carried until 2026-08-31.]
-
-#v(1.0em)
-#text(size: 8.5pt, style: "italic")[
-  Acknowledgements: the computational verification, literature search, and drafting of this
-  article were carried out with substantial assistance from Claude (Anthropic), acting as an AI
-  research assistant under the author's direction and review -- not as a co-author. Every claim
-  above has been checked by the method stated -- symbolic/computational verification against the
-  actual generating ideal, or citation checked directly against the cited primary source -- rather
-  than presented on the strength of a pattern or a memory of the literature.
-]
