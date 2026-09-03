@@ -262,6 +262,21 @@
 // behavior). Caught by Jan noticing the bar simply wasn't there in the compiled PDF.
 #let vek(x) = $overline(#x)$
 
+// The sign twist of @thm-basic-identity, diag(-1,-1,1).  ONE definition, so the
+// symbol is a one-line change here rather than a 90-site rewrite (Jan, 2026-09-03:
+// "make it a macro with descriptive name so we can change it easily later").
+//
+// Renamed D -> S the same day: D collides visually with the Jacobian material of
+// the later sections, and a bare D beside a Jacobian is asking for trouble.  S is
+// for the *signature* of the Lorentzian form it encodes -- diag(-1,-1,1) is that
+// form's matrix.
+//
+// MIRROR ANY CHANGE INTO tools/typst-stubs.typ.  tools/typ2tex.sh strips
+// everything above the first "= " heading before pandoc sees the file, so a macro
+// defined only here is invisible to the arXiv build -- the same two-copy rule the
+// vek/FF macros above already live under.
+#let signtwist(..a) = if a.pos().len() == 0 { $S$ } else { $S(#a.pos().at(0))$ }
+
 // =============================================================================
 
 #align(center)[
@@ -396,7 +411,7 @@ $vek(w)_j$ versus its components $w_(j,1), w_(j,2), w_(j,3)$.
     [*Symbol*], [*Meaning*], [*Defined in*],
     [$vek(v)$ (also $vek(v)_i$; components $v_(i,1),v_(i,2),v_(i,3)$, or $v_(i,j)$)],
       [reduced-coordinate vector in $FF^3$, and its blocks], [§3, Setup],
-    [$D$], [the sign twist $D = "diag"(-1,-1,1)$, used both as a map and as a matrix],
+    [$signtwist()$], [the sign twist $signtwist() = "diag"(-1,-1,1)$, used both as a map and as a matrix],
       [§3, Setup (@thm-basic-identity)],
     [$FF$], [ambient field, characteristic $eq.not 2$; $overline(FF)$ a fixed algebraic closure],
       [§3, opening paragraph; $overline(FF)$ at @rem-base-field],
@@ -456,7 +471,7 @@ not used: the identity holds over every commutative ring.
 
 #theorem[the basic identity][
   For traceless $2 times 2$ matrices $A_0,B_0$ over $FF$, with no hypothesis on the characteristic,
-  $ "enc"([A_0,B_0]) = D("enc"(A_0) times "enc"(B_0)), quad D := mat(-1,0,0;0,-1,0;0,0,1). $
+  $ "enc"([A_0,B_0]) = signtwist("enc"(A_0) times "enc"(B_0)), quad signtwist() := mat(-1,0,0;0,-1,0;0,0,1). $
 ] <thm-basic-identity>
 
 #proof[Proof of @thm-basic-identity][
@@ -470,25 +485,25 @@ not used: the identity holds over every commutative ring.
 ]
 
 #remark[why this particular twist, and not some other one][
-  There are three concrete respects in which $D$ improves on the naive reshuffle $tau(a,b,c)=(b,a,2c)$ that
+  There are three concrete respects in which $signtwist()$ improves on the naive reshuffle $tau(a,b,c)=(b,a,2c)$ that
   the encoding $"red"(A):=(a_12,a_21,d_a)$ forces,
   each checked, not merely asserted:
-  + *$D$ does not mix coordinates.* $tau$ swaps two of its three inputs; $D$ acts diagonally, one
+  + *$signtwist()$ does not mix coordinates.* $tau$ swaps two of its three inputs; $signtwist()$ acts diagonally, one
     coordinate at a time. Consequence: $"red"$ would need a page-length remark ("why
     $vek(w)_j$ carries no outer $tau$") to justify that rescaling+swapping a generating set by an
     invertible linear map doesn't change the ideal generated. Here the analogous fact is immediate:
     *individually* negating two of three generators obviously leaves the ideal unchanged, generator
     by generator -- no swap to account for. (Still verified computationally, not merely asserted:
-    $"ideal"(vek(w)_2) = "ideal"(D vek(w)_2)$, confirmed by direct Gröbner-basis equality in
+    $"ideal"(vek(w)_2) = "ideal"(signtwist() vek(w)_2)$, confirmed by direct Gröbner-basis equality in
     #text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage].)
-  + *$D$ is an involution; $tau$ is not.* $D^2 = I$ exactly (immediate from the diagonal entries
+  + *$signtwist()$ is an involution; $tau$ is not.* $signtwist()^2 = I$ exactly (immediate from the diagonal entries
     being $plus.minus 1$), while $tau^2 = "diag"(1,1,4) eq.not I$.
-  + *$D$ is not an arbitrary matrix that happens to work -- it is (up to a constant) the matrix of
+  + *$signtwist()$ is not an arbitrary matrix that happens to work -- it is (up to a constant) the matrix of
     $frak(s l)_2$'s own Killing form, in these coordinates.* For traceless
     $A_0=mat(x,y;z,-x)$, $det(A_0) = -x^2-y z$, an *indefinite* quadratic form (never definite: $-y z
     = -((y+z)\/2)^2+((y-z)\/2)^2$ is a genuine difference of squares whenever $2 eq.not 0$). Checked
     directly: $-"enc"(A)_1^2 - "enc"(A)_2^2 + "enc"(A)_3^2 = 4 det(A_0)$, exactly (Sage, symbolic).
-    So $D$'s sign pattern *is* $det$'s own signature, read off in these coordinates -- not a
+    So $signtwist()$'s sign pattern *is* $det$'s own signature, read off in these coordinates -- not a
     bookkeeping accident. (Lie-theoretically: $frak(s l)_2(RR) tilde.equiv frak(s o)(2,1)$, the
     Lorentz algebra, not the compact $frak(s o)(3)$ one gets only after adjoining $i$ -- classical,
     not cited to a specific source here, the same way this article leaves certain folklore
@@ -497,7 +512,7 @@ not used: the identity holds over every commutative ring.
     isotropic, vanishing at $(1,0,1)$, whereas $x^2+y^2+z^2$ is anisotropic, since over a formally
     real field a sum of squares vanishes only when every term does -- and isotropy is manifestly
     preserved by invertible linear substitution. (This is the content of Sylvester's law of inertia
-    in the case at hand; the law itself is a statement about $RR$.) In that precise sense $D$'s
+    in the case at hand; the law itself is a statement about $RR$.) In that precise sense $signtwist()$'s
     single-sign twist is already the simplest one achievable, not merely simpler than $tau$ by luck.
 
     Over a general field the claim genuinely fails, and it fails already in the smallest interesting
@@ -515,13 +530,13 @@ not used: the identity holds over every commutative ring.
 
 
 #definition[reduced iterated commutator, signed encoding][
-  $ vek(w)_2 := vek(v)_1 times vek(v)_2, quad vek(w)_j := D(vek(w)_(j-1)) times vek(v)_j quad (j=3,dots,k). $
+  $ vek(w)_2 := vek(v)_1 times vek(v)_2, quad vek(w)_j := signtwist(vek(w)_(j-1)) times vek(v)_j quad (j=3,dots,k). $
   Let $R_k := FF[vek(v)_1,dots,vek(v)_k]$ ($vek(v)_i in FF^3$, $3k$ variables) and $I_k subset R_k$ the ideal
   generated by the three components of $vek(w)_k$ -- the ideal cutting out $[A_1,dots,A_k]=0$ in
   reduced coordinates. Two deliberate understatements here. First, $I_k$ is at this point only the
   *generated* ideal; that it is also the full vanishing ideal of that locus is @thm-radical, in §7
   below, and is not to be assumed before then. Second, the encoded bracket is strictly
-  $D(vek(w)_k)$, not $vek(w)_k$ -- but $D$ merely negates two of three coordinates, so the two
+  $signtwist(vek(w)_k)$, not $vek(w)_k$ -- but $signtwist()$ merely negates two of three coordinates, so the two
   triples generate the same ideal, and it is cleaner to carry the untwisted one.
 ] <def-wk>
 
@@ -552,13 +567,13 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
   $ v_(1,2)v_(2,3)-v_(1,3)v_(2,2), quad v_(1,3)v_(2,1)-v_(1,1)v_(2,3), quad
     v_(1,1)v_(2,2)-v_(1,2)v_(2,1). $
   (This is what $"red"$ would give at this stage too -- the two encodings agree exactly at the very
-  first stage, since neither $tau$ nor $D$ is applied yet.) At $k=3$, the three components of
-  $vek(w)_3 = D(vek(w)_2) times vek(v)_3$ -- now with *every coefficient equal to $plus.minus 1$*, no
+  first stage, since neither $tau$ nor $signtwist()$ is applied yet.) At $k=3$, the three components of
+  $vek(w)_3 = signtwist(vek(w)_2) times vek(v)_3$ -- now with *every coefficient equal to $plus.minus 1$*, no
   factor of 2 anywhere, unlike the $tau$-twisted $vek(w)_3$ that $"red"$ produces:
   $ v_(1,2)v_(2,1)v_(3,2) - v_(1,1)v_(2,2)v_(3,2) - v_(1,3)v_(2,1)v_(3,3) + v_(1,1)v_(2,3)v_(3,3), $
   $ -v_(1,2)v_(2,1)v_(3,1) + v_(1,1)v_(2,2)v_(3,1) - v_(1,3)v_(2,2)v_(3,3) + v_(1,2)v_(2,3)v_(3,3), $
   $ v_(1,3)v_(2,1)v_(3,1) - v_(1,1)v_(2,3)v_(3,1) + v_(1,3)v_(2,2)v_(3,2) - v_(1,2)v_(2,3)v_(3,2), $
-  and $I_3 := (w_(3,1),w_(3,2),w_(3,3))$. At $k=4$, $vek(w)_4 = D(vek(w)_3) times vek(v)_4$: again every
+  and $I_3 := (w_(3,1),w_(3,2),w_(3,3))$. At $k=4$, $vek(w)_4 = signtwist(vek(w)_3) times vek(v)_4$: again every
   coefficient is $plus.minus 1$; the first component of $vek(w)_4$ is
   $ -v_(1,3)v_(2,1)v_(3,1)v_(4,2) + v_(1,1)v_(2,3)v_(3,1)v_(4,2) - v_(1,3)v_(2,2)v_(3,2)v_(4,2)
     + v_(1,2)v_(2,3)v_(3,2)v_(4,2) $
@@ -575,7 +590,7 @@ hypothesis is actually spent is not where one first expects, and the answer leav
 are happy to hand on:
 
 #problem[characteristic 2][
-  The hypothesis is *not* spent on $D$. Since $det D = 1$, the twist is invertible over every
+  The hypothesis is *not* spent on $signtwist()$. Since $det signtwist() = 1$, the twist is invertible over every
   field, and @rem-why-D's "an invertible change of generators does not change the ideal" needs no
   hypothesis whatsoever. Under the naive reshuffle it would: $det tau = -2$, so $tau$ is singular
   in characteristic 2 precisely.
@@ -601,7 +616,7 @@ are happy to hand on:
 
   *Computational evidence, bearing on the second half of the question only.* Nothing in @def-wk's
   recursion needs a characteristic hypothesis: $vek(w)_2 = vek(v)_1 times vek(v)_2$ and
-  $vek(w)_j = D(vek(w)_(j-1)) times vek(v)_j$ define an ideal $I_k subset R_k$ over *any* field.
+  $vek(w)_j = signtwist(vek(w)_(j-1)) times vek(v)_j$ define an ideal $I_k subset R_k$ over *any* field.
   Taking that recursion as the definition and running the four results in characteristic 2 anyway,
   for $k=2,dots,5$ over $FF_2$ and $FF_4$: the codimension is $2$, the three generators are
   linearly independent over the base field, $I_k$ is radical, and $"pd"(R_k \/ I_k) = 2$, so
@@ -622,10 +637,10 @@ are happy to hand on:
 
 #theorem[determinantal structure][
   For $k >= 3$, $I_k$ is the ideal of $2 times 2$ minors of the $2 times 3$ matrix
-  $ mat(D(vek(w)_(k-1)); vek(v)_k), $
-  i.e. $V(I_k)$ is the preimage, under $(vek(v)_1,dots,vek(v)_k) |-> mat(D(vek(w)_(k-1)(vek(v)_1,dots,vek(v)_(k-1)));
+  $ mat(signtwist(vek(w)_(k-1)); vek(v)_k), $
+  i.e. $V(I_k)$ is the preimage, under $(vek(v)_1,dots,vek(v)_k) |-> mat(signtwist(vek(w)_(k-1)(vek(v)_1,dots,vek(v)_(k-1)));
   vek(v)_k)$, of the classical rank-$<=1$ determinantal variety of $2 times 3$ matrices. (At $k=2$ the
-  same statement holds with $D(vek(w)_(k-1))$ replaced by $vek(v)_1$ itself, matching @def-wk's base
+  same statement holds with $signtwist(vek(w)_(k-1))$ replaced by $vek(v)_1$ itself, matching @def-wk's base
   case $vek(w)_2 = vek(v)_1 times vek(v)_2$ directly.)
 ] <thm-determinantal>
 
@@ -640,9 +655,9 @@ are happy to hand on:
   containment one way. Second -- and this is what makes "independent" mean something here -- the
   recursion itself is checked against honest $2 times 2$ matrix multiplication: the $A_i$ are
   reconstructed from their $"enc"$-coordinates, the iterated commutator is formed by repeated
-  matrix products, and the result encoded and compared against $D(vek(w)_k)$. The two routes share
+  matrix products, and the result encoded and compared against $signtwist(vek(w)_k)$. The two routes share
   no code. The underlying
-  polynomial identity $"enc"([A,B]) = D("enc"(A) times "enc"(B))$ of @thm-basic-identity makes this a two-line induction
+  polynomial identity $"enc"([A,B]) = signtwist("enc"(A) times "enc"(B))$ of @thm-basic-identity makes this a two-line induction
   valid for *every* $k$, not merely a pattern checked at small $k$
   (#text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]).
 ]
@@ -653,13 +668,13 @@ classical determinantal variety.
 
 #example[the $2 times 3$ matrix of @thm-determinantal, for $k=2,3,4$][
   At $k=2$: $ mat(vek(v)_1; vek(v)_2) = mat(v_(1,1), v_(1,2), v_(1,3); v_(2,1), v_(2,2), v_(2,3)). $
-  At $k=3$, the first row is $D(vek(w)_2) = (-w_(2,1), -w_(2,2), w_(2,3))$ where
+  At $k=3$, the first row is $signtwist(vek(w)_2) = (-w_(2,1), -w_(2,2), w_(2,3))$ where
   $vek(w)_2 = vek(v)_1 times vek(v)_2$ is as in the previous example, giving
-  $ mat(D(vek(w)_2); vek(v)_3) = mat(
+  $ mat(signtwist(vek(w)_2); vek(v)_3) = mat(
       v_(1,3)v_(2,2)-v_(1,2)v_(2,3), -v_(1,3)v_(2,1)+v_(1,1)v_(2,3), -v_(1,2)v_(2,1)+v_(1,1)v_(2,2);
       v_(3,1), v_(3,2), v_(3,3)
     ). $
-  At $k=4$, the first row is $D(vek(w)_3)$, entries cubic with up to 4 terms:
+  At $k=4$, the first row is $signtwist(vek(w)_3)$, entries cubic with up to 4 terms:
   $ mat(
       -v_(1,2)v_(2,1)v_(3,2) + v_(1,1)v_(2,2)v_(3,2) + v_(1,3)v_(2,1)v_(3,3) - v_(1,1)v_(2,3)v_(3,3), quad dots.h.c, quad dots.h.c;
       v_(4,1), v_(4,2), v_(4,3)
@@ -677,8 +692,8 @@ classical determinantal variety.
 
 #proof[Proof of @lem-nondeg][
   By induction: $vek(w)_2(e_1,e_2)=e_1 times e_2=e_3 eq.not 0$; given $c := vek(w)_(j-1)(p) eq.not 0$, at
-  least one standard basis vector is not proportional to $D(c)$, and a cross product vanishes
-  only on linearly dependent pairs, so $vek(w)_j(p,e_i) = D(c) times e_i eq.not 0$ for a suitable
+  least one standard basis vector is not proportional to $signtwist(c)$, and a cross product vanishes
+  only on linearly dependent pairs, so $vek(w)_j(p,e_i) = signtwist(c) times e_i eq.not 0$ for a suitable
   $e_i$.
 ]
 
@@ -711,7 +726,7 @@ codimension, not the determinantal-structure theorem above, not any external cit
   nontrivial constant relation is possible.
 
   *Induction step.* Suppose the components of $vek(w)_(k-1)$ are linearly independent over $FF$, and
-  let $c in FF^3$ satisfy $c dot vek(w)_k = 0$. Writing $a := D(vek(w)_(k-1))$, the scalar triple
+  let $c in FF^3$ satisfy $c dot vek(w)_k = 0$. Writing $a := signtwist(vek(w)_(k-1))$, the scalar triple
   product identity gives
   $ 0 = c dot (a times vek(v)_k) = (c times a) dot vek(v)_k . $
   The variables $vek(v)_k$ are a *fresh* block, occurring in neither $a$ nor $c$, and the
@@ -723,7 +738,7 @@ codimension, not the determinantal-structure theorem above, not any external cit
   is a polynomial for any index with $c_i eq.not 0$. But then $a$'s three components are pairwise
   proportional, hence linearly *dependent* over $FF$ (any $d$ with $d dot c = 0$ gives
   $d dot a = (d dot c) f = 0$, and such a nonzero $d$ exists since $c$ spans only a line in $FF^3$).
-  Since $D$ is invertible, the components of $vek(w)_(k-1) = D^(-1)(a)$ are then linearly dependent
+  Since $signtwist()$ is invertible, the components of $vek(w)_(k-1) = signtwist()^(-1)(a)$ are then linearly dependent
   too, contradicting the induction hypothesis. Hence $c = 0$.
 
   Corroborated computationally: the coefficient matrix has rank 3 at $k=2,dots,6$
@@ -731,9 +746,9 @@ codimension, not the determinantal-structure theorem above, not any external cit
 ]
 
 #remark[why non-degeneracy is not enough here][
-  It is tempting to argue instead that a constant relation would force $D(vek(w)_(k-1))$ to be a
+  It is tempting to argue instead that a constant relation would force $signtwist(vek(w)_(k-1))$ to be a
   *constant vector*, and to rule that out by @lem-nondeg. That argument is not valid. The relation
-  forces only $c times D(vek(w)_(k-1)) = 0$, which makes the components of $D(vek(w)_(k-1))$
+  forces only $c times signtwist(vek(w)_(k-1)) = 0$, which makes the components of $signtwist(vek(w)_(k-1))$
   pairwise proportional --- not constant. A vector such as $(f,2f,3f)$ with $f eq.not 0$ is
   nonvanishing, so @lem-nondeg does not exclude it, yet its components are visibly dependent.
   Non-degeneracy is strictly weaker than what the step needs, which is why the induction above
@@ -775,12 +790,12 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   For $k >= 3$, write $pi$ for the projection *forgetting $vek(v)_k$*,
   $ pi : AA^(3k) -> AA^(3(k-1)), quad pi(vek(v)_1,dots,vek(v)_k) := (vek(v)_1,dots,vek(v)_(k-1)), $
   and $Phi$ for the map
-  $ Phi : AA^(3(k-1)) times AA^1 -> AA^(3k), quad Phi(p,lambda) := (p,\ lambda D(vek(w)_(k-1)(p))). $
+  $ Phi : AA^(3(k-1)) times AA^1 -> AA^(3k), quad Phi(p,lambda) := (p,\ lambda signtwist(vek(w)_(k-1)(p))). $
   Define two subsets of $AA^(3k)$:
   $ Y_1 := V(I_(k-1)) times AA^3, quad Y_2 := overline(Phi(AA^(3k-2))). $
   $Y_1$ is the locus where the previous bracket already vanishes, with $vek(v)_k$ completely free;
   $Y_2$ is the closure of the locus swept out as $vek(v)_k$ ranges over scalar multiples of
-  $D(vek(w)_(k-1)(p))$, over all $p in AA^(3(k-1))$. At $k=2$ there is no "previous bracket" to chain
+  $signtwist(vek(w)_(k-1)(p))$, over all $p in AA^(3(k-1))$. At $k=2$ there is no "previous bracket" to chain
   from, so neither $Y_1$ nor $Phi$ is defined; by convention $Y_2 := V(I_2)$ directly there,
   matching @thm-determinantal's own base-case treatment.
 ] <def-y1y2>
@@ -861,11 +876,11 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   -- and these three repay a careful reading, because their shape is not the one the
   parametrization first suggests. *All three* are linear in the new block $vek(v)_3$; what separates
   them is total degree, $2,2,3$. The two quadratic ones are, up to sign, the incidence conditions
-  $ vek(v)_1 dot D(vek(v)_3) = 0, quad vek(v)_2 dot D(vek(v)_3) = 0. $
-  These are *consequences* of the proportionality $vek(v)_3 prop D(vek(w)_2)$, not its components:
-  substituting $vek(v)_3 = lambda D(vek(w)_2)$ and using $D^2 = I$ turns them into
+  $ vek(v)_1 dot signtwist(vek(v)_3) = 0, quad vek(v)_2 dot signtwist(vek(v)_3) = 0. $
+  These are *consequences* of the proportionality $vek(v)_3 prop signtwist(vek(w)_2)$, not its components:
+  substituting $vek(v)_3 = lambda signtwist(vek(w)_2)$ and using $signtwist()^2 = I$ turns them into
   $lambda (vek(v)_i dot vek(w)_2) = 0$, which holds because $vek(w)_2 = vek(v)_1 times vek(v)_2$ is
-  orthogonal to both of its factors. (The components of $vek(v)_3 times D(vek(w)_2)$, which *are* the
+  orthogonal to both of its factors. (The components of $vek(v)_3 times signtwist(vek(w)_2)$, which *are* the
   proportionality condition, are cubic, and none of them appears above.) The third generator, of
   degree 3, is verbatim the first component of $vek(w)_3$. Note that no generator of this ideal
   could avoid $vek(v)_3$ altogether: $Y_2$ projects dominantly onto $AA^6$, so the elimination ideal
@@ -875,7 +890,7 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   below, where this exact ideal reappears as one of $I_3$'s two primary components. At $k=4$ the
   same pattern repeats one degree higher, the three generators now having degrees $2,3,4$ and again
   all three linear in the new block $vek(v)_4$. The first two are once more incidence conditions
-  forced by $vek(w)_3 perp D(vek(w)_2), vek(v)_3$, namely $vek(v)_3 dot D(vek(v)_4) = 0$ and
+  forced by $vek(w)_3 perp signtwist(vek(w)_2), vek(v)_3$, namely $vek(v)_3 dot signtwist(vek(v)_4) = 0$ and
   $vek(w)_2 dot vek(v)_4 = 0$; the third is the negative of $vek(w)_4$'s first component:
   $ v_(3,1) v_(4,1) + v_(3,2) v_(4,2) - v_(3,3) v_(4,3), $
   $ v_(1,3) v_(2,2) v_(4,1) - v_(1,2) v_(2,3) v_(4,1) - v_(1,3) v_(2,1) v_(4,2)
@@ -896,12 +911,12 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   a problem for $Y_2$,
   because $Y_2$ is *defined* as $overline(Phi(dot))$ from the outset, and the decomposition used in
   @thm-codim's proof below, $V(I_k) = Y_1 union Y_2$, is established by a direct case split rather
-  than by taking closures and hoping: a point $(p,vek(v)_k) in V(I_k)$ either has $D(vek(w)_(k-1)(p))=0$,
-  putting it in $Y_1$ directly, or has $vek(v)_k = lambda D(vek(w)_(k-1)(p))$ for some $lambda$, so
+  than by taking closures and hoping: a point $(p,vek(v)_k) in V(I_k)$ either has $signtwist(vek(w)_(k-1)(p))=0$,
+  putting it in $Y_1$ directly, or has $vek(v)_k = lambda signtwist(vek(w)_(k-1)(p))$ for some $lambda$, so
   $(p,vek(v)_k) = Phi(p,lambda)$ is *literally* a value of $Phi$ -- not merely a limit point -- hence in
   $Y_2$ with no appeal to closure at all. The reverse containment
   $Y_1 union Y_2 subset.eq V(I_k)$ needs only that $Phi(dot) subset.eq V(I_k)$ (a cross product of
-  a vector with itself vanishes: $D(vek(w)_(k-1)) times (lambda D(vek(w)_(k-1))) = 0$ identically)
+  a vector with itself vanishes: $signtwist(vek(w)_(k-1)) times (lambda signtwist(vek(w)_(k-1))) = 0$ identically)
   together with $V(I_k)$ already being closed, automatic since it is a vanishing locus by
   definition. So the theorem never needs "the image of $Phi$ is closed" -- only that it is
   contained in the already-closed $V(I_k)$, which is immediate.
@@ -917,9 +932,9 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   (vek(v)_1,dots,vek(v)_(k-1))$. Hence $pi^(-1)(U_(k-1)) = U_(k-1) times AA^3$, the set of points
   whose *first* $k-1$ blocks lie in $U_(k-1)$ and whose $vek(v)_k$ is completely unconstrained. Over
   $U_(k-1)$, $Phi$ is injective. Both $p$ and $lambda$ can be recovered from $Phi(p,lambda)$: $p$
-  directly, and $lambda$ by dividing any nonzero coordinate of $vek(v)_k=lambda D(vek(w)_(k-1)(p))$
-  by the corresponding coordinate of $D(vek(w)_(k-1)(p))$; this division is well-defined since
-  $D(vek(w)_(k-1)(p)) eq.not 0$ on $U_(k-1)$. Injectivity gives
+  directly, and $lambda$ by dividing any nonzero coordinate of $vek(v)_k=lambda signtwist(vek(w)_(k-1)(p))$
+  by the corresponding coordinate of $signtwist(vek(w)_(k-1)(p))$; this division is well-defined since
+  $signtwist(vek(w)_(k-1)(p)) eq.not 0$ on $U_(k-1)$. Injectivity gives
   $dim Y_2 = dim (U_(k-1) times AA^1) = 3(k-1)+1 = 3k-2$. Since $U_(k-1)$ is nonempty by
   @lem-nondeg, $Phi(U_(k-1) times {1})$ is a nonempty subset of $Y_2 inter pi^(-1)(U_(k-1))$.
 ]
@@ -933,8 +948,8 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   with independent-indeterminate entries, of the standard dimension $4 = 3 dot 2 - 2$ for the
   generic determinantal variety of this shape #bcite("MotzkinTaussky1955"). *Inductive step*: by
   @thm-determinantal, and since $a times b = 0$ if and only if $a,b$ are linearly dependent,
-  $V(I_k) = Y_1 union Y_2$ (@def-y1y2). The locus $D(vek(w)_(k-1))=0$ gives $Y_1$, with $vek(v)_k$
-  unconstrained; the locus $D(vek(w)_(k-1)) eq.not 0$ with $vek(v)_k$ proportional to it gives a
+  $V(I_k) = Y_1 union Y_2$ (@def-y1y2). The locus $signtwist(vek(w)_(k-1))=0$ gives $Y_1$, with $vek(v)_k$
+  unconstrained; the locus $signtwist(vek(w)_(k-1)) eq.not 0$ with $vek(v)_k$ proportional to it gives a
   subset of $Y_2$. This is the direct case split of @rem-closure-suffices, not merely a
   closure-level approximation. By the inductive hypothesis, $dim V(I_(k-1)) = 3(k-1)-2$, so
   $dim Y_1 = 3(k-1)-2+3 = 3k-2$. Also $dim Y_2 = 3k-2$, by @lem-y2-dim. Hence
@@ -1035,10 +1050,10 @@ of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
 #example[a suitable point of $Y_2$, concretely, at $k=3$][
   Rather than only the defining ideal (@ex-components-k3 below), a single explicit point: take
   $vek(v)_1=(1,0,0)$, $vek(v)_2=(0,1,0)$ (so $vek(v)_1 in U_2$, @lem-nondeg), giving
-  $vek(w)_2=vek(v)_1 times vek(v)_2=(0,0,1)$ and $D(vek(w)_2)=(0,0,1)$. Taking $lambda=1$ in
-  @def-y1y2's $Phi$, i.e. $vek(v)_3 := D(vek(w)_2)=(0,0,1)$, gives the point
+  $vek(w)_2=vek(v)_1 times vek(v)_2=(0,0,1)$ and $signtwist(vek(w)_2)=(0,0,1)$. Taking $lambda=1$ in
+  @def-y1y2's $Phi$, i.e. $vek(v)_3 := signtwist(vek(w)_2)=(0,0,1)$, gives the point
   $ (vek(v)_1,vek(v)_2,vek(v)_3) = ((1,0,0),(0,1,0),(0,0,1)) in Y_2 subset AA^9. $
-  Directly: $vek(w)_3 = D(vek(w)_2) times vek(v)_3 = (0,0,1) times (0,0,1) = 0$ (a vector crossed
+  Directly: $vek(w)_3 = signtwist(vek(w)_2) times vek(v)_3 = (0,0,1) times (0,0,1) = 0$ (a vector crossed
   with itself), confirming this point lies in $V(I_3)$, as any point of the form $Phi(p,lambda)$
   must (@def-y1y2). The point lies on the *new* component $P_3$, not on the inherited $P_2$ --
   $vek(v)_1$ and $vek(v)_2$ are independent here, so the $k=2$ bracket does not already vanish. It
@@ -1117,7 +1132,7 @@ of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
 
 #proof[Proof of @prop-detideal][
   Bruns and Vetter #bcite("BrunsVetter1988"), Theorem (2.7), p. 13, gives exactly this for an
-  *arbitrary* matrix, as needed since one row of our $2 times 3$ matrix ($D(vek(w)_(k-1))$) is a
+  *arbitrary* matrix, as needed since one row of our $2 times 3$ matrix ($signtwist(vek(w)_(k-1))$) is a
   fixed polynomial vector, not a row of independent indeterminates. (The original construction,
   Eagon and Northcott #bcite("EagonNorthcott1962"), is superseded here by Bruns-Vetter's more
   general treatment -- confirmed closed-access via Unpaywall, not used directly.)
@@ -1233,23 +1248,23 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
   Write $J_k$ for the $3 times 3k$ Jacobian of $vek(w)_k$, $[u]_times$ for the skew matrix with
   $[u]_times v = u times v$. Then
   $J_2 = [ -[vek(v)_2]_times mid(|) [vek(v)_1]_times ]$, and for $k >= 3$,
-  $ J_k = [ -[vek(v)_k]_times D J_(k-1) mid(|) [D(vek(w)_(k-1))]_times ]. $
+  $ J_k = [ -[vek(v)_k]_times signtwist() J_(k-1) mid(|) [signtwist(vek(w)_(k-1))]_times ]. $
 ] <lem-jacrecursion>
 
 #proof[Proof of @lem-jacrecursion][
-  For the second block, $vek(w)_k = D(vek(w)_(k-1)) times vek(v)_k = [D(vek(w)_(k-1))]_times vek(v)_k$ is linear in
+  For the second block, $vek(w)_k = signtwist(vek(w)_(k-1)) times vek(v)_k = [signtwist(vek(w)_(k-1))]_times vek(v)_k$ is linear in
   $vek(v)_k$ with coefficient matrix free of $vek(v)_k$. For the first, differentiating
-  $vek(w)_k = D(vek(w)_(k-1)) times vek(v)_k$ with respect to any variable $t$ among $vek(v)_1,dots,vek(v)_(k-1)$ gives
-  $∂_t vek(w)_k = (D ∂_t vek(w)_(k-1)) times vek(v)_k = -[vek(v)_k]_times D ∂_t vek(w)_(k-1)$, using
+  $vek(w)_k = signtwist(vek(w)_(k-1)) times vek(v)_k$ with respect to any variable $t$ among $vek(v)_1,dots,vek(v)_(k-1)$ gives
+  $∂_t vek(w)_k = (signtwist() ∂_t vek(w)_(k-1)) times vek(v)_k = -[vek(v)_k]_times signtwist() ∂_t vek(w)_(k-1)$, using
   $a times b = -[b]_times a$; assembling columns gives the stated product.
 ]
 
 #example[$J_3$, explicitly][
   With variables ordered $v_(1,1),v_(1,2),v_(1,3),v_(2,1),v_(2,2),v_(2,3),v_(3,1),v_(3,2),v_(3,3)$,
   the $3 times 9$ Jacobian of $vek(w)_3$ (the three generators of $I_3$ from the earlier example),
-  column-blocked to match @lem-jacrecursion's formula $J_3 = [ -[vek(v)_3]_times D J_2 mid(|)
-  [D(vek(w)_2)]_times ]$ -- shown here as the two blocks separately, since side by side the full
-  $3 times 9$ matrix does not fit the page width. First, $-[vek(v)_3]_times D J_2$ ($3 times 6$):
+  column-blocked to match @lem-jacrecursion's formula $J_3 = [ -[vek(v)_3]_times signtwist() J_2 mid(|)
+  [signtwist(vek(w)_2)]_times ]$ -- shown here as the two blocks separately, since side by side the full
+  $3 times 9$ matrix does not fit the page width. First, $-[vek(v)_3]_times signtwist() J_2$ ($3 times 6$):
   #text(size: 7pt)[
     $ mat(
         -v_(2,2)v_(3,2)+v_(2,3)v_(3,3), v_(2,1)v_(3,2), -v_(2,1)v_(3,3),
@@ -1260,7 +1275,7 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
         v_(1,3)v_(3,1), v_(1,3)v_(3,2), -v_(1,1)v_(3,1)-v_(1,2)v_(3,2)
       ) $
   ]
-  and then $[D(vek(w)_2)]_times$ ($3 times 3$, the skew matrix of $D(vek(w)_2)$'s three coordinates from
+  and then $[signtwist(vek(w)_2)]_times$ ($3 times 3$, the skew matrix of $signtwist(vek(w)_2)$'s three coordinates from
   the earlier matrix example):
   $ mat(
       0, v_(1,2)v_(2,1)-v_(1,1)v_(2,2), -v_(1,3)v_(2,1)+v_(1,1)v_(2,3);
@@ -1272,10 +1287,10 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
 
 #remark[a false shortcut, caught and corrected][
   A naive reading of @lem-jacrecursion suggests appending $vek(v)_k=0$ preserves rank on an inherited
-  component -- this is false: the old-variable block is left-multiplied by $-[vek(v)_k]_times D$, not
+  component -- this is false: the old-variable block is left-multiplied by $-[vek(v)_k]_times signtwist()$, not
   merely padded with zero rows. At the first inherited case ($k=2 arrow.r 3$), appending $vek(v)_3=0$
   actually drops the rank to 0. The correct witness (@lem-witness-inherited below) instead picks
-  $vek(v)_k = e_i$ for a standard basis vector *not* lying in $D dot "im" J_(k-1)(q)$ -- a genuine
+  $vek(v)_k = e_i$ for a standard basis vector *not* lying in $signtwist() dot "im" J_(k-1)(q)$ -- a genuine
   choice, not a formality.
 ]
 
@@ -1289,15 +1304,15 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
   *The case $k=2$ separately*, because the statement above cannot be read at $k=2$: it would refer
   to a non-degeneracy witness "at level 1", and neither $vek(w)_1$ nor @lem-nondeg exists there ---
   @def-wk starts the recursion at $j=2$. Nor does @lem-jacrecursion's $k >= 3$ formula apply. Argue
-  directly instead: $J_2 = [ -[vek(v)_2]_times mid(|) [vek(v)_1]_times ]$ carries no $D$ at all, so
+  directly instead: $J_2 = [ -[vek(v)_2]_times mid(|) [vek(v)_1]_times ]$ carries no $signtwist()$ at all, so
   for any $p eq.not 0$, $J_2(p,0) = [ 0 mid(|) [p]_times ]$, which has rank 2 by the kernel
   computation below. And $(p,0) in V(I_2)$ since $vek(w)_2(p,0) = p times 0 = 0$.
 
-  *For $k >= 3.$* By @lem-jacrecursion, $J_k(p,0) = [ 0 mid(|) [D(vek(w)_(k-1)(p))]_times ]$ since
-  $-[0]_times D J_(k-1)(p) = 0$; and $D(vek(w)_(k-1)(p)) eq.not 0$ since $vek(w)_(k-1)(p) eq.not 0$
-  (@lem-nondeg) and $D$ is invertible. For $u eq.not 0$,
+  *For $k >= 3.$* By @lem-jacrecursion, $J_k(p,0) = [ 0 mid(|) [signtwist(vek(w)_(k-1)(p))]_times ]$ since
+  $-[0]_times signtwist() J_(k-1)(p) = 0$; and $signtwist(vek(w)_(k-1)(p)) eq.not 0$ since $vek(w)_(k-1)(p) eq.not 0$
+  (@lem-nondeg) and $signtwist()$ is invertible. For $u eq.not 0$,
   $ker [u]_times = {v : u times v = 0} = FF u$ (a cross product vanishes exactly on linearly
-  dependent pairs), so $[D(vek(w)_(k-1)(p))]_times$ has rank 2, giving $"rank" J_k(p,0) = 2$.
+  dependent pairs), so $[signtwist(vek(w)_(k-1)(p))]_times$ has rank 2, giving $"rank" J_k(p,0) = 2$.
 ]
 
 #lemma[rank-2 witness on an inherited component][
@@ -1307,11 +1322,11 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
 ] <lem-witness-inherited>
 
 #proof[Proof of @lem-witness-inherited][
-  Let $W := D dot "im" J_(k-1)(q)$, a 2-dimensional subspace of $FF^3$ since $D$ is invertible and
+  Let $W := signtwist() dot "im" J_(k-1)(q)$, a 2-dimensional subspace of $FF^3$ since $signtwist()$ is invertible and
   $"rank" J_(k-1)(q)=2$. Since $e_1,e_2,e_3$ span $FF^3$ and $W eq.not FF^3$, some $e_i in.not W$;
   fix such an $i$. Since $q in V(I_(k-1))$, $vek(w)_(k-1)(q)=0$, so @lem-jacrecursion gives
-  $J_k(q,e_i) = [ -[e_i]_times D J_(k-1)(q) mid(|) 0 ] $, of rank $dim([e_i]_times W)$ since
-  $D J_(k-1)(q)$ has image exactly $W$. As $ker [e_i]_times = FF e_i$ and $W inter FF e_i = 0$
+  $J_k(q,e_i) = [ -[e_i]_times signtwist() J_(k-1)(q) mid(|) 0 ] $, of rank $dim([e_i]_times W)$ since
+  $signtwist() J_(k-1)(q)$ has image exactly $W$. As $ker [e_i]_times = FF e_i$ and $W inter FF e_i = 0$
   (else $e_i in W$), $[e_i]_times$ is injective on $W$, so $dim([e_i]_times W) = 2$.
 ]
 
@@ -1532,7 +1547,7 @@ that remain.
   permission at
   #link("https://www.home.uni-osnabrueck.de/wbruns/brunsw/detrings.pdf")[the first author's own
   page]. Theorem (2.7) and Theorem (16.36) verified directly against this copy, 2026-08-16.]
-#bibentry("EagonNorthcott1962")[J.A. Eagon, D.G. Northcott, #emph[Ideals defined by matrices and a
+#bibentry("EagonNorthcott1962")[J.A. Eagon, signtwist().G. Northcott, #emph[Ideals defined by matrices and a
   certain complex associated with them], Proc. Roy. Soc. London Ser. A 269(1337) (1962), 188-204.
   DOI: #link("https://doi.org/10.1098/rspa.1962.0170")[10.1098/rspa.1962.0170]. Closed access
   (confirmed via Unpaywall, 2026-08-16); superseded here by Bruns-Vetter's more general treatment.]
@@ -1540,7 +1555,7 @@ that remain.
   II], Trans. Amer. Math. Soc. 80 (1955), 387-401.]
 #bibentry("Stacks00OS")[#emph[The Stacks Project], tag 00OS (dimension formula for finitely
   generated field extensions / equicodimensionality of affine domains), and equivalently
-  D. Eisenbud, #emph[Commutative Algebra with a View Toward Algebraic Geometry], Springer GTM 150,
+  signtwist(). Eisenbud, #emph[Commutative Algebra with a View Toward Algebraic Geometry], Springer GTM 150,
   1995, Cor. 13.4. Open access at
   #link("https://stacks.math.columbia.edu/tag/00OS")[stacks.math.columbia.edu/tag/00OS].]
 #bibentry("Gerstenhaber1961")[M. Gerstenhaber, #emph[On dominance and varieties of commuting

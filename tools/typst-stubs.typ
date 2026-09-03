@@ -14,6 +14,7 @@
   if detail == none { [⟦CIT|#key⟧] } else { [⟦CIT|#key|#detail⟧] }
 }
 #let vek(x) = $overline(#x)$
+#let signtwist(..a) = if a.pos().len() == 0 { $S$ } else { $S(#a.pos().at(0))$ }   // mirror; see the source preamble
 #let RR = $bb(R)$
 #let QQ = $bb(Q)$
 #let FF = $bb(F)$
