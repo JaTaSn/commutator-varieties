@@ -54,6 +54,13 @@ HEADER
   cat "$OUT/.body.tex"
   echo
   echo '\end{document}'
+  # File-local variables, so opening the generated main.tex in Emacs picks the
+  # right engine without anyone having to remember.  Must follow \end{document};
+  # added 2026-09-03 from an edit Jan had made in the generated file itself.
+  echo
+  echo '% Local Variables:'
+  echo '% TeX-engine: xetex'
+  echo '% End:'
 } > "$OUT/main.tex"
 rm -f "$OUT/.body.tex"
 
