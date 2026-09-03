@@ -1,7 +1,16 @@
 #!/bin/bash
-# Sync the current manuscript into ai-workspace/projects/fast-commutators/article/.
+# Sync the current manuscript into ai-workspace/20-projects/fast-commutators/article/.
 #
 # Changelog (reverse-chronological)
+#   2026-09-03  Fixed DEST.  ai-workspace renumbered its top level (projects/ ->
+#               20-projects/) and this hardcoded path was not updated, so line 48's
+#               guard fired on every invocation: BOTH the sync and --check have been
+#               silently dead since that rename.  That is precisely why the project
+#               copy sat five commits stale while article/README.md still advertised
+#               --check as "the quick answer to 'am I reading the current version?'",
+#               and why Jan read the split as a deliberate choice not to copy back.
+#               A script whose only failure mode is exit 1 into a scrollback nobody
+#               reads is indistinguishable from a script nobody runs.
 #   2026-08-31  Created.
 #
 # WHY THIS EXISTS
@@ -41,7 +50,7 @@
 set -euo pipefail
 
 SRC_REPO="$(cd "$(dirname "$0")/.." && pwd)"
-DEST="/backup/Repositories/ai-workspace/projects/fast-commutators/article"
+DEST="/backup/Repositories/ai-workspace/20-projects/fast-commutators/article"
 STEM="ring-of-k-commuting-2x2-matrices"
 README="$DEST/README.md"
 

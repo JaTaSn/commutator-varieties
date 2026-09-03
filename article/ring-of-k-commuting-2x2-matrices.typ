@@ -1548,7 +1548,7 @@ that remain.
   permission at
   #link("https://www.home.uni-osnabrueck.de/wbruns/brunsw/detrings.pdf")[the first author's own
   page]. Theorem (2.7) and Theorem (16.36) verified directly against this copy, 2026-08-16.]
-#bibentry("EagonNorthcott1962")[J.A. Eagon, signtwist().G. Northcott, #emph[Ideals defined by matrices and a
+#bibentry("EagonNorthcott1962")[J.A. Eagon, D.G. Northcott, #emph[Ideals defined by matrices and a
   certain complex associated with them], Proc. Roy. Soc. London Ser. A 269(1337) (1962), 188-204.
   DOI: #link("https://doi.org/10.1098/rspa.1962.0170")[10.1098/rspa.1962.0170]. Closed access
   (confirmed via Unpaywall, 2026-08-16); superseded here by Bruns-Vetter's more general treatment.]
@@ -1556,7 +1556,7 @@ that remain.
   II], Trans. Amer. Math. Soc. 80 (1955), 387-401.]
 #bibentry("Stacks00OS")[#emph[The Stacks Project], tag 00OS (dimension formula for finitely
   generated field extensions / equicodimensionality of affine domains), and equivalently
-  signtwist(). Eisenbud, #emph[Commutative Algebra with a View Toward Algebraic Geometry], Springer GTM 150,
+  D. Eisenbud, #emph[Commutative Algebra with a View Toward Algebraic Geometry], Springer GTM 150,
   1995, Cor. 13.4. Open access at
   #link("https://stacks.math.columbia.edu/tag/00OS")[stacks.math.columbia.edu/tag/00OS].]
 #bibentry("Gerstenhaber1961")[M. Gerstenhaber, #emph[On dominance and varieties of commuting

@@ -126,6 +126,29 @@ if pdftotext main.pdf - 2>/dev/null | grep -inE "$INTERNAL"; then
 fi
 printf '  internal matter ....... none\n'
 
+# ---- macro-leakage guard --------------------------------------------------
+# A macro NAME that reaches the rendered page means a substitution ran in
+# markup mode, where "signtwist()" is literal text rather than a call.  It is
+# only a call inside $...$.
+#
+# Cost, 2026-09-03: the D -> S rename (commit 26b6a25) was applied textually and
+# hit two author initials inside #bibentry bodies, so reference [2] credited
+# "signtwist().G. Northcott" and [4] cited "signtwist(). Eisenbud" -- on the
+# printed page of BOTH routes, undetected for a day.  Neither existing guard
+# could see it: the strings are legitimate prose to the semicolon guard, and
+# contain none of the internal-matter patterns above.
+#
+# Same principle as the guard directly above: check the BUILT PDF, because the
+# defect can enter from either the .typ or article/frontmatter.tex.
+LEAKED='signtwist\(|vek\(|bcite\(|bibentry\(|#emph\[|#text\['
+if pdftotext main.pdf - 2>/dev/null | grep -nE "$LEAKED"; then
+  echo
+  echo "FAIL: a source macro name reached the built PDF (matches above)." >&2
+  echo "      A macro is only a call inside \$...\$; in markup it is literal text." >&2
+  exit 1
+fi
+printf '  macro leakage ......... none\n'
+
 # Leave only what would actually be uploaded, plus the built PDF and the log.
 rm -f main.aux main.out .body-only
 echo

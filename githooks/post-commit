@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# post-commit: warn when the reading copy in ai-workspace has drifted from the
+# manuscript here.
+#
+# Why this exists (2026-09-03).  tools/sync-to-projdir.sh keeps a current copy of
+# the article in ai-workspace/20-projects/fast-commutators/article/, because the
+# *project* outlives the manuscript.  It had been broken since ai-workspace
+# renumbered its top level: the hardcoded destination still said projects/ rather
+# than 20-projects/, so every invocation exited 1 on its own not-found guard.
+# Nothing noticed, because nothing ran it.  The copy fell five commits behind and
+# read as a deliberate decision not to sync at all.
+#
+# So: check after every commit, when the drift is one commit old rather than five.
+#
+# Deliberately a WARNING, not an auto-sync.  Copying into a *different* git repo
+# on every commit would leave uncommitted files sitting in ai-workspace behind
+# Jan's back, and this repo's whole convention is that generated copies get
+# committed through an ordinary reviewable commit rather than appearing by
+# themselves.  Same reasoning as ai-workspace's own post-merge hook.
+#
+# INSTALL (per clone -- core.hooksPath is local config and cannot be tracked):
+#
+#     git config core.hooksPath githooks
+#
+# The hook body is tracked, so it travels with the repo and only the one-line
+# setup is machine-local.  Putting the script itself in .git/hooks/ would fix
+# exactly one machine and leave the next clone free to repeat the failure above
+# -- the same trap as .git/info/exclude versus .gitignore.
+set -uo pipefail
+cd "$(git rev-parse --show-toplevel)" || exit 0
+
+[ -x tools/sync-to-projdir.sh ] || exit 0
+
+if ! tools/sync-to-projdir.sh --check >/dev/null 2>&1; then
+  echo "post-commit: the ai-workspace reading copy has drifted from this commit."
+  echo "             run  tools/sync-to-projdir.sh  to refresh it, then commit it there."
+fi
+exit 0
