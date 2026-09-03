@@ -10,6 +10,19 @@
 .auctex-auto/
 /tmp/
 
+# The ancillary directory and the upload tarball are rebuilt wholesale from the
+# already-tracked code/ and runs/ on every run of tools/make-arxiv.sh, so
+# tracking them would duplicate ~300 KB of blobs per regeneration.
+#
+# There is a second reason, and it is the load-bearing one: anc/runs/ is a
+# verbatim copy of runs/, and the global *.log / *.out / *.toc patterns above
+# would silently drop any transcript so named -- producing a bundle missing a
+# file the manuscript cites, with nothing to indicate it.  No current transcript
+# matches, so this is prophylaxis rather than a fix, but the failure it prevents
+# is invisible.
+/article/arxiv/anc/
+/article/arxiv/submission.tar.gz
+
 # Lean build artefacts and fetched dependencies. .lake holds ~1.3 GB of cloned
 # packages (mathlib, batteries, aesop, ...) each with its own .git, so committing
 # it both bloats the repo and creates embedded repositories git cannot handle.

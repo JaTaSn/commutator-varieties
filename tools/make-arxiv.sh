@@ -64,6 +64,45 @@ HEADER
 } > "$OUT/main.tex"
 rm -f "$OUT/.body.tex"
 
+echo "==> ancillary files"
+# The manuscript names computer-algebra scripts by path, at the point of use.
+# Those names are only worth printing if a reader can actually get the files, so
+# they ship as arXiv ancillary files.  arXiv never compiles anything under anc/
+# -- its own rule is that no TeX file may appear there, and none does.
+#
+# Rebuilt from scratch every run: a script renamed in the manuscript must not
+# leave its old copy sitting in the bundle, which is the failure a plain "copy
+# if missing" would produce.
+rm -rf "$OUT/anc"
+mkdir -p "$OUT/anc/code" "$OUT/anc/runs"
+
+# The script list is DERIVED from the manuscript's own citations rather than
+# kept by hand here.  A hand list drifts the moment a citation is added or a
+# file renamed, and the failure is silent in the worst way: a reader follows a
+# filename that is not in the tarball.  Deriving it also buys the reverse check
+# for free -- a citation to a file that does not exist becomes a build failure.
+#
+# The source writes them Typst-escaped (code/verify\_over\_finite\_fields.sage),
+# hence the tr.
+mapfile -t CITED < <(grep -oP 'code/[A-Za-z0-9_\\]+\.(sage|m2|py)' "$SRC" | tr -d '\\' | sort -u)
+if [ "${#CITED[@]}" -eq 0 ]; then
+  echo "FAIL: no code/ citations found in $SRC -- has the citation style changed?" >&2
+  exit 1
+fi
+for f in "${CITED[@]}"; do
+  if [ ! -f "$ROOT/$f" ]; then
+    echo "FAIL: the manuscript cites $f, which does not exist." >&2
+    exit 1
+  fi
+  cp "$ROOT/$f" "$OUT/anc/code/"
+done
+# runs/ ships whole.  The script -> transcript naming follows two different
+# conventions (verify_generator_independence.sage -> generator-independence-
+# results.txt, but verify_over_finite_fields.sage -> verify-over-finite-
+# fields.txt), so any derived mapping would be fragile for no gain: the whole
+# directory is a couple of hundred kilobytes and carries its own README.
+cp "$ROOT"/runs/* "$OUT/anc/runs/"
+
 echo "==> xelatex (pass 1/2)"
 (cd "$OUT" && xelatex -interaction=nonstopmode main.tex >/dev/null) || true
 echo "==> xelatex (pass 2/2)"
@@ -148,9 +187,19 @@ if pdftotext main.pdf - 2>/dev/null | grep -nE "$LEAKED"; then
   exit 1
 fi
 printf '  macro leakage ......... none\n'
+printf '  ancillary ............. %s script(s), %s transcript(s), %s\n' \
+  "$(ls -1 "$OUT/anc/code" | wc -l)" "$(ls -1 "$OUT/anc/runs" | wc -l)" \
+  "$(du -sh "$OUT/anc" | cut -f1)"
 
 # Leave only what would actually be uploaded, plus the built PDF and the log.
-rm -f main.aux main.out .body-only
+rm -f main.aux main.out .body-only submission.tar.gz
+
+# The bundle is no longer a single file, so it goes up as a tarball.  main.pdf
+# is deliberately excluded: arXiv objects to a PDF submitted alongside TeX
+# source, and it stays in article/arxiv/ for local reading regardless.
+(cd "$OUT" && tar czf submission.tar.gz main.tex anc)
+
 echo
 echo "Bundle: $OUT"
+echo "Upload: $OUT/submission.tar.gz"
 ls -1 "$OUT"

@@ -1,6 +1,19 @@
-# 2026-08-30 (Claude-Code-jts-pc, adversarial-referee round 3): independent re-verification of the
-# Radicality section (Lemmas 32-39, Theorem 40) of article/ring-of-k-commuting-2x2-matrices.typ
-# AFTER the red/tau -> enc/D merge.  The script previously cited by that section,
+# Independent re-verification of the Radicality section of
+# article/ring-of-k-commuting-2x2-matrices.typ under the signed encoding.
+#
+# Changelog (reverse-chronological)
+#   2026-09-03  Renamed referee_radicality_D_check.sage -> _S_check.sage.  The
+#               manuscript renamed the twist D -> S on 2026-09-03 (D collides with
+#               the Jacobian material), and this script is cited by name in prose
+#               that reads "verified ... for the signed encoding" -- so a reader
+#               met an S in the sentence and a D in the filename.  That reader is
+#               now an arXiv reader, since the scripts ship as ancillary files.
+#               The local variable named D inside is left alone: it is internal,
+#               and rewriting working verification code for cosmetics is a worse
+#               trade than a one-line note saying D here IS the S of the article.
+#   2026-08-30  Created (Claude-Code-jts-pc, adversarial-referee round 3).
+#
+# Written AFTER the red/tau -> enc/D merge.  The script previously cited by that section,
 # verify_jacobian_rank_all_components.sage, still uses the OLD tau encoding
 # (tau(a,b,c)=(b,a,2c)), so it verifies the old ideal, not the manuscript's current one.
 # This script redoes every numerically checkable claim of the section for D = diag(-1,-1,1):

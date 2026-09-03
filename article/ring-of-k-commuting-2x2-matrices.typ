@@ -1426,7 +1426,7 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
 Verified independently in Sage, for the signed encoding, at every $k=2,dots,6$: the Jacobian
 recursion (@lem-jacrecursion) checked as a polynomial identity, not just at points, and every
 witness confirmed to lie on $V(I_k)$ with $"rank" J_k = 2$
-(#text(style: "italic")[code/referee\_radicality\_D\_check.sage]). The sharper claim --- that each
+(#text(style: "italic")[code/referee\_radicality\_S\_check.sage]). The sharper claim --- that each
 witness lies on *exactly* its intended component --- is confirmed by an independently-computed
 primary decomposition at every $k=3,4,5,6$, which returns $k-1$ components in each case, in
 agreement with @thm-componentcount; the $k=6$ decomposition takes some hours.
@@ -1544,8 +1544,10 @@ the intended component; and the decomposition itself recomputed at $k=3,4,5,6$.
 Because rank, dimension and radicality are *not* characteristic-independent --- a matrix of rank 3
 over $QQ$ may drop rank modulo $p$ --- computations over $QQ$ license nothing about $FF_p$, and the
 four main results were therefore re-run over $FF_2$, $FF_3$, $FF_4$, $FF_5$, $FF_7$ and $FF_9$ as
-well. No deviation appeared. The scripts are named at the point of use and are kept, with their
-output, alongside the source.
+well. No deviation appeared. The scripts are named at the point of use, and are included with this
+submission as ancillary files under `anc/code/`, with their full output transcripts under
+`anc/runs/`; the paths cited in the text are the paths inside that directory. The explicit
+computations they produce are displayed in @sec-appendix.
 
 Nothing in this article is conjectural, or checked only at small $k$: every statement is proven for
 *every* $k >= 2$, over an *arbitrary* field of the stated characteristic. The computational thread
