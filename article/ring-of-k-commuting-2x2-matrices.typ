@@ -364,19 +364,22 @@ the full matrix-entry coordinates the classical literature typically uses. The g
 in this article is the *iterated* generalization to $k >= 3$: not the classical commuting variety at
 all (see the naming note above), but a structurally analogous determinantal ideal, built by chaining
 the same bilinear cross-product formula that governs the $n=2$ case. It is exactly the same *flavor*
-of question the Artin-Hochster conjecture asks -- is this natural, geometrically meaningful ideal
-Cohen-Macaulay? is it reduced? -- for a different, recursively-defined family of ideals, and this
-article answers it completely and unconditionally, for every $k >= 2$ (@thm-primarydecomp), rather
-than case by case or conjecturally. In that sense the results below can be read as a fully worked
+of question the Artin-Hochster conjecture asks. Is this natural, geometrically meaningful ideal
+Cohen-Macaulay? Is it reduced? Here those two questions are asked of a different,
+recursively-defined family of ideals, and this article answers them completely and
+unconditionally, for every $k >= 2$ (@thm-primarydecomp), rather than case by case or
+conjecturally. In that sense the results below can be read as a fully worked
 structural analogue of the still-open classical question, in a setting simple enough ($n=2$, but $k$
 unbounded) to admit a complete answer.
 
 = Notation
 
-Notation used across more than one later result, in order of first appearance; symbols local to a
-single proof are omitted.
+We present the notation used across more than one later result, in order of first appearance.
+Symbols local to a single proof are omitted. Throughout, $FF$ denotes the ambient field; it is
+fixed in @sec-setup to be of characteristic $eq.not 2$, and nothing in this section depends on
+that.
 
-*A typographic convention, used throughout*: an *overline* denotes a *vector* -- an element of
+*The following typographic convention is used throughout.* An *overline* denotes a *vector* -- an element of
 $FF^3$ (or, for $R_k$ itself, of the free module $R_k^3$) -- while the *same letter, plain, with a
 two-index comma subscript*, denotes one of that vector's three individual scalar *components*. So
 $vek(v)_i in FF^3$ is block $i$'s whole reduced-coordinate vector, while its three components are
@@ -412,7 +415,7 @@ $vek(w)_j$ versus its components $w_(j,1), w_(j,2), w_(j,3)$.
   )
 ]
 
-= Setup: the signed encoding and the defining ideal
+= Setup: the signed encoding and the defining ideal <sec-setup>
 
 Throughout, $FF$ is a field of characteristic $eq.not 2$, and all matrices, vectors and polynomial
 rings are over $FF$ unless said otherwise. (Where exactly that characteristic hypothesis is spent
@@ -420,17 +423,20 @@ is a question in its own right, taken up in @prob-char2 at the end of this secti
 examples below are computed over $QQ$, but nothing in the definitions is special to it.)
 
 *Step 1: discard the scalar part.* Write $A = mat(a_11,a_12;a_21,a_22)$ as the sum of its scalar
-part $("tr"(A)\/2) I$ and its traceless remainder $A_0 := A - ("tr"(A)\/2) I = mat(d_a\/2,a_12;
-a_21,-d_a\/2)$, $d_a := a_11-a_22$. Scalar matrices are central, so they never contribute to a
-commutator: $[c I, B] = c I B - B c I = c B - c B = 0$ for every $B$ and every scalar $c$, hence
-$[A,B]=[A_0,B_0]$ identically -- no information relevant to *any* bracket is lost by discarding the
+part $("tr"(A)\/2) I$ and its traceless remainder
+$ A_0 := A - ("tr"(A)\/2) I = mat(d_a\/2,a_12;a_21,-d_a\/2), quad d_a := a_11 - a_22 . $
+Scalar matrices are central, so they never contribute to a commutator:
+$ [c I, B] = c I B - B c I = c B - c B = 0 $
+for every $B$ and every scalar $c$, hence $[A,B]=[A_0,B_0]$ identically -- no information relevant to *any* bracket is lost by discarding the
 scalar part, so from here on only the traceless remainder matters.
 
 *Step 2: encode the traceless remainder.* A traceless matrix $mat(x,y;z,-x)$ has three free entries.
 Rather than reading them off directly ($x,y,z$ themselves -- shown in @rem-why-D below to be a
 strictly *worse* choice, forcing a swap *and* two separate factors of 2), take
-$ "enc"(A) := (a_11-a_22,\ a_12+a_21,\ a_12-a_21) in FF^3, $
-the traceless $(1,1)$-entry doubled (the quantity $d_a$ of Step 1), and $A$'s two off-diagonal
+$ "enc"(A) := (a_11-a_22, a_12+a_21, a_12-a_21) in FF^3, $
+the traceless $(1,1)$-entry doubled. (On the traceless part $a_22 = -a_11$, so
+$d_a = a_11 - a_22 = 2 a_11$: the quantity $d_a$ of Step 1 is literally twice that entry.) The
+remaining two coordinates are $A$'s two off-diagonal
 entries replaced by their sum and difference. As with the naive encoding $"red"$ of @rem-why-D, no division
 is needed to *compute* $"enc"$ -- only its inverse (recovering $a_12,a_21$ individually as
 $(v_2+v_3)/2$ and $(v_2-v_3)/2$) needs $2$ invertible, which is the standing hypothesis the
@@ -438,15 +444,18 @@ article already carries, not a new one.
 
 
 *Step 3: form the commutator.* Given traceless $A_0=mat(x,y;z,-x)$ and $B_0=mat(u,v;w,-u)$, the
-ordinary matrix commutator $[A_0,B_0]=A_0 B_0-B_0 A_0$ is again traceless automatically
-($"tr"(P Q)="tr"(Q P)$ for any $P,Q$, so $"tr"([P,Q])=0$ always), hence again encodable by $"enc"$.
+ordinary matrix commutator $[A_0,B_0]=A_0 B_0-B_0 A_0$ is again traceless automatically, since
+$"tr"(P Q)="tr"(Q P)$ for any $P,Q$ and therefore $"tr"([P,Q])=0$ always, so it is again encodable
+by $"enc"$.
 
 
 *Step 4: the encoded bracket is the cross product, up to one fixed sign twist.*
 
+For the following theorem, the article's standing hypothesis $"char" FF eq.not 2$ is deliberately
+not used: the identity holds over every commutative ring.
+
 #theorem[the basic identity][
-  For traceless $2 times 2$ matrices $A_0,B_0$ over $FF$, with *no* hypothesis on the
-  characteristic --- the article's standing $"char" FF eq.not 2$ is deliberately not used here ---
+  For traceless $2 times 2$ matrices $A_0,B_0$ over $FF$, with no hypothesis on the characteristic,
   $ "enc"([A_0,B_0]) = D("enc"(A_0) times "enc"(B_0)), quad D := mat(-1,0,0;0,-1,0;0,0,1). $
 ] <thm-basic-identity>
 
@@ -461,7 +470,7 @@ ordinary matrix commutator $[A_0,B_0]=A_0 B_0-B_0 A_0$ is again traceless automa
 ]
 
 #remark[why this particular twist, and not some other one][
-  Three concrete respects in which $D$ improves on the naive reshuffle $tau(a,b,c)=(b,a,2c)$ that
+  There are three concrete respects in which $D$ improves on the naive reshuffle $tau(a,b,c)=(b,a,2c)$ that
   the encoding $"red"(A):=(a_12,a_21,d_a)$ forces,
   each checked, not merely asserted:
   + *$D$ does not mix coordinates.* $tau$ swaps two of its three inputs; $D$ acts diagonally, one
@@ -539,8 +548,7 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
 
 
 #example[$vek(w)_k$ and $I_k$, explicitly, for $k=2,3,4$][
-  Computed directly (#text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]), not
-  hand-derived. At $k=2$, the three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
+  Computed directly, not hand-derived. At $k=2$, the three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
   $ v_(1,2)v_(2,3)-v_(1,3)v_(2,2), quad v_(1,3)v_(2,1)-v_(1,1)v_(2,3), quad
     v_(1,1)v_(2,2)-v_(1,2)v_(2,1). $
   (This is what $"red"$ would give at this stage too -- the two encodings agree exactly at the very
@@ -613,7 +621,7 @@ are happy to hand on:
 = The determinantal structure and the generator count
 
 #theorem[determinantal structure][
-  For $k >= 3$, $I_k$ is exactly the ideal of $2 times 2$ minors of the $2 times 3$ matrix
+  For $k >= 3$, $I_k$ is the ideal of $2 times 2$ minors of the $2 times 3$ matrix
   $ mat(D(vek(w)_(k-1)); vek(v)_k), $
   i.e. $V(I_k)$ is the preimage, under $(vek(v)_1,dots,vek(v)_k) |-> mat(D(vek(w)_(k-1)(vek(v)_1,dots,vek(v)_(k-1)));
   vek(v)_k)$, of the classical rank-$<=1$ determinantal variety of $2 times 3$ matrices. (At $k=2$ the
@@ -622,9 +630,10 @@ are happy to hand on:
 ] <thm-determinantal>
 
 #proof[Proof of @thm-determinantal][
-  Immediate from the fact that the three components of a cross product $a times b$ are (up to sign)
-  exactly the $2 times 2$ minors of the $2 times 3$ matrix with rows $a,b$, combined with
-  @def-wk's recursion -- and checked independently at $k=2,dots,6$ in
+  The claim is immediate from two facts taken together. The three components of a cross product
+  $a times b$ are, up to sign, the $2 times 2$ minors of the $2 times 3$ matrix with rows $a$ and
+  $b$; and @def-wk's recursion builds $vek(w)_k$ from exactly such a cross product. The statement
+  was also checked independently at $k=2,dots,6$ in
   #text(style: "italic")[code/verify\_determinantal\_structure\_all\_k.sage], in two separate ways.
   First, $I_k$ and the ideal of the displayed minors are shown equal by reducing each ideal's
   generators to zero against the other's Gröbner basis, in *both* directions, rather than by
