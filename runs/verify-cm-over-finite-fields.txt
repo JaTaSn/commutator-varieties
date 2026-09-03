@@ -16,6 +16,14 @@ GF(4)   2   2       2    yes
 GF(4)   3   2       2    yes
 GF(4)   4   2       2    yes
 GF(4)   5   2       2    yes
+GF(7)   2   2       2    yes
+GF(7)   3   2       2    yes
+GF(7)   4   2       2    yes
+GF(7)   5   2       2    yes
+GF(9)   2   2       2    yes
+GF(9)   3   2       2    yes
+GF(9)   4   2       2    yes
+GF(9)   5   2       2    yes
 QQ   2   2       2    yes
 QQ   3   2       2    yes
 QQ   4   2       2    yes

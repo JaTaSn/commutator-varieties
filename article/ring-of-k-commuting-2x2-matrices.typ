@@ -512,13 +512,16 @@ not used: the identity holds over every commutative ring.
 ] <thm-basic-identity>
 
 #proof[Proof of @thm-basic-identity][
-  A direct computation, carried out symbolically over generic entries $a_11,dots,b_22$ (not merely
-  checked at sampled points) in
-  #text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]: both sides, expanded in
-  the 8 free entries, agree term by term --- they are displayed in full in @app-identity. Both sides are integer polynomials in those entries, so
-  the identity descends to every commutative ring; it was checked over $ZZ$ and, separately, over
-  $FF_2$ -- where it still holds -- precisely to confirm that this step is not one of the places
-  where $"char" FF eq.not 2$ is spent (see @prob-char2).
+  A direct computation, carried out symbolically over generic entries $a_11,dots,b_22$ rather than
+  checked at sampled points, in
+  #text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]. Both sides, expanded in
+  the 8 free entries, agree term by term; they are displayed in full in @app-identity.
+
+  Both sides are integer polynomials in those entries, so the identity descends to every commutative
+  ring. It was also checked directly over $ZZ$ and, separately, over $FF_2$ --- where it still
+  holds --- in #text(style: "italic")[code/referee\_round4\_setup\_determinantal\_check.sage],
+  precisely to confirm that this step is not one of the places where $"char" FF eq.not 2$ is spent
+  (@qst-char2).
 ]
 
 #remark[why this particular twist, and not some other one][
@@ -1028,8 +1031,12 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
 
 #proof[Proof of @thm-codim][
   Induction on $k$. *Base case $k=2$*: $V(I_2)$ is the rank-$<=1$ locus of a $2 times 3$ matrix
-  with independent-indeterminate entries, of the standard dimension $4 = 3 dot 2 - 2$ for the
-  generic determinantal variety of this shape #bcite("MotzkinTaussky1955"). *Inductive step*: by
+  with independent-indeterminate entries. Its dimension is the standard $4 = 3 dot 2 - 2$ for a
+  generic determinantal variety of this shape: the classical codimension formula for the rank-$<= t$
+  locus of a generic $m times n$ matrix gives $(m-t)(n-t) = 1 dot 2 = 2$ here
+  #bcite("BrunsVetter1988"), and the same value falls out of viewing $V(I_2)$ as the affine cone
+  over the Segre embedding $PP^1 times PP^2 arrow.hook PP^5$, of dimension $1+2+1=4$. Confirmed
+  directly by Gröbner-basis computation as well (@ex-dim-codim). *Inductive step*: by
   @thm-determinantal, and since $a times b = 0$ if and only if $a,b$ are linearly dependent,
   $V(I_k) = Y_1 union Y_2$ (@def-y1y2). The locus $signtwist(vek(w)_(k-1))=0$ gives $Y_1$, with $vek(v)_k$
   unconstrained; the locus $signtwist(vek(w)_(k-1)) eq.not 0$ with $vek(v)_k$ proportional to it gives a
@@ -1058,7 +1065,7 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   ]
   All three rows follow directly from @thm-codim's formula $dim(R_k\/I_k)=3k-2$; also confirmed by
   direct Gröbner-basis dimension computation in Sage at each $k$, as an independent check.
-]
+] <ex-dim-codim>
 
 #proposition[$Y_2 subset.not.eq Y_1$][
   With $Y_1, Y_2$ as in the proof of @thm-codim: $Y_2 subset.not.eq Y_1$.
@@ -1070,14 +1077,20 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
 ]
 
 #proposition[no component of $Y_1$ lies in $Y_2$][
-  No irreducible component $Z$ of $V(I_(k-1))$ (each of dimension $3(k-1)-2$, by @thm-codim applied
-  at $k-1$) has $Z times AA^3 subset.eq Y_2$.
+  Let $Z$ be an irreducible component of $V(I_(k-1))$ *of dimension $3(k-1)-2$*. Then
+  $Z times AA^3 subset.eq.not Y_2$.
+
+  The dimension hypothesis is stated rather than cited. @thm-codim gives the dimension of the
+  *union* $V(I_(k-1))$, which does not by itself say that every component attains it; the
+  per-component statement is part of @thm-componentcount, and this proposition is used inside that
+  theorem's own induction, where it is available as the inductive hypothesis at level $k-1$.
 ] <prop-y1-not-in-y2>
 
 #proof[Proof of @prop-y1-not-in-y2][
   Both $Z times AA^3$ and $Y_2$ are irreducible: $Y_2$ by @lem-y2-irred, and $Z times AA^3$ because
   a product of irreducible varieties is irreducible ($Z$ is irreducible by hypothesis, and $AA^3$
-  trivially is). Both have the *same* dimension $3k-2$, by @thm-codim and @lem-y2-dim. Containment
+  trivially is). Both have the *same* dimension $3k-2$: $Z times AA^3$ by the hypothesis on $Z$,
+  and $Y_2$ by @lem-y2-dim. Containment
   would therefore force equality. This is refuted: $Z times AA^3$ is disjoint from
   $pi^(-1)(U_(k-1))$, since $vek(w)_(k-1)$ vanishes identically on $Z subset V(I_(k-1))$; but $Y_2$
   meets $pi^(-1)(U_(k-1))$, by @lem-y2-dim.
@@ -1094,9 +1107,12 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   irreducible -- the affine cone over the Segre embedding $PP^1 times PP^2 arrow.hook PP^5$,
   equivalently the Motzkin-Taussky #bcite("MotzkinTaussky1955") irreducibility of the $2 times 2$
   commuting variety -- so exactly 1 component, matching $k-1=1$. *Step*: $V(I_k) = Y_1 union Y_2$
-  as in @thm-codim's proof; by the inductive hypothesis $Y_1$ has $k-2$ irreducible components,
-  each of dimension $3k-2$ (@thm-codim), none contained in another; @prop-y2-not-in-y1 and
-  @prop-y1-not-in-y2 rule out containment between $Y_2$ and any of them or vice versa. A finite
+  as in @thm-codim's proof. By the inductive hypothesis --- this theorem at level $k-1$, which is
+  where the per-component dimension comes from --- $V(I_(k-1))$ has $k-2$ irreducible components,
+  each of dimension $3(k-1)-2$, none contained in another; crossing with $AA^3$ makes them $Y_1$'s
+  components, each of dimension $3k-2$. That is exactly the hypothesis @prop-y1-not-in-y2 asks for,
+  so it and @prop-y2-not-in-y1 together rule out containment between $Y_2$ and any of them, in
+  either direction. A finite
   union of irreducible closed sets with no containments is irredundant, giving exactly
   $(k-2)+1=k-1$ components.
 ]
@@ -1653,6 +1669,12 @@ argument stays legible. This appendix displays them. Everything here is *corrobo
 in the article rests on a computation, and nothing below is offered as one. Each block names the
 script that produced it, and the scripts ship with this submission as ancillary files under
 `anc/code/`, with their full transcripts under `anc/runs/`.
+
+One naming point, since the scripts ship as they are. Most of them were written while the sign
+twist was called $D$, and they still write `D` internally for the matrix this article calls
+$signtwist()$. It is the same matrix, $"diag"(-1,-1,1)$; only the article's name for it changed.
+Their contents were not rewritten for the rename, on the grounds that editing working verification
+code for cosmetic reasons is a worse risk than a sentence saying so.
 
 Every polynomial below was recomputed for this appendix from the recursion of @def-wk rather than
 transcribed from an earlier draft. That distinction is not pedantry here: the article changed
