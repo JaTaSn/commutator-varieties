@@ -674,15 +674,16 @@ classical determinantal variety.
       v_(1,3)v_(2,2)-v_(1,2)v_(2,3), -v_(1,3)v_(2,1)+v_(1,1)v_(2,3), -v_(1,2)v_(2,1)+v_(1,1)v_(2,2);
       v_(3,1), v_(3,2), v_(3,3)
     ). $
-  At $k=4$, the first row is $signtwist(vek(w)_3)$, entries cubic with up to 4 terms:
-  $ mat(
-      -v_(1,2)v_(2,1)v_(3,2) + v_(1,1)v_(2,2)v_(3,2) + v_(1,3)v_(2,1)v_(3,3) - v_(1,1)v_(2,3)v_(3,3), quad dots.h.c, quad dots.h.c;
-      v_(4,1), v_(4,2), v_(4,3)
-    ) $
-  (the other two entries of the first row, of the same shape, omitted for width -- all displayed in
-  full in #text(style: "italic")[code/verify\_determinantal\_structure\_all\_k.sage]). The row
-  degree grows by one at each step ($1,2,3,dots$), while the second row is always the fresh, free
-  vector $vek(v)_k$ -- exactly the "one fixed complicated row, one free row" shape @prop-detideal needs.
+  At $k=4$ the first row is $signtwist(vek(w)_3)$, whose three entries are cubic with four terms
+  each. Naming them $A$, $B$, $C$ keeps the matrix legible:
+  $ mat(A, B, C; v_(4,1), v_(4,2), v_(4,3)), $
+  where
+  $ A &= -v_(1,2)v_(2,1)v_(3,2) + v_(1,1)v_(2,2)v_(3,2) + v_(1,3)v_(2,1)v_(3,3) - v_(1,1)v_(2,3)v_(3,3), \
+    B &= v_(1,2)v_(2,1)v_(3,1) - v_(1,1)v_(2,2)v_(3,1) + v_(1,3)v_(2,2)v_(3,3) - v_(1,2)v_(2,3)v_(3,3), \
+    C &= v_(1,3)v_(2,1)v_(3,1) - v_(1,1)v_(2,3)v_(3,1) + v_(1,3)v_(2,2)v_(3,2) - v_(1,2)v_(2,3)v_(3,2). $
+  The row degree grows by one at each step ($1,2,3,dots$), while the second row is always the fresh,
+  free vector $vek(v)_k$ -- exactly the "one fixed complicated row, one free row" shape
+  @prop-detideal needs.
 ]
 
 #lemma[non-degeneracy][
