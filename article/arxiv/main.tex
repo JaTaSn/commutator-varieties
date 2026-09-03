@@ -396,7 +396,7 @@ For the following theorem, the article's standing hypothesis \(\text{char }\math
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-basic-identity}}] A direct computation, carried out symbolically over generic entries \(a_{11},\ldots,b_{22}\) (not merely checked at sampled points) in code/verify\_lorentzian\_encoding\_identity.sage: both sides, expanded in the 8 free entries, agree term by term. Both sides are integer polynomials in those entries, so the identity descends to every commutative ring; it was checked over \(\mathbb{Z}\) and, separately, over \(\mathbb{F}_{2}\) -- where it still holds -- precisely to confirm that this step is not one of the places where \(\text{char }\mathbb{F} \neq 2\) is spent (see \thmref{Problem}{prob-char2}).
+\begin{proof}[{Proof of \thmref{Theorem}{thm-basic-identity}}] A direct computation, carried out symbolically over generic entries \(a_{11},\ldots,b_{22}\) (not merely checked at sampled points) in code/verify\_lorentzian\_encoding\_identity.sage: both sides, expanded in the 8 free entries, agree term by term --- they are displayed in full in \cref{app-identity}. Both sides are integer polynomials in those entries, so the identity descends to every commutative ring; it was checked over \(\mathbb{Z}\) and, separately, over \(\mathbb{F}_{2}\) -- where it still holds -- precisely to confirm that this step is not one of the places where \(\text{char }\mathbb{F} \neq 2\) is spent (see \thmref{Problem}{prob-char2}).
 
 \end{proof}
 
@@ -404,14 +404,14 @@ For the following theorem, the article's standing hypothesis \(\text{char }\math
 
 \begin{enumerate}
 \item
-  \textbf{\(S\) does not mix coordinates.} \(\tau\) swaps two of its three inputs; \(S\) acts diagonally, one coordinate at a time. Consequence: \(\text{red}\) would need a page-length remark (``why \({\overline{w}}_{j}\) carries no outer \(\tau\)'') to justify that rescaling+swapping a generating set by an invertible linear map doesn't change the ideal generated. Here the analogous fact is immediate: \textbf{individually} negating two of three generators obviously leaves the ideal unchanged, generator by generator -- no swap to account for. (Still verified computationally, not merely asserted: \(\text{ideal}\left( {\overline{w}}_{2} \right) = \text{ ideal}\left( S{\overline{w}}_{2} \right)\), confirmed by direct Gröbner-basis equality in code/verify\_encoding\_gl3\_equivariance.sage.)
+  \textbf{\(S\) does not mix coordinates.} \(\tau\) swaps two of its three inputs; \(S\) acts diagonally, one coordinate at a time. Consequence: \(\text{red}\) would need a page-length remark (``why \({\overline{w}}_{j}\) carries no outer \(\tau\)'') to justify that rescaling+swapping a generating set by an invertible linear map doesn't change the ideal generated. Here the analogous fact is immediate: \textbf{individually} negating two of three generators obviously leaves the ideal unchanged, generator by generator -- no swap to account for. (Still verified computationally, not merely asserted: \(\text{ideal}\left( {\overline{w}}_{2} \right) = \text{ ideal}\left( S{\overline{w}}_{2} \right)\), confirmed by direct Gröbner-basis equality in code/verify\_encoding\_gl3\_equivariance.sage the three generators are written out in \cref{app-remark2}.)
 \item
   \textbf{\(S\) is an involution; \(\tau\) is not.} \(S^{2} = I\) exactly (immediate from the diagonal entries being \(\pm 1\)), while \(\tau^{2} = \text{ diag}(1,1,4) \neq I\).
 \item
   \textbf{\(S\) is not an arbitrary matrix that happens to work -- it is (up to a constant) the matrix of \(\mathfrak{sl}_{2}\)'s own Killing form, in these coordinates.} For traceless \(A_{0} = \begin{pmatrix}
   x & y \\
   z & - x
-  \end{pmatrix}\), \(\det(A_{0}) = - x^{2} - yz\), an \textbf{indefinite} quadratic form (never definite: \(- yz = {- \left( (y + z)/2 \right)}^{2} + \left( (y - z)/2 \right)^{2}\) is a genuine difference of squares whenever \(2 \neq 0\)). Checked directly: \(- {\text{enc}(A)}_{1}^{2} - {\text{ enc}(A)}_{2}^{2} + {\text{ enc}(A)}_{3}^{2} = 4\det(A_{0})\), exactly (Sage, symbolic). So \(S\)'s sign pattern \textbf{is} \(\det\)'s own signature, read off in these coordinates -- not a bookkeeping accident. (Lie-theoretically: \(\mathfrak{sl}_{2}\left( \mathbb{R} \right) \cong \mathfrak{so}(2,1)\), the Lorentz algebra, not the compact \(\mathfrak{so}(3)\) one gets only after adjoining \(i\) -- classical, not cited to a specific source here, the same way this article leaves certain folklore facts uncited rather than inventing a citation.) Over \(\mathbb{R}\), or over any formally real field such as \(\mathbb{Q}\), that sign cannot be removed by \textbf{any} invertible linear re-encoding: \(- x^{2} - y^{2} + z^{2}\) is isotropic, vanishing at \((1,0,1)\), whereas \(x^{2} + y^{2} + z^{2}\) is anisotropic, since over a formally real field a sum of squares vanishes only when every term does -- and isotropy is manifestly preserved by invertible linear substitution. (This is the content of Sylvester's law of inertia in the case at hand; the law itself is a statement about \(\mathbb{R}\).) In that precise sense \(S\)'s single-sign twist is already the simplest one achievable, not merely simpler than \(\tau\) by luck.
+  \end{pmatrix}\), \(\det(A_{0}) = - x^{2} - yz\), an \textbf{indefinite} quadratic form (never definite: \(- yz = {- \left( (y + z)/2 \right)}^{2} + \left( (y - z)/2 \right)^{2}\) is a genuine difference of squares whenever \(2 \neq 0\)). Checked directly: \(- {\text{enc}(A)}_{1}^{2} - {\text{ enc}(A)}_{2}^{2} + {\text{ enc}(A)}_{3}^{2} = 4\det(A_{0})\), exactly (Sage, symbolic; \cref{app-remark2}). So \(S\)'s sign pattern \textbf{is} \(\det\)'s own signature, read off in these coordinates -- not a bookkeeping accident. (Lie-theoretically: \(\mathfrak{sl}_{2}\left( \mathbb{R} \right) \cong \mathfrak{so}(2,1)\), the Lorentz algebra, not the compact \(\mathfrak{so}(3)\) one gets only after adjoining \(i\) -- classical, not cited to a specific source here, the same way this article leaves certain folklore facts uncited rather than inventing a citation.) Over \(\mathbb{R}\), or over any formally real field such as \(\mathbb{Q}\), that sign cannot be removed by \textbf{any} invertible linear re-encoding: \(- x^{2} - y^{2} + z^{2}\) is isotropic, vanishing at \((1,0,1)\), whereas \(x^{2} + y^{2} + z^{2}\) is anisotropic, since over a formally real field a sum of squares vanishes only when every term does -- and isotropy is manifestly preserved by invertible linear substitution. (This is the content of Sylvester's law of inertia in the case at hand; the law itself is a statement about \(\mathbb{R}\).) In that precise sense \(S\)'s single-sign twist is already the simplest one achievable, not merely simpler than \(\tau\) by luck.
 
   Over a general field the claim genuinely fails, and it fails already in the smallest interesting case, so the restriction above is not idle caution: over \(\mathbb{F}_{3}\), where \(- 1\) is \textbf{not} a square, \(\text{diag}( - 1, - 1,1)\) is nevertheless congruent to the identity form, via \(T = \begin{pmatrix}
   0 & 0 & 1 \\
@@ -443,7 +443,7 @@ v_{1,3}v_{2,1} - v_{1,1}v_{2,3} \\
 v_{1,1}v_{2,2} - v_{1,2}v_{2,1}
 \end{pmatrix} \in \mathbb{A}^{3},}\end{equation} and \(I_{k}\) (\thmref{Definition}{def-wk}) is, equivalently, the ideal generated by the three coordinate functions of \({\overline{w}}_{k}:\mathbb{A}^{3k} \rightarrow \mathbb{A}^{3}\) pulled back along this substitution.
 
-\begin{example}{\({\overline{w}}_{k}\) and \(I_{k}\), explicitly, for \(k = 2,3,4\)}{ex-wk-signed} Computed directly (code/compute\_signed\_encoding\_examples.sage), not hand-derived. At \(k = 2\), the three components of \({\overline{w}}_{2} = {\overline{v}}_{1} \times {\overline{v}}_{2}\): \begin{equation}\fitdisplay{v_{1,2}v_{2,3} - v_{1,3}v_{2,2},\quad v_{1,3}v_{2,1} - v_{1,1}v_{2,3},\quad v_{1,1}v_{2,2} - v_{1,2}v_{2,1}.}\end{equation} (This is what \(\text{red}\) would give at this stage too -- the two encodings agree exactly at the very first stage, since neither \(\tau\) nor \(S\) is applied yet.) At \(k = 3\), the three components of \({\overline{w}}_{3} = {S\left( {\overline{w}}_{2} \right)} \times {\overline{v}}_{3}\) -- now with \textbf{every coefficient equal to \(\pm 1\)}, no factor of 2 anywhere, unlike the \(\tau\)-twisted \({\overline{w}}_{3}\) that \(\text{red}\) produces: \begin{equation}\fitdisplay{v_{1,2}v_{2,1}v_{3,2} - v_{1,1}v_{2,2}v_{3,2} - v_{1,3}v_{2,1}v_{3,3} + v_{1,1}v_{2,3}v_{3,3},}\end{equation} \begin{equation}\fitdisplay{- v_{1,2}v_{2,1}v_{3,1} + v_{1,1}v_{2,2}v_{3,1} - v_{1,3}v_{2,2}v_{3,3} + v_{1,2}v_{2,3}v_{3,3},}\end{equation} \begin{equation}\fitdisplay{v_{1,3}v_{2,1}v_{3,1} - v_{1,1}v_{2,3}v_{3,1} + v_{1,3}v_{2,2}v_{3,2} - v_{1,2}v_{2,3}v_{3,2},}\end{equation} and \(I_{3} \coloneqq  \left( w_{3,1},w_{3,2},w_{3,3} \right)\). At \(k = 4\), \({\overline{w}}_{4} = {S\left( {\overline{w}}_{3} \right)} \times {\overline{v}}_{4}\): again every coefficient is \(\pm 1\); the first component of \({\overline{w}}_{4}\) is \begin{equation}\fitdisplay{- v_{1,3}v_{2,1}v_{3,1}v_{4,2} + v_{1,1}v_{2,3}v_{3,1}v_{4,2} - v_{1,3}v_{2,2}v_{3,2}v_{4,2} + v_{1,2}v_{2,3}v_{3,2}v_{4,2}}\end{equation} \begin{equation}\fitdisplay{+ v_{1,2}v_{2,1}v_{3,1}v_{4,3} - v_{1,1}v_{2,2}v_{3,1}v_{4,3} + v_{1,3}v_{2,2}v_{3,3}v_{4,3} - v_{1,2}v_{2,3}v_{3,3}v_{4,3},}\end{equation} the other two of the same shape (omitted for space; all three components of \({\overline{w}}_{4}\), and \(I_{4} \coloneqq  \left( w_{4,1},w_{4,2},w_{4,3} \right)\), in code/compute\_signed\_encoding\_examples.sage's output).
+\begin{example}{\({\overline{w}}_{k}\) and \(I_{k}\), explicitly, for \(k = 2,3,4\)}{ex-wk-signed} Computed directly (code/compute\_signed\_encoding\_examples.sage), not hand-derived. At \(k = 2\), the three components of \({\overline{w}}_{2} = {\overline{v}}_{1} \times {\overline{v}}_{2}\): \begin{equation}\fitdisplay{v_{1,2}v_{2,3} - v_{1,3}v_{2,2},\quad v_{1,3}v_{2,1} - v_{1,1}v_{2,3},\quad v_{1,1}v_{2,2} - v_{1,2}v_{2,1}.}\end{equation} (This is what \(\text{red}\) would give at this stage too -- the two encodings agree exactly at the very first stage, since neither \(\tau\) nor \(S\) is applied yet.) At \(k = 3\), the three components of \({\overline{w}}_{3} = {S\left( {\overline{w}}_{2} \right)} \times {\overline{v}}_{3}\) -- now with \textbf{every coefficient equal to \(\pm 1\)}, no factor of 2 anywhere, unlike the \(\tau\)-twisted \({\overline{w}}_{3}\) that \(\text{red}\) produces: \begin{equation}\fitdisplay{v_{1,2}v_{2,1}v_{3,2} - v_{1,1}v_{2,2}v_{3,2} - v_{1,3}v_{2,1}v_{3,3} + v_{1,1}v_{2,3}v_{3,3},}\end{equation} \begin{equation}\fitdisplay{- v_{1,2}v_{2,1}v_{3,1} + v_{1,1}v_{2,2}v_{3,1} - v_{1,3}v_{2,2}v_{3,3} + v_{1,2}v_{2,3}v_{3,3},}\end{equation} \begin{equation}\fitdisplay{v_{1,3}v_{2,1}v_{3,1} - v_{1,1}v_{2,3}v_{3,1} + v_{1,3}v_{2,2}v_{3,2} - v_{1,2}v_{2,3}v_{3,2},}\end{equation} and \(I_{3} \coloneqq  \left( w_{3,1},w_{3,2},w_{3,3} \right)\). At \(k = 4\), \({\overline{w}}_{4} = {S\left( {\overline{w}}_{3} \right)} \times {\overline{v}}_{4}\): again every coefficient is \(\pm 1\); the first component of \({\overline{w}}_{4}\) is \begin{equation}\fitdisplay{- v_{1,3}v_{2,1}v_{3,1}v_{4,2} + v_{1,1}v_{2,3}v_{3,1}v_{4,2} - v_{1,3}v_{2,2}v_{3,2}v_{4,2} + v_{1,2}v_{2,3}v_{3,2}v_{4,2}}\end{equation} \begin{equation}\fitdisplay{+ v_{1,2}v_{2,1}v_{3,1}v_{4,3} - v_{1,1}v_{2,2}v_{3,1}v_{4,3} + v_{1,3}v_{2,2}v_{3,3}v_{4,3} - v_{1,2}v_{2,3}v_{3,3}v_{4,3},}\end{equation} the other two of the same shape (omitted for space; all three components of \({\overline{w}}_{4}\), and \(I_{4} \coloneqq  \left( w_{4,1},w_{4,2},w_{4,3} \right)\), in code/compute\_signed\_encoding\_examples.sage's output). The same data at \(k = 6\), where the generators reach 32 terms apiece and the \(\pm 1\) pattern is still unbroken, is in \cref{app-i6}.
 
 \end{example}
 
@@ -529,7 +529,7 @@ C & = v_{1,3}v_{2,1}v_{3,1} - v_{1,1}v_{2,3}v_{3,1} + v_{1,3}v_{2,2}v_{3,2} - v_
 
 By \thmref{Definition}{def-wk}, \({\overline{w}}_{j}\left( p,e_{i} \right) = {S\left( {\overline{w}}_{j - 1}(p) \right)} \times e_{i} = {S(c)} \times e_{i} \neq 0\). (The twist falls on \(c\) rather than on the result because that is where \thmref{Definition}{def-wk}'s recursion puts it.) So \({\overline{w}}_{j}\) is not identically zero, and appending \(e_{i}\) to a witness at level \(j - 1\) gives one at level \(j\).
 
-\textbf{The witness in closed form.} Running the step from \(p^{(2)} = \left( e_{1},e_{2} \right)\) and taking the least admissible \(i\) each time, the choice is \(i = 1\) at \textbf{every} level: \({\overline{w}}_{2} = e_{3}\) and \({S\left( e_{3} \right)} = e_{3}\), which is not proportional to \(e_{1}\), giving \({\overline{w}}_{3} = e_{3} \times e_{1} = e_{2}\); then \({S\left( e_{2} \right)} = - e_{2}\), again not proportional to \(e_{1}\), giving \({\overline{w}}_{4} = \left( - e_{2} \right) \times e_{1} = e_{3}\); and the pair \(\left( e_{3},e_{2} \right)\) now repeats. Hence the closed form in the statement, and every coordinate of both the witness and its image lies in \(\{ 0, \pm 1\}\). Verified for \(j = 2,\ldots,8\), by two independent evaluations per level, in code/verify\_nondegeneracy\_witness.sage.
+\textbf{The witness in closed form.} Running the step from \(p^{(2)} = \left( e_{1},e_{2} \right)\) and taking the least admissible \(i\) each time, the choice is \(i = 1\) at \textbf{every} level: \({\overline{w}}_{2} = e_{3}\) and \({S\left( e_{3} \right)} = e_{3}\), which is not proportional to \(e_{1}\), giving \({\overline{w}}_{3} = e_{3} \times e_{1} = e_{2}\); then \({S\left( e_{2} \right)} = - e_{2}\), again not proportional to \(e_{1}\), giving \({\overline{w}}_{4} = \left( - e_{2} \right) \times e_{1} = e_{3}\); and the pair \(\left( e_{3},e_{2} \right)\) now repeats. Hence the closed form in the statement, and every coordinate of both the witness and its image lies in \(\{ 0, \pm 1\}\). Verified for \(j = 2,\ldots,8\), by two independent evaluations per level, in code/verify\_nondegeneracy\_witness.sage, and tabulated in \cref{app-witness}.
 
 \textbf{Openness.} \(U_{j}\) is the complement of the Zariski-closed set \(V\left( w_{j,1},w_{j,2},w_{j,3} \right)\), hence open; it is nonempty because \(p^{(j)}\) lies in it.
 
@@ -557,7 +557,7 @@ The generator count of \(I_{k}\) needs nothing beyond the definition and non-deg
 
 Suppose \(c \neq 0\). Then \(c \times a = 0\) forces \(a = f \cdot c\) for a single polynomial \(f\) --- over the fraction field \(c \times a = 0\) says \(a\) lies in the line spanned by \(c\), and \(f = a_{i}/c_{i}\) is a polynomial for any index with \(c_{i} \neq 0\). But then \(a\)'s three components are pairwise proportional, hence linearly \textbf{dependent} over \(\mathbb{F}\) (any \(d\) with \(d \cdot c = 0\) gives \(d \cdot a = (d \cdot c)f = 0\), and such a nonzero \(d\) exists since \(c\) spans only a line in \(\mathbb{F}^{3}\)). Since \(S\) is invertible, the components of \({\overline{w}}_{k - 1} = S^{- 1}(a)\) are then linearly dependent too, contradicting the induction hypothesis. Hence \(c = 0\).
 
-Corroborated computationally: the coefficient matrix has rank 3 at \(k = 2,\ldots,6\) (code/verify\_generator\_independence.sage).
+Corroborated computationally: the coefficient matrix has rank 3 at \(k = 2,\ldots,6\) (code/verify\_generator\_independence.sage); the full table is in \cref{app-independence}.
 
 \end{proof}
 
@@ -955,6 +955,118 @@ The computations were carried out in SageMath and Macaulay2, and the formalizati
 This manuscript was produced with substantial assistance from a large language model, Claude (Anthropic), and the extent of it is stated here rather than left to be inferred. The itemised account is \S{}10: which results were machine-checked and which were not, what the computer algebra established and what it merely corroborated, and what the adversarial review found. Claude is not a co-author, and is not credited as one.
 
 Every computational claim has been checked along a route independent of the statement being tested, and the reference list has been checked against the sources cited --- with the one exception that where a source is a printed book outside this project's open-access policy, an independently verified equivalent is cited alongside it. The author has verified the results to the best of his ability, made the final edits, and assumes full responsibility for any errors, mistakes or gaps that remain.
+
+\section{Appendix: the explicit computations}\label{sec-appendix}
+
+The results above are stated with their computations named rather than displayed, so that the argument stays legible. This appendix displays them. Everything here is \textbf{corroboration}: no proof in the article rests on a computation, and nothing below is offered as one. Each block names the script that produced it, and the scripts ship with this submission as ancillary files under \texttt{anc/code/}, with their full transcripts under \texttt{anc/runs/}.
+
+Every polynomial below was recomputed for this appendix from the recursion of \thmref{Definition}{def-wk} rather than transcribed from an earlier draft. That distinction is not pedantry here: the article changed encoding partway through its life, from the reshuffle \(\tau(a,b,c) = (b,a,2c)\) to \(S\), and a computed polynomial cannot be carried across such a change by substituting symbols --- it has to be recomputed. Output that still carries a literal coefficient \(2\) in the \(\overline{v}\)-coordinates is the tell that it was not.
+
+\subsection{Both sides of the basic identity}\label{app-identity}
+
+\thmref{Theorem}{thm-basic-identity} asserts \(\text{enc}\left( \left\lbrack A_{0},B_{0} \right\rbrack \right) = {S\left( \text{enc}\left( A_{0} \right) \times \text{ enc}\left( B_{0} \right) \right)}\). Expanded over generic entries \(a_{11},\ldots,b_{22}\), the two sides are, component by component:
+
+\begin{verbatim}
+lhs_1 = rhs_1 = -2*a21*b12 + 2*a12*b21
+lhs_2 = rhs_2 = -a12*b11 + a21*b11 + a11*b12 - a22*b12 - a11*b21 + a22*b21
+                + a12*b22 - a21*b22
+lhs_3 = rhs_3 = -a12*b11 - a21*b11 + a11*b12 - a22*b12 + a11*b21 - a22*b21
+                + a12*b22 + a21*b22
+\end{verbatim}
+
+The difference is \((0,0,0)\) identically. Chaining once more gives the triple commutator \(\text{enc}\left( \left\lbrack \lbrack A,B\rbrack,C \right\rbrack \right)\), which the recursion computes as \(S\left( {S\left( \text{enc}(A) \times \text{ enc}(B) \right)} \times \text{ enc}(C) \right)\); its three components have \(8\), \(20\) and \(20\) terms:
+
+\begin{verbatim}
+comp_1 = -2*a21*b11*c12 + 2*a11*b21*c12 - 2*a22*b21*c12 + 2*a21*b22*c12
+         - 2*a12*b11*c21 + 2*a11*b12*c21 - 2*a22*b12*c21 + 2*a12*b22*c21
+
+comp_2 = a12*b11*c11 + a21*b11*c11 - a11*b12*c11 + a22*b12*c11 - a11*b21*c11
+         + a22*b21*c11 - a12*b22*c11 - a21*b22*c11 - 2*a21*b12*c12
+         + 2*a12*b21*c12 + 2*a21*b12*c21 - 2*a12*b21*c21 - a12*b11*c22
+         - a21*b11*c22 + a11*b12*c22 - a22*b12*c22 + a11*b21*c22
+         - a22*b21*c22 + a12*b22*c22 + a21*b22*c22
+
+comp_3 = a12*b11*c11 - a21*b11*c11 - a11*b12*c11 + a22*b12*c11 + a11*b21*c11
+         - a22*b21*c11 - a12*b22*c11 + a21*b22*c11 - 2*a21*b12*c12
+         + 2*a12*b21*c12 - 2*a21*b12*c21 + 2*a12*b21*c21 - a12*b11*c22
+         + a21*b11*c22 + a11*b12*c22 - a22*b12*c22 - a11*b21*c22
+         + a22*b21*c22 + a12*b22*c22 - a21*b22*c22
+\end{verbatim}
+
+The factors of \(2\) here are expected and are \textbf{not} a symptom of the retired encoding: on the traceless part \(a_{22} = - a_{11}\), so \(d_{a} = a_{11} - a_{22} = 2a_{11}\). The article's claim that no \(2\) appears is about the \(\overline{v}\)-coordinates of \thmref{Example}{ex-wk-signed}, which is a different expansion in different variables. Both routes agree exactly (code/regenerate\_displays\_S.sage, code/verify\_lorentzian\_encoding\_identity.sage).
+
+\subsection{\texorpdfstring{The three assertions of \thmref{Remark}{rem-why-D}}{The three assertions of {[}rem-why-D{]}}}\label{app-remark2}
+
+\textbf{The ideal is unchanged by the twist.} The three components of \({\overline{w}}_{2}\), which are also the entries of \(S\left( {\overline{w}}_{2} \right)\) up to sign, are \begin{equation}\fitdisplay{- v_{1,3}v_{2,2} + v_{1,2}v_{2,3},\quad v_{1,3}v_{2,1} - v_{1,1}v_{2,3},\quad - v_{1,2}v_{2,1} + v_{1,1}v_{2,2},}\end{equation} so \(\text{ideal}\left( {\overline{w}}_{2} \right) = \text{ ideal}\left( S{\overline{w}}_{2} \right)\) generator by generator: two of the three are negated and the third is fixed, and negating a generator does not change the ideal it generates. Confirmed independently by Gröbner-basis equality in code/verify\_encoding\_gl3\_equivariance.sage.
+
+\textbf{The Lorentzian form.} With \(A_{0}\) the traceless part of a generic \(A\), the polynomial \(- {\text{enc}\left( A_{0} \right)}_{1}^{2} - {\text{ enc}\left( A_{0} \right)}_{2}^{2} + {\text{ enc}\left( A_{0} \right)}_{3}^{2} - 4\det(A_{0})\) is identically \(0\) --- not zero at sampled points, but the zero polynomial in \(a_{11},\ldots,a_{22}\).
+
+\textbf{The involution, and the \(\mathbb{F}_{3}\) congruence.} \(S^{2} = I\) exactly, while \(\tau^{2} = \text{ diag}(1,1,4) \neq I\) and \(\det\tau = - 2\). Over \(\mathbb{F}_{3}\), with \(T = \begin{pmatrix}
+0 & 0 & 1 \\
+1 & 1 & 0 \\
+1 & 2 & 0
+\end{pmatrix}\) of determinant \(1\), \begin{equation}\fitdisplay{T^{\top}T = \text{ diag}(2,2,1) = \text{ diag}( - 1, - 1,1)\quad\text{ in }\mathbb{F}_{3},}\end{equation} so \(S\)'s form is congruent to the identity form there. This is why the article's claim is stated for formally real fields rather than for fields in which \(- 1\) is a non-square: the latter condition is the wrong one, and \(\mathbb{F}_{3}\) is the counterexample.
+
+\subsection{\texorpdfstring{The generators of \(I_{6}\)}{The generators of I\_\{6\}}}\label{app-i6}
+
+\thmref{Theorem}{thm-mingens} gives \(I_{k}\) three minimal generators for every \(k\). At \(k = 6\) they are degree-\(6\) forms in the \(18\) variables \(v_{1,1},\ldots,v_{6,3}\), with \(32\) terms each and \textbf{every coefficient equal to \(\pm 1\)}:
+
+\begin{verbatim}
+w_6,1 = -v1_3*v2_1*v3_1*v4_1*v5_1*v6_2 + v1_1*v2_3*v3_1*v4_1*v5_1*v6_2
+        - v1_3*v2_2*v3_2*v4_1*v5_1*v6_2 + v1_2*v2_3*v3_2*v4_1*v5_1*v6_2
+        - v1_2*v2_1*v3_2*v4_3*v5_1*v6_2 + v1_1*v2_2*v3_2*v4_3*v5_1*v6_2
+        + v1_3*v2_1*v3_3*v4_3*v5_1*v6_2 - v1_1*v2_3*v3_3*v4_3*v5_1*v6_2
+        - v1_3*v2_1*v3_1*v4_2*v5_2*v6_2 + v1_1*v2_3*v3_1*v4_2*v5_2*v6_2
+        - v1_3*v2_2*v3_2*v4_2*v5_2*v6_2 + v1_2*v2_3*v3_2*v4_2*v5_2*v6_2
+        + v1_2*v2_1*v3_1*v4_3*v5_2*v6_2 - v1_1*v2_2*v3_1*v4_3*v5_2*v6_2
+        + v1_3*v2_2*v3_3*v4_3*v5_2*v6_2 - v1_2*v2_3*v3_3*v4_3*v5_2*v6_2
+        + v1_2*v2_1*v3_1*v4_1*v5_1*v6_3 - v1_1*v2_2*v3_1*v4_1*v5_1*v6_3
+        + v1_3*v2_2*v3_3*v4_1*v5_1*v6_3 - v1_2*v2_3*v3_3*v4_1*v5_1*v6_3
+        + v1_2*v2_1*v3_2*v4_2*v5_1*v6_3 - v1_1*v2_2*v3_2*v4_2*v5_1*v6_3
+        - v1_3*v2_1*v3_3*v4_2*v5_1*v6_3 + v1_1*v2_3*v3_3*v4_2*v5_1*v6_3
+        + v1_3*v2_1*v3_1*v4_2*v5_3*v6_3 - v1_1*v2_3*v3_1*v4_2*v5_3*v6_3
+        + v1_3*v2_2*v3_2*v4_2*v5_3*v6_3 - v1_2*v2_3*v3_2*v4_2*v5_3*v6_3
+        - v1_2*v2_1*v3_1*v4_3*v5_3*v6_3 + v1_1*v2_2*v3_1*v4_3*v5_3*v6_3
+        - v1_3*v2_2*v3_3*v4_3*v5_3*v6_3 + v1_2*v2_3*v3_3*v4_3*v5_3*v6_3
+\end{verbatim}
+
+The other two components, \(w_{6,2}\) and \(w_{6,3}\), have the same shape and the same \(32\)-term, \(\pm 1\) profile; all three are printed in full in code/regenerate\_displays\_S.sage's transcript, which ships as \texttt{anc/runs/display-ground-truth-S.txt}. The script asserts the coefficient profile rather than merely printing it, so a regression to the retired encoding fails the run instead of producing a plausible-looking table.
+
+\subsection{The non-degeneracy witness}\label{app-witness}
+
+The point constructed in the proof of \thmref{Lemma}{lem-nondeg}, evaluated:
+
+\begin{verbatim}
+j    witness (v_1,...,v_j)              w_j
+2    (e1,e2)                            e3
+3    (e1,e2,e1)                         e2
+4    (e1,e2,e1,e1)                      e3
+5    (e1,e2,e1,e1,e1)                   e2
+6    (e1,e2,e1,e1,e1,e1)                e3
+7    (e1,e2,e1,e1,e1,e1,e1)             e2
+8    (e1,e2,e1,e1,e1,e1,e1,e1)          e3
+\end{verbatim}
+
+Each level is checked twice in code/verify\_nondegeneracy\_witness.sage: once as the induction runs, and once by feeding the finished witness back through \thmref{Definition}{def-wk}'s recursion as a point of \(\mathbb{A}^{3j}\), which is how \thmref{Lemma}{lem-nondeg} states it. The same script runs the retired \(\tau\) alongside, where the witness must alternate, \(\left( e_{1},e_{2},e_{1},e_{2},\ldots \right)\), and the images are \((0,2,0)\), \((0,0,2)\), \((0,4,0)\), \(\ldots\), doubling at every level and reaching \(8\) by \(j = 8\). That column reproduces values recorded before the encoding changed, which is what makes the \(S\) column above a check rather than merely a new computation.
+
+\subsection{Independence of the generators}\label{app-independence}
+
+The corroboration cited in the proof of \thmref{Lemma}{lem-mingens-indep}. For each \(k\), the three components of \({\overline{w}}_{k}\) are expanded over the monomials that actually occur and the resulting \(3 \times N\) coefficient matrix is checked to have rank \(3\) --- which is exactly the assertion that no nontrivial constant relation holds among them:
+
+\begin{longtable}[]{@{}cccccc@{}}
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(k\) & \#variables & degree & \#monomials & rank & independent? \\
+2 & 6 & 2 & 6 & 3 & yes \\
+3 & 9 & 3 & 12 & 3 & yes \\
+4 & 12 & 4 & 24 & 3 & yes \\
+5 & 15 & 5 & 48 & 3 & yes \\
+6 & 18 & 6 & 96 & 3 & yes \\
+\end{longtable}
+
+The monomial count doubles at each step while the rank stays at \(3\), so the margin widens rather than narrows as \(k\) grows (code/verify\_generator\_independence.sage).
 
 \section{References}
 

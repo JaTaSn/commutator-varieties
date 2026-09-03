@@ -515,7 +515,7 @@ not used: the identity holds over every commutative ring.
   A direct computation, carried out symbolically over generic entries $a_11,dots,b_22$ (not merely
   checked at sampled points) in
   #text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]: both sides, expanded in
-  the 8 free entries, agree term by term. Both sides are integer polynomials in those entries, so
+  the 8 free entries, agree term by term --- they are displayed in full in @app-identity. Both sides are integer polynomials in those entries, so
   the identity descends to every commutative ring; it was checked over $ZZ$ and, separately, over
   $FF_2$ -- where it still holds -- precisely to confirm that this step is not one of the places
   where $"char" FF eq.not 2$ is spent (see @prob-char2).
@@ -532,14 +532,16 @@ not used: the identity holds over every commutative ring.
     *individually* negating two of three generators obviously leaves the ideal unchanged, generator
     by generator -- no swap to account for. (Still verified computationally, not merely asserted:
     $"ideal"(vek(w)_2) = "ideal"(signtwist() vek(w)_2)$, confirmed by direct Gröbner-basis equality in
-    #text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage].)
+    #text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage]; the three generators are
+    written out in @app-remark2.)
   + *$signtwist()$ is an involution; $tau$ is not.* $signtwist()^2 = I$ exactly (immediate from the diagonal entries
     being $plus.minus 1$), while $tau^2 = "diag"(1,1,4) eq.not I$.
   + *$signtwist()$ is not an arbitrary matrix that happens to work -- it is (up to a constant) the matrix of
     $frak(s l)_2$'s own Killing form, in these coordinates.* For traceless
     $A_0=mat(x,y;z,-x)$, $det(A_0) = -x^2-y z$, an *indefinite* quadratic form (never definite: $-y z
     = -((y+z)\/2)^2+((y-z)\/2)^2$ is a genuine difference of squares whenever $2 eq.not 0$). Checked
-    directly: $-"enc"(A)_1^2 - "enc"(A)_2^2 + "enc"(A)_3^2 = 4 det(A_0)$, exactly (Sage, symbolic).
+    directly: $-"enc"(A)_1^2 - "enc"(A)_2^2 + "enc"(A)_3^2 = 4 det(A_0)$, exactly (Sage, symbolic;
+    @app-remark2).
     So $signtwist()$'s sign pattern *is* $det$'s own signature, read off in these coordinates -- not a
     bookkeeping accident. (Lie-theoretically: $frak(s l)_2(RR) tilde.equiv frak(s o)(2,1)$, the
     Lorentz algebra, not the compact $frak(s o)(3)$ one gets only after adjoining $i$ -- classical,
@@ -619,7 +621,9 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
     - v_(1,2)v_(2,3)v_(3,3)v_(4,3), $
   the other two of the same shape (omitted for space; all three components of $vek(w)_4$, and
   $I_4:=(w_(4,1),w_(4,2),w_(4,3))$, in
-  #text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]'s output).
+  #text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]'s output). The same data at
+  $k=6$, where the generators reach 32 terms apiece and the $plus.minus 1$ pattern is still
+  unbroken, is in @app-i6.
 ] <ex-wk-signed>
 
 The displayed examples above were computed over $QQ$, but every result below holds over the
@@ -766,7 +770,7 @@ classical determinantal variety.
   $vek(w)_4 = (-e_2) times e_1 = e_3$; and the pair $(e_3, e_2)$ now repeats. Hence the closed form
   in the statement, and every coordinate of both the witness and its image lies in
   $\{0, plus.minus 1\}$. Verified for $j=2,dots,8$, by two independent evaluations per level, in
-  #text(style: "italic")[code/verify\_nondegeneracy\_witness.sage].
+  #text(style: "italic")[code/verify\_nondegeneracy\_witness.sage], and tabulated in @app-witness.
 
   *Openness.* $U_j$ is the complement of the Zariski-closed set $V(w_(j,1),w_(j,2),w_(j,3))$, hence
   open; it is nonempty because $p^((j))$ lies in it.
@@ -817,7 +821,8 @@ codimension, not the determinantal-structure theorem above, not any external cit
   too, contradicting the induction hypothesis. Hence $c = 0$.
 
   Corroborated computationally: the coefficient matrix has rank 3 at $k=2,dots,6$
-  (#text(style: "italic")[code/verify\_generator\_independence.sage]).
+  (#text(style: "italic")[code/verify\_generator\_independence.sage]); the full table is in
+  @app-independence.
 ]
 
 #remark[why non-degeneracy is not enough here][
@@ -1612,6 +1617,175 @@ where a source is a printed book outside this project's open-access policy, an i
 verified equivalent is cited alongside it. The author has verified the results to the best of his
 ability, made the final edits, and assumes full responsibility for any errors, mistakes or gaps
 that remain.
+
+#v(1.5em)
+= Appendix: the explicit computations <sec-appendix>
+
+The results above are stated with their computations named rather than displayed, so that the
+argument stays legible. This appendix displays them. Everything here is *corroboration*: no proof
+in the article rests on a computation, and nothing below is offered as one. Each block names the
+script that produced it, and the scripts ship with this submission as ancillary files under
+`anc/code/`, with their full transcripts under `anc/runs/`.
+
+Every polynomial below was recomputed for this appendix from the recursion of @def-wk rather than
+transcribed from an earlier draft. That distinction is not pedantry here: the article changed
+encoding partway through its life, from the reshuffle $tau(a,b,c)=(b,a,2c)$ to $signtwist()$, and
+a computed polynomial cannot be carried across such a change by substituting symbols --- it has to
+be recomputed. Output that still carries a literal coefficient $2$ in the $vek(v)$-coordinates is
+the tell that it was not.
+
+== Both sides of the basic identity <app-identity>
+
+@thm-basic-identity asserts $"enc"([A_0,B_0]) = signtwist("enc"(A_0) times "enc"(B_0))$. Expanded
+over generic entries $a_11,dots,b_22$, the two sides are, component by component:
+
+#text(size: 8pt)[
+```
+lhs_1 = rhs_1 = -2*a21*b12 + 2*a12*b21
+lhs_2 = rhs_2 = -a12*b11 + a21*b11 + a11*b12 - a22*b12 - a11*b21 + a22*b21
+                + a12*b22 - a21*b22
+lhs_3 = rhs_3 = -a12*b11 - a21*b11 + a11*b12 - a22*b12 + a11*b21 - a22*b21
+                + a12*b22 + a21*b22
+```
+]
+
+The difference is $(0,0,0)$ identically. Chaining once more gives the triple commutator
+$"enc"([[A,B],C])$, which the recursion computes as
+$signtwist(signtwist("enc"(A) times "enc"(B)) times "enc"(C))$; its three components have
+$8$, $20$ and $20$ terms:
+
+#text(size: 8pt)[
+```
+comp_1 = -2*a21*b11*c12 + 2*a11*b21*c12 - 2*a22*b21*c12 + 2*a21*b22*c12
+         - 2*a12*b11*c21 + 2*a11*b12*c21 - 2*a22*b12*c21 + 2*a12*b22*c21
+
+comp_2 = a12*b11*c11 + a21*b11*c11 - a11*b12*c11 + a22*b12*c11 - a11*b21*c11
+         + a22*b21*c11 - a12*b22*c11 - a21*b22*c11 - 2*a21*b12*c12
+         + 2*a12*b21*c12 + 2*a21*b12*c21 - 2*a12*b21*c21 - a12*b11*c22
+         - a21*b11*c22 + a11*b12*c22 - a22*b12*c22 + a11*b21*c22
+         - a22*b21*c22 + a12*b22*c22 + a21*b22*c22
+
+comp_3 = a12*b11*c11 - a21*b11*c11 - a11*b12*c11 + a22*b12*c11 + a11*b21*c11
+         - a22*b21*c11 - a12*b22*c11 + a21*b22*c11 - 2*a21*b12*c12
+         + 2*a12*b21*c12 - 2*a21*b12*c21 + 2*a12*b21*c21 - a12*b11*c22
+         + a21*b11*c22 + a11*b12*c22 - a22*b12*c22 - a11*b21*c22
+         + a22*b21*c22 + a12*b22*c22 - a21*b22*c22
+```
+]
+
+The factors of $2$ here are expected and are *not* a symptom of the retired encoding: on the
+traceless part $a_22 = -a_11$, so $d_a = a_11 - a_22 = 2a_11$. The article's claim that no $2$
+appears is about the $vek(v)$-coordinates of @ex-wk-signed, which is a different expansion in
+different variables. Both routes agree exactly
+(#text(style: "italic")[code/regenerate\_displays\_S.sage],
+#text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]).
+
+== The three assertions of @rem-why-D <app-remark2>
+
+*The ideal is unchanged by the twist.* The three components of $vek(w)_2$, which are also the
+entries of $signtwist(vek(w)_2)$ up to sign, are
+$ -v_(1,3)v_(2,2) + v_(1,2)v_(2,3), quad v_(1,3)v_(2,1) - v_(1,1)v_(2,3), quad
+  -v_(1,2)v_(2,1) + v_(1,1)v_(2,2), $
+so $"ideal"(vek(w)_2) = "ideal"(signtwist() vek(w)_2)$ generator by generator: two of the three are
+negated and the third is fixed, and negating a generator does not change the ideal it generates.
+Confirmed independently by Gröbner-basis equality in
+#text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage].
+
+*The Lorentzian form.* With $A_0$ the traceless part of a generic $A$, the polynomial
+$-"enc"(A_0)_1^2 - "enc"(A_0)_2^2 + "enc"(A_0)_3^2 - 4 det(A_0)$ is identically $0$ --- not zero at
+sampled points, but the zero polynomial in $a_11,dots,a_22$.
+
+*The involution, and the $FF_3$ congruence.* $signtwist()^2 = I$ exactly, while
+$tau^2 = "diag"(1,1,4) eq.not I$ and $det tau = -2$. Over $FF_3$, with
+$T = mat(0,0,1;1,1,0;1,2,0)$ of determinant $1$,
+$ T^tack.b T = "diag"(2,2,1) = "diag"(-1,-1,1) quad "in" FF_3, $
+so $signtwist()$'s form is congruent to the identity form there. This is why the article's claim is
+stated for formally real fields rather than for fields in which $-1$ is a non-square: the latter
+condition is the wrong one, and $FF_3$ is the counterexample.
+
+== The generators of $I_6$ <app-i6>
+
+@thm-mingens gives $I_k$ three minimal generators for every $k$. At $k=6$ they are degree-$6$
+forms in the $18$ variables $v_(1,1),dots,v_(6,3)$, with $32$ terms each and *every coefficient
+equal to $plus.minus 1$*:
+
+#text(size: 6.5pt)[
+```
+w_6,1 = -v1_3*v2_1*v3_1*v4_1*v5_1*v6_2 + v1_1*v2_3*v3_1*v4_1*v5_1*v6_2
+        - v1_3*v2_2*v3_2*v4_1*v5_1*v6_2 + v1_2*v2_3*v3_2*v4_1*v5_1*v6_2
+        - v1_2*v2_1*v3_2*v4_3*v5_1*v6_2 + v1_1*v2_2*v3_2*v4_3*v5_1*v6_2
+        + v1_3*v2_1*v3_3*v4_3*v5_1*v6_2 - v1_1*v2_3*v3_3*v4_3*v5_1*v6_2
+        - v1_3*v2_1*v3_1*v4_2*v5_2*v6_2 + v1_1*v2_3*v3_1*v4_2*v5_2*v6_2
+        - v1_3*v2_2*v3_2*v4_2*v5_2*v6_2 + v1_2*v2_3*v3_2*v4_2*v5_2*v6_2
+        + v1_2*v2_1*v3_1*v4_3*v5_2*v6_2 - v1_1*v2_2*v3_1*v4_3*v5_2*v6_2
+        + v1_3*v2_2*v3_3*v4_3*v5_2*v6_2 - v1_2*v2_3*v3_3*v4_3*v5_2*v6_2
+        + v1_2*v2_1*v3_1*v4_1*v5_1*v6_3 - v1_1*v2_2*v3_1*v4_1*v5_1*v6_3
+        + v1_3*v2_2*v3_3*v4_1*v5_1*v6_3 - v1_2*v2_3*v3_3*v4_1*v5_1*v6_3
+        + v1_2*v2_1*v3_2*v4_2*v5_1*v6_3 - v1_1*v2_2*v3_2*v4_2*v5_1*v6_3
+        - v1_3*v2_1*v3_3*v4_2*v5_1*v6_3 + v1_1*v2_3*v3_3*v4_2*v5_1*v6_3
+        + v1_3*v2_1*v3_1*v4_2*v5_3*v6_3 - v1_1*v2_3*v3_1*v4_2*v5_3*v6_3
+        + v1_3*v2_2*v3_2*v4_2*v5_3*v6_3 - v1_2*v2_3*v3_2*v4_2*v5_3*v6_3
+        - v1_2*v2_1*v3_1*v4_3*v5_3*v6_3 + v1_1*v2_2*v3_1*v4_3*v5_3*v6_3
+        - v1_3*v2_2*v3_3*v4_3*v5_3*v6_3 + v1_2*v2_3*v3_3*v4_3*v5_3*v6_3
+```
+]
+
+The other two components, $w_(6,2)$ and $w_(6,3)$, have the same shape and the same $32$-term,
+$plus.minus 1$ profile; all three are printed in full in
+#text(style: "italic")[code/regenerate\_displays\_S.sage]'s transcript, which ships as
+`anc/runs/display-ground-truth-S.txt`. The script asserts the coefficient profile rather than
+merely printing it, so a regression to the retired encoding fails the run instead of producing a
+plausible-looking table.
+
+== The non-degeneracy witness <app-witness>
+
+The point constructed in the proof of @lem-nondeg, evaluated:
+
+#text(size: 8pt)[
+```
+j    witness (v_1,...,v_j)              w_j
+2    (e1,e2)                            e3
+3    (e1,e2,e1)                         e2
+4    (e1,e2,e1,e1)                      e3
+5    (e1,e2,e1,e1,e1)                   e2
+6    (e1,e2,e1,e1,e1,e1)                e3
+7    (e1,e2,e1,e1,e1,e1,e1)             e2
+8    (e1,e2,e1,e1,e1,e1,e1,e1)          e3
+```
+]
+
+Each level is checked twice in #text(style: "italic")[code/verify\_nondegeneracy\_witness.sage]:
+once as the induction runs, and once by feeding the finished witness back through @def-wk's
+recursion as a point of $AA^(3j)$, which is how @lem-nondeg states it. The same script runs the
+retired $tau$ alongside, where the witness must alternate, $(e_1,e_2,e_1,e_2,dots)$, and the images
+are $(0,2,0)$, $(0,0,2)$, $(0,4,0)$, $dots$, doubling at every level and reaching $8$ by $j=8$.
+That column reproduces values recorded before the encoding changed, which is what makes the
+$signtwist()$ column above a check rather than merely a new computation.
+
+== Independence of the generators <app-independence>
+
+The corroboration cited in the proof of @lem-mingens-indep. For each $k$, the three components of
+$vek(w)_k$ are expanded over the monomials that actually occur and the resulting $3 times N$
+coefficient matrix is checked to have rank $3$ --- which is exactly the assertion that no
+nontrivial constant relation holds among them:
+
+#align(center)[
+  #table(
+    columns: 6,
+    align: center,
+    stroke: 0.5pt,
+    inset: 6pt,
+    [$k$], [\#variables], [degree], [\#monomials], [rank], [independent?],
+    [2], [6], [2], [6], [3], [yes],
+    [3], [9], [3], [12], [3], [yes],
+    [4], [12], [4], [24], [3], [yes],
+    [5], [15], [5], [48], [3], [yes],
+    [6], [18], [6], [96], [3], [yes],
+  )
+]
+
+The monomial count doubles at each step while the rank stays at $3$, so the margin widens rather
+than narrows as $k$ grows (#text(style: "italic")[code/verify\_generator\_independence.sage]).
 
 #v(1.5em)
 = References
