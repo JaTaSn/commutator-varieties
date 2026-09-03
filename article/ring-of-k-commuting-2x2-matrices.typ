@@ -984,17 +984,20 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
 ]
 
 #remark[the closure, not the raw image, is what is needed][
-  A polynomial map's image need not itself be closed -- the standard example is
-  $AA^2 -> AA^2$, $(x,y) |-> (x,x y)$, whose image is not even locally closed, though it is
-  *constructible* (a finite union of locally closed sets) by Chevalley's theorem, which has no
-  purely topological analogue for general continuous maps #bcite("Youcis2014"). This never causes
-  a problem for $Y_2$,
-  because $Y_2$ is *defined* as $overline(Phi(dot))$ from the outset, and the decomposition used in
-  @thm-codim's proof below, $V(I_k) = Y_1 union Y_2$, is established by a direct case split rather
-  than by taking closures and hoping: a point $(p,vek(v)_k) in V(I_k)$ either has $signtwist(vek(w)_(k-1)(p))=0$,
-  putting it in $Y_1$ directly, or has $vek(v)_k = lambda signtwist(vek(w)_(k-1)(p))$ for some $lambda$, so
-  $(p,vek(v)_k) = Phi(p,lambda)$ is *literally* a value of $Phi$ -- not merely a limit point -- hence in
-  $Y_2$ with no appeal to closure at all. The reverse containment
+  A polynomial map's image need not itself be closed. The standard example is
+  $AA^2 -> AA^2$, $(x,y) |-> (x,x y)$, whose image is not even locally closed. It is
+  *constructible*, a finite union of locally closed sets, by Chevalley's theorem -- a result with no
+  purely topological analogue for general continuous maps #bcite("Youcis2014").
+
+  None of this troubles $Y_2$, for two reasons. First, @def-y1y2 *defines* $Y_2$ as
+  $overline(Phi(dot))$ from the outset. Second, the decomposition $V(I_k) = Y_1 union Y_2$ used in
+  @thm-codim's proof below comes from a direct case split rather than from taking closures and
+  hoping. Take a point $(p,vek(v)_k) in V(I_k)$. Either $signtwist(vek(w)_(k-1)(p))=0$, which puts
+  it in $Y_1$ directly; or $vek(v)_k = lambda signtwist(vek(w)_(k-1)(p))$ for some $lambda$, in
+  which case $(p,vek(v)_k) = Phi(p,lambda)$ is *literally* a value of $Phi$ rather than merely a
+  limit point, and so lies in $Y_2$ with no appeal to closure at all.
+
+  The reverse containment
   $Y_1 union Y_2 subset.eq V(I_k)$ needs only that $Phi(dot) subset.eq V(I_k)$ (a cross product of
   a vector with itself vanishes: $signtwist(vek(w)_(k-1)) times (lambda signtwist(vek(w)_(k-1))) = 0$ identically)
   together with $V(I_k)$ already being closed, automatic since it is a vanishing locus by
@@ -1219,14 +1222,19 @@ of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
 ]
 
 #remark[why the generator count above wasn't proven this way][
-  It is tempting to expect @prop-detideal to also hand over the generator count for free via
-  Bruns-Vetter's Theorem (16.36), p. 217 ("The Theorem of Hilbert-Burch") -- but that theorem, as
-  actually stated, gives only $I = a dot I_m (f)$ for a nonzerodivisor $a$, not a generator count
-  on its own: at expected codimension, an *arbitrary* $2 times 3$ matrix's minors can be perfect
-  and Cohen-Macaulay while one minor vanishes identically or is a scalar combination of the others
-  (concretely: $mat(x,y,0;0,0,1)$ over $FF[x,y]$ has minors $0,x,y$, height 2 as expected,
-  $J=(x,y)$ perfect and Cohen-Macaulay with only *2* generators). This is exactly why @thm-mingens
-  was proven directly from linear independence instead of cited from this section's machinery.
+  One might expect @prop-detideal to hand over the generator count as well, for free, via
+  Bruns-Vetter's Theorem (16.36), p. 217, the Theorem of Hilbert-Burch. It does not. That theorem
+  as actually stated gives $I = a dot I_m (f)$ for a nonzerodivisor $a$, and a generator count is
+  not among its conclusions.
+
+  Nor could it be. At expected codimension the minors of an *arbitrary* $2 times 3$ matrix can be
+  perfect and Cohen-Macaulay while one minor vanishes identically, or is a scalar combination of
+  the other two. A single example settles it: over $FF[x,y]$ the matrix $mat(x,y,0;0,0,1)$ has
+  minors $0, x, y$ and height 2, exactly as expected, yet $J=(x,y)$ is perfect and Cohen-Macaulay
+  with only *two* generators.
+
+  This is why @thm-mingens is proven directly from linear independence rather than cited from this
+  section's machinery.
 ]
 
 #theorem[$R_k \/ I_k$ is Cohen-Macaulay][
@@ -1248,16 +1256,21 @@ give radicality -- which then closes both the generator-count (§4) / Cohen-Maca
 component count to a genuine primary decomposition.
 
 #lemma[reduction via Serre][
-  Recall Serre's condition $S_n$: a Noetherian ring $A$ satisfies $S_n$ if
-  $"depth"(A_P) >= min(n, dim A_P)$ for every prime $P subset A$ (Cohen-Macaulay means
-  $"depth"(A_P) = dim A_P$ at *every* prime -- the extremal case, $n=infinity$ in effect). Cohen-Macaulay
-  rings satisfy $S_n$ for every $n$: $"depth"(A_P) = dim A_P >= min(n,dim A_P)$ trivially, whatever
-  $n$ is -- this needs nothing beyond the two definitions just given, standard for Serre's
-  conditions in general (see e.g. Bruns and Vetter #bcite("BrunsVetter1988") or Eisenbud's
-  #emph[Commutative Algebra with a View Toward Algebraic Geometry]). In particular $S_1$. Serre's
-  criterion for reducedness -- a Noetherian ring is reduced if and only if it satisfies $R_0$ and
-  $S_1$ #bcite("Stacks031R") -- then says that, given @thm-cm, radicality of $I_k$ is equivalent to
-  $R_0$ alone: regularity of $R_k \/ I_k$ at each of its minimal primes.
+  Recall Serre's condition $S_n$. A Noetherian ring $A$ satisfies $S_n$ if
+  $"depth"(A_P) >= min(n, dim A_P)$ for every prime $P subset A$. Cohen-Macaulayness is the
+  extremal case: it asks for $"depth"(A_P) = dim A_P$ at *every* prime, which is $n = infinity$ in
+  effect.
+
+  A Cohen-Macaulay ring therefore satisfies $S_n$ for every $n$, since
+  $"depth"(A_P) = dim A_P >= min(n, dim A_P)$ holds trivially whatever $n$ is. This needs nothing
+  beyond the two definitions just given, and it is standard for Serre's conditions in general: see
+  Bruns and Vetter #bcite("BrunsVetter1988"), or Eisenbud's
+  #emph[Commutative Algebra with a View Toward Algebraic Geometry]. In particular $R_k \/ I_k$
+  satisfies $S_1$.
+
+  Serre's criterion for reducedness says that a Noetherian ring is reduced if and only if it
+  satisfies both $R_0$ and $S_1$ #bcite("Stacks031R"). Given @thm-cm, then, radicality of $I_k$ is
+  equivalent to $R_0$ alone: regularity of $R_k \/ I_k$ at each of its minimal primes.
 ] <lem-serre>
 
 The four lemmas that follow are the standard Jacobian criterion, split into its two genuinely
@@ -1470,28 +1483,40 @@ because it is the hinge on which the statement's claimed generality turns.
 ] <thm-primarydecomp>
 
 #proof[Proof of @thm-primarydecomp][
-  Spelled out in full, combining the two independent halves proven above rather than left as a
-  one-line conjunction. By @thm-radical, $I_k$ is radical, i.e. $I_k = sqrt(I_k)$. A standard fact
-  about radical ideals in a Noetherian ring: a radical ideal equals the intersection of its own
-  minimal primes, $I_k = inter_(P in "Min"(I_k)) P$ -- since $sqrt(I_k)$ equals the intersection of
-  *all* primes containing $I_k$ (Krull's theorem, not the definition of the radical, which is the
-  set of elements with a power in $I_k$), and the minimal ones already suffice: every non-minimal
-  prime containing $I_k$ contains some minimal one, hence is redundant in the intersection.
-  @thm-componentcount identifies $"Min"(I_k)$ explicitly -- over $overline(FF)$, per
-  @rem-base-field -- as exactly $k-1$ primes, one per block pattern $j=2,dots,k$, named
-  $P_2,dots,P_k$ by @def-primecomponents. Substituting gives the displayed equation. Each $P_j$,
-  being prime, is trivially its own primary-decomposition component ($P_j$-primary with associated
-  prime $P_j$ itself) -- no separate argument for "primary" beyond "prime" is needed. For primality
-  itself, nothing is left to prove: @def-primecomponents *defines* $P_j$ as $ker phi_j$, and the
-  kernel of a homomorphism into a domain is prime. This covers $j=2$ along with the rest, at no
-  extra cost. (@lem-y2-irred gives the same conclusion for $j >= 3$ but not for $j=2$, being stated
-  for $k >= 3$; $P_2$ is $I_2$ itself, the ideal of maximal minors of a generic $2 times 3$ matrix,
-  classically prime. Neither route is needed now.) Extending $P_j$ from $R_j$ to $R_k$ by adjoining the free
-  blocks $vek(v)_(j+1),dots,vek(v)_k$ preserves primality, since $R_k \/ P_j R_k$ is a polynomial
-  ring over the domain $R_j \/ P_j$. Irredundancy -- no $P_j$ can be
-  omitted, i.e. no $P_j$ contains $inter_(i eq.not j) P_i$ -- is exactly @thm-componentcount's own
-  no-containment conclusion (@prop-y2-not-in-y1 and @prop-y1-not-in-y2, applied at every level of that
-  theorem's induction), not a fact needing any further proof here.
+  The two halves were proven independently above, so this combines them in full rather than
+  asserting the conjunction in one line.
+
+  *The decomposition itself.* By @thm-radical, $I_k$ is radical, so $I_k = sqrt(I_k)$. A radical
+  ideal in a Noetherian ring equals the intersection of its own minimal primes:
+  $ I_k = inter_(P in "Min"(I_k)) P. $
+  This holds because $sqrt(I_k)$ is the intersection of *all* primes containing $I_k$ -- Krull's
+  theorem, not the definition of the radical, which is instead the set of elements with a power in
+  $I_k$ -- and the minimal primes already suffice. Every non-minimal prime containing $I_k$
+  contains a minimal one, and is therefore redundant in the intersection.
+
+  @thm-componentcount identifies $"Min"(I_k)$ explicitly, over $overline(FF)$ as @rem-base-field
+  requires: exactly $k-1$ primes, one per block pattern $j=2,dots,k$, named $P_2,dots,P_k$ in
+  @def-primecomponents. Substituting them gives the displayed equation.
+
+  *Why the components are primary.* Each $P_j$ is prime, so it is trivially its own
+  primary-decomposition component, being $P_j$-primary with associated prime $P_j$. Nothing beyond
+  primality has to be argued.
+
+  *Why they are prime.* Nothing is left to prove here either. @def-primecomponents *defines* $P_j$
+  as $ker phi_j$, and the kernel of a homomorphism into a domain is prime. That argument covers
+  $j=2$ along with the rest, at no extra cost. @lem-y2-irred would give the same conclusion for
+  $j >= 3$, but it is stated for $k >= 3$ and so misses $j=2$; $P_2$ is $I_2$ itself, the ideal of
+  maximal minors of a generic $2 times 3$ matrix, which is classically prime. Neither of those
+  routes is needed.
+
+  Extending $P_j$ from $R_j$ to $R_k$ by adjoining the free blocks
+  $vek(v)_(j+1),dots,vek(v)_k$ preserves primality, since $R_k \/ P_j R_k$ is a polynomial ring
+  over the domain $R_j \/ P_j$.
+
+  *Irredundancy.* No $P_j$ can be omitted, i.e. no $P_j$ contains $inter_(i eq.not j) P_i$. This is
+  exactly @thm-componentcount's own no-containment conclusion, obtained from @prop-y2-not-in-y1 and
+  @prop-y1-not-in-y2 applied at every level of that theorem's induction. It needs no further proof
+  here.
 ]
 
 #remark[summary][
