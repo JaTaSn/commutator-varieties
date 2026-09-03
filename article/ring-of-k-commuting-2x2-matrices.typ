@@ -218,7 +218,44 @@
 #show: show-theorion
 // One continuous counter for the whole document -- theorion's default resets
 // per top-level heading, which is not what a single-thread article wants.
+//
+// NB: cosmos/fancy.typ:360 defines this as (theorem-counter.set-inherited-levels),
+// so it targets the THEOREM counter and nothing else.  A frame built with its own
+// counter is unaffected -- see the question environment below, which relies on that.
 #set-inherited-levels(0)
+
+// Question: a referenceable environment for the open question inside prob-char2
+// (Jan, 2026-09-03: "break out the Question as its own environment, so that it can
+// be referred to").
+//
+// It gets its OWN counter, deliberately, and this is the whole design decision.
+// theorion's make-frame (core.typ:317) builds a fresh richer-counter keyed by the
+// identifier when no `counter:` argument is given; every shared-counter environment
+// in cosmos/fancy.typ opts IN by passing `counter: theorem-counter` explicitly.  So
+// omitting it is the supported way to get an independent sequence, and the default
+// inherited-levels of 0 makes that sequence globally continuous -- the same
+// behaviour the line above buys for the theorem family, on a separate thread.
+//
+// Why not join the shared counter: inserting a numbered environment before
+// thm-determinantal would renumber Theorem 6 -> 7, Example 7 -> 8, Lemma 8 -> 9, ...
+// Remark 45 -> 46.  Those numbers are cited by name in LEAN/KCommuting/*.lean,
+// LEAN/README.md, article/preamble.tex, tools/markers2env.py and in Jan's review
+// annotations, which still have unapplied items keyed to them.  LEAN/README.md
+// already carries a section apologising for the last renumbering; doing it again
+// for a presentational change is not a trade worth making.
+//
+// MIRROR ANY CHANGE INTO tools/typst-stubs.typ (the two-copy rule -- see the
+// signtwist note below for why).
+#let (question-counter, question-box, question, show-question) = make-frame(
+  "question",
+  "Question",
+  render: fancy-box.with(
+    get-border-color: get-tertiary-border-color,
+    get-body-color: get-tertiary-body-color,
+    get-symbol: get-tertiary-symbol,
+  ),
+)
+#show: show-question
 
 // --- Bibliography (unaffected by theorion -- hand-rolled as before) --------
 #let bibnum = (
@@ -563,7 +600,8 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
 
 
 #example[$vek(w)_k$ and $I_k$, explicitly, for $k=2,3,4$][
-  Computed directly, not hand-derived. At $k=2$, the three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
+  Computed directly (#text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]), not
+  hand-derived. At $k=2$, the three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
   $ v_(1,2)v_(2,3)-v_(1,3)v_(2,2), quad v_(1,3)v_(2,1)-v_(1,1)v_(2,3), quad
     v_(1,1)v_(2,2)-v_(1,2)v_(2,1). $
   (This is what $"red"$ would give at this stage too -- the two encodings agree exactly at the very
@@ -601,36 +639,38 @@ are happy to hand on:
   beside a complement, they sit *inside* the traceless matrices.
 
   The bracket is unbothered --- scalars are central in every characteristic --- so $[dot,dot]$
-  still descends to the three-dimensional quotient $frak(g l)_2 \/ (FF dot I)$. The question is
-  whether the rest of the article descends with it.
+  still descends to the three-dimensional quotient $frak(g l)_2 \/ (FF dot I)$. Whether the rest of
+  the article descends with it is @qst-char2 below.
+] <prob-char2>
 
-  *Question.* Over a field of characteristic 2, is there a linear isomorphism
+#question[a twisted-cross-product model in characteristic 2][
+  Over a field of characteristic 2, is there a linear isomorphism
   $frak(g l)_2 \/ (FF dot I) tilde.equiv FF^3$ carrying the induced bracket to a twisted cross
   product $E(dot times dot)$ for some invertible $E$? And if so, do @thm-codim, @thm-mingens,
   @thm-cm, @thm-radical and @thm-primarydecomp hold verbatim?
+] <qst-char2>
 
-  What makes this more than idle curiosity: *every polynomial displayed in @ex-wk-signed has
-  coefficients $plus.minus 1$ only*. No $2$ appears anywhere in the output. Whatever the
-  obstruction is, it lives entirely in the setup and not in the ideal --- which is exactly the
-  situation in which a different setup might dissolve it.
+What makes @qst-char2 more than idle curiosity: *every polynomial displayed in @ex-wk-signed has
+coefficients $plus.minus 1$ only*. No $2$ appears anywhere in the output. Whatever the
+obstruction is, it lives entirely in the setup and not in the ideal --- which is exactly the
+situation in which a different setup might dissolve it.
 
-  *Computational evidence, bearing on the second half of the question only.* Nothing in @def-wk's
-  recursion needs a characteristic hypothesis: $vek(w)_2 = vek(v)_1 times vek(v)_2$ and
-  $vek(w)_j = signtwist(vek(w)_(j-1)) times vek(v)_j$ define an ideal $I_k subset R_k$ over *any* field.
-  Taking that recursion as the definition and running the four results in characteristic 2 anyway,
-  for $k=2,dots,5$ over $FF_2$ and $FF_4$: the codimension is $2$, the three generators are
-  linearly independent over the base field, $I_k$ is radical, and $"pd"(R_k \/ I_k) = 2$, so
-  $R_k \/ I_k$ is Cohen-Macaulay --- in every case, with no deviation whatever from the
-  characteristic-zero behaviour (#text(style: "italic")[code/verify\_over\_finite\_fields.sage] and
-  #text(style: "italic")[code/verify\_cm\_over\_finite\_fields.m2]; the same runs also cover
-  $FF_3, FF_5, FF_7, FF_9$ and $QQ$). The *conclusions*, then, appear to survive characteristic 2
-  untouched --- which is evidence for the paragraph above, not against it.
+*Computational evidence, bearing on the second half of @qst-char2 only.* Nothing in @def-wk's
+recursion needs a characteristic hypothesis: $vek(w)_2 = vek(v)_1 times vek(v)_2$ and
+$vek(w)_j = signtwist(vek(w)_(j-1)) times vek(v)_j$ define an ideal $I_k subset R_k$ over *any* field.
+Taking that recursion as the definition and running the four results in characteristic 2 anyway,
+for $k=2,dots,5$ over $FF_2$ and $FF_4$: the codimension is $2$, the three generators are
+linearly independent over the base field, $I_k$ is radical, and $"pd"(R_k \/ I_k) = 2$, so
+$R_k \/ I_k$ is Cohen-Macaulay --- in every case, with no deviation whatever from the
+characteristic-zero behaviour (#text(style: "italic")[code/verify\_over\_finite\_fields.sage] and
+#text(style: "italic")[code/verify\_cm\_over\_finite\_fields.m2]; the same runs also cover
+$FF_3, FF_5, FF_7, FF_9$ and $QQ$). The *conclusions*, then, appear to survive characteristic 2
+untouched --- which is evidence for the paragraph above, not against it.
 
-  What no computation of this kind can settle is the *first* half of the question: whether a
-  twisted-cross-product model of $frak(g l)_2 \/ (FF dot I)$ exists there at all, so that this
-  $I_k$ is once again the ideal of an iterated-commutator locus rather than merely a recursion that
-  happens to go on behaving well. That is where the exercise lies.
-] <prob-char2>
+What no computation of this kind can settle is the *first* half of @qst-char2: whether a
+twisted-cross-product model of $frak(g l)_2 \/ (FF dot I)$ exists there at all, so that this
+$I_k$ is once again the ideal of an iterated-commutator locus rather than merely a recursion that
+happens to go on behaving well. That is where the exercise lies.
 
 
 = The determinantal structure and the generator count
@@ -686,16 +726,50 @@ classical determinantal variety.
   @prop-detideal needs.
 ]
 
-#lemma[non-degeneracy][
-  For every $j >= 2$, the polynomial map $vek(w)_j : AA^(3j) -> AA^3$ is not identically zero. Hence
-  $U_j := {p in AA^(3j) : vek(w)_j (p) eq.not 0}$ is a nonempty Zariski-open subset.
+#lemma[non-degeneracy, with an explicit witness][
+  For every $j >= 2$, the polynomial map $vek(w)_j : AA^(3j) -> AA^3$ is not identically zero.
+  Concretely, the point
+  $ p^((j)) := (e_1, e_2, underbrace(e_1\, dots\, e_1, j-2)) in AA^(3j) $
+  satisfies $vek(w)_j (p^((j))) eq.not 0$; explicitly $vek(w)_j (p^((j))) = e_3$ for $j$ even and
+  $e_2$ for $j$ odd. Hence $U_j := {p in AA^(3j) : vek(w)_j (p) eq.not 0}$ is a nonempty
+  Zariski-open subset of $AA^(3j)$.
 ] <lem-nondeg>
 
 #proof[Proof of @lem-nondeg][
-  By induction: $vek(w)_2(e_1,e_2)=e_1 times e_2=e_3 eq.not 0$; given $c := vek(w)_(j-1)(p) eq.not 0$, at
-  least one standard basis vector is not proportional to $signtwist(c)$, and a cross product vanishes
-  only on linearly dependent pairs, so $vek(w)_j(p,e_i) = signtwist(c) times e_i eq.not 0$ for a suitable
-  $e_i$.
+  The induction is on $j$, and it carries more than the statement "some point survives": it carries
+  a *named* point, because @lem-witness-new later needs one rather than a mere existence claim.
+
+  *Base case $j=2$.* By @def-wk, $vek(w)_2 = vek(v)_1 times vek(v)_2$, so
+  $vek(w)_2(e_1,e_2) = e_1 times e_2 = e_3 eq.not 0$. Thus $p^((2)) = (e_1,e_2)$ works.
+
+  *Induction step.* Let $j >= 3$ and suppose $p in AA^(3(j-1))$ satisfies
+  $c := vek(w)_(j-1)(p) eq.not 0$. Three observations, in order:
+
+  + $signtwist(c) eq.not 0$, since $det signtwist() = 1$ makes $signtwist()$ invertible over every
+    field (@rem-why-D), so it kills no nonzero vector.
+  + Therefore $FF dot signtwist(c)$ is a *line* in $FF^3$. The three vectors $e_1,e_2,e_3$ span
+    $FF^3$, and a line contains at most one of them; so at least two indices $i$ have
+    $e_i in.not FF dot signtwist(c)$. Fix any such $i$.
+  + A cross product vanishes exactly on linearly dependent pairs --- $ker [u]_times = FF u$ for
+    $u eq.not 0$, the computation carried out in the proof of @lem-witness-inherited --- so
+    $signtwist(c) times e_i eq.not 0$.
+
+  By @def-wk, $vek(w)_j (p, e_i) = signtwist(vek(w)_(j-1)(p)) times e_i = signtwist(c) times e_i eq.not 0$.
+  (The twist falls on $c$ rather than on the result because that is where @def-wk's recursion puts
+  it.) So $vek(w)_j$ is not identically zero, and appending $e_i$ to a witness at level $j-1$ gives
+  one at level $j$.
+
+  *The witness in closed form.* Running the step from $p^((2)) = (e_1,e_2)$ and taking the least
+  admissible $i$ each time, the choice is $i=1$ at *every* level: $vek(w)_2 = e_3$ and
+  $signtwist(e_3) = e_3$, which is not proportional to $e_1$, giving $vek(w)_3 = e_3 times e_1 = e_2$;
+  then $signtwist(e_2) = -e_2$, again not proportional to $e_1$, giving
+  $vek(w)_4 = (-e_2) times e_1 = e_3$; and the pair $(e_3, e_2)$ now repeats. Hence the closed form
+  in the statement, and every coordinate of both the witness and its image lies in
+  $\{0, plus.minus 1\}$. Verified for $j=2,dots,8$, by two independent evaluations per level, in
+  #text(style: "italic")[code/verify\_nondegeneracy\_witness.sage].
+
+  *Openness.* $U_j$ is the complement of the Zariski-closed set $V(w_(j,1),w_(j,2),w_(j,3))$, hence
+  open; it is nonempty because $p^((j))$ lies in it.
 ]
 
 The generator count of $I_k$ needs nothing beyond the definition and non-degeneracy -- not

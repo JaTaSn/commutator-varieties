@@ -25,3 +25,7 @@
 #let bibentry(key, body) = [ ⟦BIB|#key⟧ #body ⟦END⟧ ]
 #let bibnum = (:)
 #let problem(..a) = { let p = a.pos(); [ ⟦PRB|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
+// question: mirror of the source preamble's make-frame declaration.  Note the
+// LaTeX side gives it its OWN counter too (preamble.tex), matching the Typst --
+// so both routes print "Question 1" and neither renumbers the theorem family.
+#let question(..a) = { let p = a.pos(); [ ⟦QUE|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }

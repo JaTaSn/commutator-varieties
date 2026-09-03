@@ -141,6 +141,23 @@
   attach boxed title to top left={xshift=6pt,yshift=-2mm},
   boxed title style={colback=clrPrb, arc=1pt}}{}
 
+\definecolor{clrQue}{HTML}{B03060}
+% Question is the ONE environment deliberately NOT on the theorem counter, so it
+% prints "Question 1" rather than taking a number out of the main sequence.  The
+% Typst side does the same thing (make-frame with no counter: argument), and the
+% two must agree or the routes disagree on every number after it.
+%
+% Reason: the Question was broken out of Problem 5 in 2026-09.  Joining the shared
+% counter would have renumbered Theorem 6 -> 7, Example 7 -> 8, ... Remark 45 -> 46,
+% and those numbers are cited by name in LEAN/KCommuting/*.lean, LEAN/README.md,
+% tools/markers2env.py, the comment above, and Jan's review annotations.
+% LEAN/README.md already documents an earlier renumbering that misled a reader.
+\newtcbtheorem{question}{Question}{%
+  enhanced, breakable, colback=clrQue!4, colframe=clrQue, coltitle=white,
+  fonttitle=\bfseries, arc=2pt, boxrule=0.6pt, left=6pt, right=6pt,
+  attach boxed title to top left={xshift=6pt,yshift=-2mm},
+  boxed title style={colback=clrQue, arc=1pt}}{}
+
 % proof stays plain -- a boxed proof reads badly at this density
 \renewcommand{\qedsymbol}{$\square$}
 

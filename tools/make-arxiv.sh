@@ -87,7 +87,7 @@ sed -n '/^\\begin{document}/,$p' main.tex > .body-only
 printf '  quotes ................ %s opening / %s closing (must be equal)\n' \
   "$(grep -o '``' .body-only | wc -l)" "$(grep -o "''" .body-only | wc -l)"
 printf '  boxed environments .... %s\n' \
-  "$(grep -oE '\\begin\{(theorem|proposition|lemma|remark|definition|example|problem)\}' .body-only | wc -l)"
+  "$(grep -oE '\\begin\{(theorem|proposition|lemma|remark|definition|example|problem|question)\}' .body-only | wc -l)"
 printf '  figure (tikzpicture) .. %s\n' "$(grep -c 'begin{tikzpicture}' main.tex)"
 printf '  overfull hboxes ....... %s\n' "$(grep -c 'Overfull \\hbox' main.log || true)"
 printf '  pages ................. %s\n' "$(pdfinfo main.pdf 2>/dev/null | awk '/^Pages/{print $2}')"

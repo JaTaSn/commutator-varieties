@@ -54,7 +54,7 @@ import sys
 
 ENV = {"THM": "theorem", "PRP": "proposition", "LEM": "lemma", "REM": "remark",
        "DEF": "definition", "EXA": "example", "PRF": "proof", "BIB": "bibitem",
-       "PRB": "problem"}
+       "PRB": "problem", "QUE": "question"}
 
 # The '|' separator inside a marker never survives pandoc literally: it comes
 # back as "\textbar " before a space and "\textbar{}" before anything else.
@@ -79,7 +79,7 @@ def citations(text):
     return CITE.sub(one, text)
 
 # environments that carry a tcolorbox label suffix (proof does not)
-BOXED = "theorem|proposition|lemma|remark|definition|example|problem"
+BOXED = "theorem|proposition|lemma|remark|definition|example|problem|question"
 
 
 def markers_to_environments(text):
@@ -182,7 +182,7 @@ def fix_references(text):
     supplement = {"theorem": "Theorem", "proposition": "Proposition",
                   "lemma": "Lemma", "remark": "Remark",
                   "definition": "Definition", "example": "Example",
-                  "problem": "Problem"}
+                  "problem": "Problem", "question": "Question"}
     ours = dict((lbl, supplement[env]) for env, lbl in re.findall(
         r"\\begin\{(" + BOXED + r")\}\{.*?\}\{([^{}]+)\}", text, flags=re.S))
 
