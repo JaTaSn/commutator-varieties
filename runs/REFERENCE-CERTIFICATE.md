@@ -124,8 +124,26 @@ nevertheless the wrong one.
 
 ## [13] Tambour, *The Number of Solutions of Some Equations in Finite Groups and a New Proof of Itô's Theorem*, Comm. Algebra 28 (2000), no. 11, 5353–5361
 
-**Status: verified against publisher metadata.** DOI `10.1080/00927870008827160` confirmed. Earlier
-version: Stockholm University Research Reports in Mathematics No. 15 (1998).
+**Status: verified against the source, via the earlier open-access version.**
+
+The published Taylor & Francis version is **closed access**. Checked 2026-09-04 against Unpaywall
+(`api.unpaywall.org/v2/10.1080/00927870008827160`), which reports `is_oa: false`,
+`oa_status: "closed"`, and zero OA locations. A T&F link that appears to work may be misleading:
+one carrying a `casa_token` parameter is Campus Activated Subscriber Access, i.e. access granted
+by a prior institutional session, not open access. (A bare `curl` of the DOI returns 403, but that
+proves nothing on its own — publishers serve bot-challenge pages before evaluating entitlement.)
+
+The earlier version **is** freely available, was downloaded and read, and is in this project's
+`literature/`:
+
+> Torbjörn Tambour, *On the number of solutions of some equations in finite groups*, Stockholm
+> University Research Reports in Mathematics No. 15, 1998, ISSN 1401-5617, 12 pp.
+> <https://www2.math.su.se/reports/1998/15/>  (PDF: `1998-15.pdf`)
+
+Note the earlier title is genuinely different — it lacks the "and a new proof of Itô's theorem"
+clause — so both are given in the bibliography rather than one being treated as a reprint of the
+other. The bibliography cites the published version and points at the report as the retrievable
+one.
 
 ---
 

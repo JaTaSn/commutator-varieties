@@ -1957,4 +1957,7 @@ than narrows as $k$ grows (#text(style: "italic")[anc/code/verify\_generator\_in
 #bibentry("Tambour2000")[T. Tambour, #emph[The Number of Solutions of Some Equations in Finite
   Groups and a New Proof of Itô's Theorem], Communications in Algebra *28* (2000), no. 11,
   5353--5361. #link("https://doi.org/10.1080/00927870008827160")[doi:10.1080/00927870008827160].
-  Earlier version: Stockholm University Research Reports in Mathematics No. 15 (1998).]
+  The published version is not open access; freely available as the earlier
+  #emph[On the number of solutions of some equations in finite groups], Stockholm University
+  Research Reports in Mathematics No. 15 (1998), at
+  #link("https://www2.math.su.se/reports/1998/15/")[www2.math.su.se/reports/1998/15].]
