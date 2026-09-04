@@ -234,6 +234,16 @@ if pdftotext main.pdf - 2>/dev/null | grep -nE "$LEAKED"; then
   exit 1
 fi
 printf '  macro leakage ......... none\n'
+
+# SUBMISSION-FIELDS.txt is hand-authored, not generated, and holds a second copy
+# of the title, abstract and MSC.  That makes it drift-prone in exactly the way
+# frontmatter.tex already is.  A warning, not a failure: it is not part of the
+# build, and a stale copy is only a problem at submission time.
+if [ -f "$OUT/SUBMISSION-FIELDS.txt" ] && [ "$SRC" -nt "$OUT/SUBMISSION-FIELDS.txt" ]; then
+  printf '  submission fields ..... STALE (source is newer -- re-check title/abstract/MSC)\n'
+else
+  printf '  submission fields ..... current\n'
+fi
 printf '  ancillary ............. %s script(s), %s transcript(s), %s\n' \
   "$(ls -1 "$OUT/anc/code" | wc -l)" "$(ls -1 "$OUT/anc/runs" | wc -l)" \
   "$(du -sh "$OUT/anc" | cut -f1)"

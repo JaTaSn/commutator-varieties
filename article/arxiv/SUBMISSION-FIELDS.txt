@@ -1,0 +1,110 @@
+================================================================================
+arXiv submission fields -- copy and paste, one field at a time.
+Generated 2026-09-04 from article/ring-of-k-commuting-2x2-matrices.typ.
+Upload with: submission.tar.gz  (in this directory; main.tex + anc/)
+================================================================================
+
+
+--- TITLE -------------------------------------------------------------------
+
+The coordinate ring of the $k$-fold iterated commutator locus for $2 \times 2$ matrices
+
+  arXiv accepts TeX math in the title field and renders it, so this matches
+  the paper exactly. If you prefer plain ASCII:
+
+    The coordinate ring of the k-fold iterated commutator locus for 2x2 matrices
+
+
+--- AUTHORS -----------------------------------------------------------------
+
+Jan Snellman
+
+  The arXiv form asks only for the name; affiliation and e-mail live in the
+  paper. For reference, as printed there:
+
+    Matematiska Institutionen, Linköpings Universitet, 581 83 Linköping, Sweden
+    ORCID  0009-0002-6676-5068
+    jan.snellman@liu.se
+
+  ORCID can be linked to the submission separately, in your arXiv account.
+
+
+--- ABSTRACT ----------------------------------------------------------------
+
+Plain text with TeX math. No boldface or italics: the arXiv abstract field
+does not support them, and $...$ math is standard and renders.
+
+For $2 \times 2$ matrices $A_1,\dots,A_k$, write $[A_1,\dots,A_k]$ for the
+left-normed iterated commutator $[\dots[[A_1,A_2],A_3],\dots,A_k]$, and $I_k$
+for the ideal, in the $3k$-variable reduced-coordinate polynomial ring $R_k$,
+cutting out its vanishing locus. We prove, for every $k \geq 2$ over any field
+of characteristic $\neq 2$, and as four independently-established results
+rather than one bundled claim: $I_k$ has codimension 2; $I_k$ has exactly 3
+minimal generators; $R_k / I_k$ is Cohen-Macaulay; and $I_k$ is radical. The
+last of these, together with an explicit component count resting on a
+non-containment argument, assembles into the Primary Decomposition Theorem:
+$I_k = P_2 \cap \cdots \cap P_k$ is an irredundant primary decomposition into
+exactly $k-1$ primes, following an explicit recursive block-involvement
+pattern. The proof identifies $I_k$ as the ideal of $2 \times 2$ minors of an
+explicit $2 \times 3$ matrix (a determinantal ideal, not merely one that looks
+determinantal), and invokes classical determinantal-ideal theory
+(Bruns-Vetter) and an explicit rank-2 Jacobian witness on every component
+(Serre's criterion) for the algebraic and radicality halves respectively.
+
+--- MSC-CLASS ---------------------------------------------------------------
+
+13C40, 14M12, 13H10, 15A27, 13P10
+
+  (In the paper: Primary 13C40, 14M12; Secondary 13H10, 15A27, 13P10.
+   arXiv's MSC-class field takes a bare comma-separated list.)
+
+    13C40  Linkage, complete intersections and determinantal ideals
+    14M12  Determinantal varieties
+    13H10  Special types (Cohen-Macaulay, Gorenstein, ...)
+    15A27  Commutativity of matrices
+    13P10  Grobner bases; other bases for ideals and modules
+
+
+--- COMMENTS ----------------------------------------------------------------
+
+29 pages. Ancillary files include the SageMath and Macaulay2 scripts cited in
+the text, with their full output transcripts, and a certificate recording for
+each reference what was checked and how. Parts of the results are formally
+verified in Lean 4 / mathlib; the paper states precisely which. Prepared with
+disclosed AI assistance, as described in the paper.
+
+  If you would rather not foreground the last sentence, drop it -- the paper
+  carries a full disclosure section either way, so nothing is concealed by
+  omitting it here. My suggestion is to keep it: it is consistent with the
+  paper and costs nothing.
+
+
+--- CATEGORIES --------------------------------------------------------------
+
+Primary:    math.AC  (Commutative Algebra)
+Cross-list: math.RA  (Rings and Algebras)
+            math.AG  (Algebraic Geometry)     -- optional
+
+  Cross-lists are optional and can be added after posting.
+
+
+--- LICENSE -----------------------------------------------------------------
+
+Not chosen here. arXiv's default (arXiv perpetual non-exclusive licence) is
+fine unless you want CC BY, which some funders prefer.
+
+
+================================================================================
+Checks on the bundle, at generation time
+================================================================================
+
+  main.tex ............. self-contained, xelatex, 29 pages
+  errors ............... 0
+  undefined references . 0
+  undefined citations .. 0
+  overfull hboxes ...... 0
+  ancillary ............ 11 scripts, 32 transcripts, 340K
+  no .tex/.pdf/.aux/.log anywhere under anc/
+
+Engine: xelatex (the preamble uses fontspec). arXiv has supported xelatex
+since November 2025.
