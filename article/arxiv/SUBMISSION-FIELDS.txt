@@ -82,8 +82,22 @@ disclosed AI assistance, as described in the paper.
 --- CATEGORIES --------------------------------------------------------------
 
 Primary:    math.AC  (Commutative Algebra)
-Cross-list: math.RA  (Rings and Algebras)
-            math.AG  (Algebraic Geometry)     -- optional
+Cross-list: math.AG  (Algebraic Geometry)
+            math.RA  (Rings and Algebras)     -- optional, weaker
+
+  math.AC is unambiguous: codimension, minimal generators, Cohen-Macaulayness,
+  radicality, primary decomposition, determinantal ideals.
+
+  math.AG is well earned -- section 5 is the geometric structure of V(I_k):
+  irreducible components, dimensions, Zariski topology, an explicit
+  parametrised stratification. The commuting-variety literature cited here sits
+  partly in math.AG too (Knutson's paper appeared in J. Algebraic Geom.).
+
+  math.RA is defensible but weaker: the objects are matrix commutators and
+  sl_2, but the paper makes no structure-theoretic claim about rings and
+  algebras in the sense that category is for.
+
+  NOT math.CA -- that is Classical Analysis and ODEs, nothing to do with this.
 
   Cross-lists are optional and can be added after posting.
 
