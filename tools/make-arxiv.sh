@@ -197,6 +197,12 @@ printf '  stray linebreaks ...... none\n'
 # Guard the BUILT PDF instead: whatever the route in, internal scaffolding must
 # not reach a submission.  Comments in the sources are fine -- they do not
 # render -- which is why this greps the PDF text and not the .tex.
+# NB "working note" is on this list on purpose and should stay: the failure it
+# guards against is a pointer to a note the reader cannot obtain.  If the prose
+# legitimately needs to DESCRIBE the practice of keeping such notes -- as the
+# Methods section now does -- reword it ("short standalone notes") rather than
+# loosening the pattern.  Weakening a guard to admit one true sentence is how
+# guards stop catching the false ones.
 INTERNAL='theorion|/TRASH|[Ww]orking draft|not distributed|workspace top level|working note'
 if pdftotext main.pdf - 2>/dev/null | grep -inE "$INTERNAL"; then
   echo
