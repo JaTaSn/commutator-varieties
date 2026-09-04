@@ -875,7 +875,7 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   For $k >= 3$, write $pi$ for the projection *forgetting $vek(v)_k$*,
   $ pi : AA^(3k) -> AA^(3(k-1)), quad pi(vek(v)_1,dots,vek(v)_k) := (vek(v)_1,dots,vek(v)_(k-1)), $
   and $Phi$ for the map
-  $ Phi : AA^(3(k-1)) times AA^1 -> AA^(3k), quad Phi(p,lambda) := (p,\ lambda signtwist(vek(w)_(k-1)(p))). $
+  $ Phi : AA^(3(k-1)) times AA^1 -> AA^(3k), quad Phi(p,lambda) := (p, lambda signtwist(vek(w)_(k-1)(p))). $
   Define two subsets of $AA^(3k)$:
   $ Y_1 := V(I_(k-1)) times AA^3, quad Y_2 := overline(Phi(AA^(3k-2))). $
   Here $Y_1$ is the locus where the previous bracket already vanishes, with $vek(v)_k$ completely
@@ -1128,7 +1128,7 @@ of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
   For $k >= 2$ and $j=2,dots,k$, let $Phi_j$ be @def-y1y2's map $Phi$ run at parameter $j$ (with
   the base convention $Phi_2(p,lambda) := (p,lambda p)$), and let
   $ Psi_j : AA^(3(j-1)) times AA^1 times AA^(3(k-j)) -> AA^(3k), quad
-    (p,lambda,q) |-> (Phi_j (p,lambda),\ q) $
+    (p,lambda,q) |-> (Phi_(j)(p,lambda), q) $
   be $Phi_j$ with the remaining blocks $vek(v)_(j+1),dots,vek(v)_k$ carried along untouched. Since
   $Psi_j$ is a polynomial map it *is*, read backwards, a homomorphism of $FF$-algebras
   $ phi_j : R_k -> FF[p,lambda,q] = FF[t_1,dots,t_(3k-2)], $

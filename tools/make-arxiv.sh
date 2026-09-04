@@ -144,6 +144,47 @@ if grep -nE '#(emph|text|strong)\[[^]]*\];' "$SRC"; then
   exit 1
 fi
 
+# ---- stray-linebreak guard ------------------------------------------------
+# In Typst MATH, "\ " is a LINE BREAK, not a thin space.  Written inside a tuple
+# it silently stacks the thing vertically:
+#
+#     Phi(p,\ lambda S(w))   typesets as   (p,
+#                                               lambda S(w))
+#
+# and nothing warns, in either build route.  This bit three times in this one
+# manuscript: eqn 1 (Jan, reading the PDF, 2026-09-03), then eqns 23 and 33,
+# which survived that fix because it repaired the one site rather than sweeping.
+# Hence a guard instead of a fourth repair.
+#
+# Done in Python, not grep: math spans run across lines here, so a line-oriented
+# check misses exactly the case that bit (eqn 33's "$" opened on the line above).
+# A backslash at END of line is the legitimate alignment break -- Example 7's
+# A/B/C list uses it -- so only mid-line "\ " followed by more content counts.
+if ! python3 - "$SRC" <<'PYEOF'
+import re, sys
+src = open(sys.argv[1]).read()
+body = src.split("\n", 206)[-1] if src.count("\n") > 206 else src
+bad = []
+for m in re.finditer(r"\$.*?\$", body, flags=re.S):
+    span = m.group(0)
+    for mm in re.finditer(r"\\ (?=\S)", span):
+        line = body[: m.start()].count("\n") + span[: mm.start()].count("\n") + 207
+        bad.append((line, " ".join(span.split())[:100]))
+if bad:
+    for line, ctx in bad:
+        print("  line ~%d:  %s" % (line, ctx), file=sys.stderr)
+    sys.exit(1)
+sys.exit(0)
+PYEOF
+then
+  echo >&2
+  echo "FAIL: '\ ' used mid-line inside math (offending spans above)." >&2
+  echo "      In Typst that is a LINE BREAK, not a thin space: it stacks tuples" >&2
+  echo "      vertically.  Use a plain space, or 'thin' for a real thin space." >&2
+  exit 1
+fi
+printf '  stray linebreaks ...... none\n'
+
 # ---- internal-matter guard ------------------------------------------------
 # The front matter in article/frontmatter.tex is transcribed BY HAND from the
 # Typst, so it is a second copy and can drift -- it did, within a day of being
