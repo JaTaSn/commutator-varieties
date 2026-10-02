@@ -2,6 +2,9 @@
 # Build the arXiv upload bundle from the Typst source, in one command.
 #
 # Changelog (reverse-chronological)
+#   2026-10-02  Widened the semicolon-eating guard from bracket-argument
+#               expressions (#emph[...];) to calls as well (#bcite(...);) --
+#               see the guard's own note.
 #   2026-09-01  Created.  Assembles article/arxiv/main.tex as a SINGLE
 #               self-contained file -- documentclass + preamble + front matter +
 #               converted body + bibliography -- because one file is the least
@@ -137,10 +140,19 @@ printf '  pages ................. %s\n' "$(pdfinfo main.pdf 2>/dev/null | awk '/
 # "\emph{mathlib} this".  A comma survives, a semicolon does not, and nothing
 # warns.  Cost one sentence in the Acknowledgements before it was noticed by
 # reading the rendered page.  Markup emphasis is immune, so write "_x_;".
-if grep -nE '#(emph|text|strong)\[[^]]*\];' "$SRC"; then
+#
+# 2026-10-02: widened to CALLS, "#bcite(...);", not just bracket-argument
+# expressions.  The original pattern only knew about #emph[...]; and so watched
+# exactly the one form that had already bitten.  Splitting reference [4] into
+# two put a "#bcite("Eisenbud1995");" into Lemma 26's proof, the semicolon
+# vanished from the LaTeX route, and the guard said nothing -- the same silent
+# failure one syntactic form over.  There is no markup-emphasis escape for a
+# call, so the fix is to reorder the sentence off the semicolon.
+if grep -nE '#(emph|text|strong)\[[^]]*\];|#[a-zA-Z][a-zA-Z0-9-]*\([^)]*\);' "$SRC"; then
   echo >&2
-  echo "FAIL: '#expr[...];' in the Typst -- pandoc drops the semicolon." >&2
-  echo "      Use markup emphasis instead: _x_;" >&2
+  echo "FAIL: '#expr[...];' or '#call(...);' in the Typst -- pandoc drops the semicolon." >&2
+  echo "      For emphasis use markup instead: _x_;  For a call, reword so the" >&2
+  echo "      semicolon does not directly follow it." >&2
   exit 1
 fi
 

@@ -67,8 +67,8 @@ Segre-cone computation given alongside. Corrected 2026-09-04.
 **Status: verified against the source.** Fetched live from
 `https://stacks.math.columbia.edu/tag/00OS`. Open access. Cited for equicodimensionality of affine
 domains over an arbitrary field — a dimension formula for finitely generated field extensions, not
-requiring a perfect-field hypothesis. The equivalent statement in Eisenbud, *Commutative Algebra
-with a View Toward Algebraic Geometry*, Cor. 13.4, is named alongside it.
+requiring a perfect-field hypothesis. The equivalent statement in Eisenbud is cited alongside it,
+as its own reference [14]; until 2026-10-02 the two shared this entry.
 
 ## [5] Gerstenhaber, *On dominance and varieties of commuting matrices*, Ann. of Math. 73 (1961), 324–348
 
@@ -144,6 +144,19 @@ Note the earlier title is genuinely different — it lacks the "and a new proof 
 clause — so both are given in the bibliography rather than one being treated as a reprint of the
 other. The bibliography cites the published version and points at the report as the retrievable
 one.
+
+## [14] Eisenbud, *Commutative Algebra with a View Toward Algebraic Geometry*, Springer GTM 150, 1995
+
+**Status: verified against publisher metadata.** Cited only for Cor. 13.4, that affine domains
+over a field are catenary and equicodimensional, alongside the equivalent Stacks Project tag 00OS
+[4]. A commercially published textbook, so no copy is held in this project's `literature/` (this
+workspace downloads open-access sources only); the statement relied on is standard, and the Stacks
+tag, which *was* read directly, carries it independently.
+
+**Provenance of this entry.** Added 2026-10-02. Through every earlier draft and the arXiv
+submission of 2026-09-04, Eisenbud and the Stacks Project were a single bundled reference [4],
+naming two different sources in one numbered entry. Jan caught it reading the built PDF. Split
+into two entries, both cited at the one place the bundled entry was cited.
 
 ---
 

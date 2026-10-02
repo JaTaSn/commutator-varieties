@@ -272,6 +272,7 @@
   Youcis2014: 11,
   Stacks031R: 12,
   Tambour2000: 13,
+  Eisenbud1995: 14,
 )
 #let bcite(key, detail: none) = {
   let n = bibnum.at(key)
@@ -374,7 +375,7 @@ standard lower-central-series convention for Lie algebras. This object arose out
 
 - a study of the corresponding formal word in the theory of fiber-counting of word-maps
   $pi: F_n -> G$, where $F_n$ is the free group on $n$ letters; in particular, after a close
-  reading of Tambour's result #bcite("Tambour2000");
+  reading of Tambour's result #bcite("Tambour2000").
 - a question in algebraic complexity theory -- how many scalar multiplications are needed to
   *compute* $[A_1,dots,A_k]$? -- which remains genuinely open for $k >= 3$ and which the author
   is presently investigating.
@@ -1258,7 +1259,7 @@ of $sqrt(I_k)$) -- that is closed in §7, after Cohen-Macaulayness is available.
   Bruns and Vetter #bcite("BrunsVetter1988"), Theorem (2.7), p. 13, gives exactly this for an
   *arbitrary* matrix, as needed since one row of our $2 times 3$ matrix ($signtwist(vek(w)_(k-1))$) is a
   fixed polynomial vector, not a row of independent indeterminates. (The construction originates
-  with Eagon and Northcott #bcite("EagonNorthcott1962"); it is the more general form given by
+  with Eagon and Northcott #bcite("EagonNorthcott1962"). It is the more general form given by
   Bruns and Vetter that is applied here.)
 ]
 
@@ -1359,10 +1360,11 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
   $ dim A_frak(m) = max{dim (A\/P)_frak(m) : P in "Min"(A), P subset.eq frak(m)}, $
   and each $A\/P = S\/tilde(P)$ is an affine domain over a field, for which
   $dim (S\/tilde(P))_frak(M) = dim S\/tilde(P)$ at *every* maximal ideal $frak(M)$ -- affine
-  domains over a field are catenary and equicodimensional (Eisenbud, #emph[Commutative Algebra],
-  Cor. 13.4; equivalently the Stacks Project, tag 00OS #bcite("Stacks00OS") -- a dimension formula
-  for finitely generated field extensions, holding over an arbitrary field, not needing a
-  perfect-field hypothesis by accident). By equidimensionality every such $dim S\/tilde(P)$ equals
+  domains over a field are catenary and equicodimensional (Eisenbud #bcite("Eisenbud1995"),
+  #emph[Commutative Algebra], Cor. 13.4; equivalently the Stacks Project, tag 00OS
+  #bcite("Stacks00OS") -- a dimension formula for finitely generated field extensions, holding
+  over an arbitrary field, not needing a perfect-field hypothesis by accident). By
+  equidimensionality every such $dim S\/tilde(P)$ equals
   $n-c$.
 ]
 
@@ -1915,9 +1917,7 @@ than narrows as $k$ grows (#text(style: "italic")[anc/code/verify\_generator\_in
 #bibentry("MotzkinTaussky1955")[T. Motzkin, O. Taussky, #emph[Pairs of matrices with property L.
   II], Trans. Amer. Math. Soc. 80 (1955), 387-401.]
 #bibentry("Stacks00OS")[#emph[The Stacks Project], tag 00OS (dimension formula for finitely
-  generated field extensions / equicodimensionality of affine domains), and equivalently
-  D. Eisenbud, #emph[Commutative Algebra with a View Toward Algebraic Geometry], Springer GTM 150,
-  1995, Cor. 13.4. Open access at
+  generated field extensions / equicodimensionality of affine domains). Open access at
   #link("https://stacks.math.columbia.edu/tag/00OS")[stacks.math.columbia.edu/tag/00OS].]
 #bibentry("Gerstenhaber1961")[M. Gerstenhaber, #emph[On dominance and varieties of commuting
   matrices], Ann. of Math. 73 (1961), 324-348.]
@@ -1961,3 +1961,7 @@ than narrows as $k$ grows (#text(style: "italic")[anc/code/verify\_generator\_in
   #emph[On the number of solutions of some equations in finite groups], Stockholm University
   Research Reports in Mathematics No. 15 (1998), at
   #link("https://www2.math.su.se/reports/1998/15/")[www2.math.su.se/reports/1998/15].]
+
+#bibentry("Eisenbud1995")[D. Eisenbud, #emph[Commutative Algebra with a View Toward Algebraic
+  Geometry], Graduate Texts in Mathematics 150, Springer-Verlag, 1995. Cor. 13.4 is the
+  statement used here, equivalent to the Stacks Project tag 00OS above.]
