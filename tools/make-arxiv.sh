@@ -247,6 +247,22 @@ if pdftotext main.pdf - 2>/dev/null | grep -nE "$LEAKED"; then
 fi
 printf '  macro leakage ......... none\n'
 
+# 2026-10-17: the ancillary-file references were repointed at a Zenodo deposit whose DOI did not
+# exist yet, leaving a deliberate placeholder in the text.  A placeholder that reaches a journal
+# is worse than a dangling path, because it reads as a DOI to everyone except the one person who
+# knows it is not.  So the build refuses to be quiet about it.  Once the real DOI is in, this
+# check costs nothing and says so.
+# NOT `grep -q`: it exits on the first match, pdftotext then dies of SIGPIPE, and under the
+# `set -o pipefail` at the top of this script that turns a SUCCESSFUL detection into a failed
+# pipeline -- so the check reported "no placeholder" while two were in the text.  Caught the day
+# it was written, 2026-10-17.  grep -c reads to the end and cannot do that.
+ZPEND=$(pdftotext main.pdf - 2>/dev/null | grep -c 'ZENODO-DOI-PENDING' || true)
+if [ "${ZPEND:-0}" -gt 0 ]; then
+  printf '  zenodo DOI ............ PLACEHOLDER x%s STILL IN THE TEXT -- do not submit this build\n' "$ZPEND"
+else
+  printf '  zenodo DOI ............ real (no placeholder)\n'
+fi
+
 # SUBMISSION-FIELDS.txt is hand-authored, not generated, and holds a second copy
 # of the title, abstract and MSC.  That makes it drift-prone in exactly the way
 # frontmatter.tex already is.  A warning, not a failure: it is not part of the

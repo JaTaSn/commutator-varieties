@@ -527,12 +527,12 @@ not used: the identity holds over every commutative ring.
 #proof[Proof of @thm-basic-identity][
   The proof is a direct computation, carried out symbolically over generic entries
   $a_11,dots,b_22$ rather than checked at sampled points, in
-  #text(style: "italic")[anc/code/verify\_lorentzian\_encoding\_identity.sage]. Both sides, expanded in
+  #text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]. Both sides, expanded in
   the 8 free entries, agree term by term; they are displayed in full in @app-identity.
 
   Both sides are integer polynomials in those entries, so the identity descends to every commutative
   ring. It was also checked directly over $ZZ$ and, separately, over $FF_2$ (where it still
-  holds), in #text(style: "italic")[anc/code/referee\_round4\_setup\_determinantal\_check.sage],
+  holds), in #text(style: "italic")[code/referee\_round4\_setup\_determinantal\_check.sage],
   precisely to confirm that this step is not one of the places where $"char" FF eq.not 2$ is spent
   (@qst-char2).
 ]
@@ -548,7 +548,7 @@ not used: the identity holds over every commutative ring.
     *individually* negating two of three generators obviously leaves the ideal unchanged, generator
     by generator -- no swap to account for. (Still verified computationally, not merely asserted:
     $"ideal"(vek(w)_2) = "ideal"(signtwist() vek(w)_2)$, confirmed by direct Gröbner-basis equality in
-    #text(style: "italic")[anc/code/verify\_encoding\_gl3\_equivariance.sage]; the three generators are
+    #text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage]; the three generators are
     written out in @app-remark2.)
   + *$signtwist()$ is an involution; $tau$ is not.* $signtwist()^2 = I$ exactly (immediate from the diagonal entries
     being $plus.minus 1$), while $tau^2 = "diag"(1,1,4) eq.not I$.
@@ -619,7 +619,7 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
 
 #example[$vek(w)_k$ and $I_k$, explicitly, for $k=2,3,4$][
   Everything below was computed directly
-  (#text(style: "italic")[anc/code/compute\_signed\_encoding\_examples.sage]) rather than derived by
+  (#text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]) rather than derived by
   hand. At $k=2$, the three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
   $ v_(1,2)v_(2,3)-v_(1,3)v_(2,2), quad v_(1,3)v_(2,1)-v_(1,1)v_(2,3), quad
     v_(1,1)v_(2,2)-v_(1,2)v_(2,1). $
@@ -638,7 +638,7 @@ $vek(w)_k : AA^(3k) -> AA^3$ pulled back along this substitution.
     - v_(1,2)v_(2,3)v_(3,3)v_(4,3), $
   the other two of the same shape (omitted for space; all three components of $vek(w)_4$, and
   $I_4:=(w_(4,1),w_(4,2),w_(4,3))$, in
-  #text(style: "italic")[anc/code/compute\_signed\_encoding\_examples.sage]'s output). The same data at
+  #text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]'s output). The same data at
   $k=6$, where the generators reach 32 terms apiece and the $plus.minus 1$ pattern is still
   unbroken, is in @app-i6.
 ] <ex-wk-signed>
@@ -683,8 +683,8 @@ Taking that recursion as the definition and running the four results in characte
 for $k=2,dots,5$ over $FF_2$ and $FF_4$: the codimension is $2$, the three generators are
 linearly independent over the base field, $I_k$ is radical, and $"pd"(R_k \/ I_k) = 2$, so
 $R_k \/ I_k$ is Cohen-Macaulay in every case, with no deviation whatever from the
-characteristic-zero behaviour (#text(style: "italic")[anc/code/verify\_over\_finite\_fields.sage] and
-#text(style: "italic")[anc/code/verify\_cm\_over\_finite\_fields.m2]; the same runs also cover
+characteristic-zero behaviour (#text(style: "italic")[code/verify\_over\_finite\_fields.sage] and
+#text(style: "italic")[code/verify\_cm\_over\_finite\_fields.m2]; the same runs also cover
 $FF_3, FF_5, FF_7, FF_9$ and $QQ$). The *conclusions*, then, appear to survive characteristic 2
 untouched, which is evidence for the paragraph above, not against it.
 
@@ -711,7 +711,7 @@ happens to go on behaving well. That is where the exercise lies.
   $a times b$ are, up to sign, the $2 times 2$ minors of the $2 times 3$ matrix with rows $a$ and
   $b$; and @def-wk's recursion builds $vek(w)_k$ from exactly such a cross product. The statement
   was also checked independently at $k=2,dots,6$ in
-  #text(style: "italic")[anc/code/verify\_determinantal\_structure\_all\_k.sage], in two separate ways.
+  #text(style: "italic")[code/verify\_determinantal\_structure\_all\_k.sage], in two separate ways.
   First, $I_k$ and the ideal of the displayed minors are shown equal by reducing each ideal's
   generators to zero against the other's Gröbner basis, in *both* directions, rather than by
   containment one way. Second -- and this is what makes "independent" mean something here -- the
@@ -721,7 +721,7 @@ happens to go on behaving well. That is where the exercise lies.
   no code. The underlying
   polynomial identity $"enc"([A,B]) = signtwist("enc"(A) times "enc"(B))$ of @thm-basic-identity makes this a two-line induction
   valid for *every* $k$, not merely a pattern checked at small $k$
-  (#text(style: "italic")[anc/code/verify\_lorentzian\_encoding\_identity.sage]).
+  (#text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]).
 ]
 
 This theorem is the engine behind the geometric results of §5: $R_k \/ I_k$ is not merely
@@ -788,7 +788,7 @@ classical determinantal variety.
   $vek(w)_4 = (-e_2) times e_1 = e_3$; and the pair $(e_3, e_2)$ now repeats. Hence the closed form
   in the statement, and every coordinate of both the witness and its image lies in
   $\{0, plus.minus 1\}$. This has been verified for $j=2,dots,8$, by two independent evaluations
-  per level, in #text(style: "italic")[anc/code/verify\_nondegeneracy\_witness.sage], and the results
+  per level, in #text(style: "italic")[code/verify\_nondegeneracy\_witness.sage], and the results
   are tabulated in @app-witness.
 
   *Openness.* $U_j$ is the complement of the Zariski-closed set $V(w_(j,1),w_(j,2),w_(j,3))$, hence
@@ -840,7 +840,7 @@ codimension, not the determinantal-structure theorem above, not any external cit
   too, contradicting the induction hypothesis. Hence $c = 0$.
 
   Corroborated computationally: the coefficient matrix has rank 3 at $k=2,dots,6$
-  (#text(style: "italic")[anc/code/verify\_generator\_independence.sage]); the full table is in
+  (#text(style: "italic")[code/verify\_generator\_independence.sage]); the full table is in
   @app-independence.
 
   This lemma is also *formally verified*: it is the statement
@@ -1494,7 +1494,7 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
 This has been verified independently in Sage, for the signed encoding, at every $k=2,dots,6$: the Jacobian
 recursion (@lem-jacrecursion) checked as a polynomial identity, not just at points, and every
 witness confirmed to lie on $V(I_k)$ with $"rank" J_k = 2$
-(#text(style: "italic")[anc/code/referee\_radicality\_S\_check.sage]). The sharper claim, that each
+(#text(style: "italic")[code/referee\_radicality\_S\_check.sage]). The sharper claim, that each
 witness lies on *exactly* its intended component, is confirmed by an independently-computed
 primary decomposition at every $k=3,4,5,6$, which returns $k-1$ components in each case, in
 agreement with @thm-componentcount; the $k=6$ decomposition takes some hours.
@@ -1624,10 +1624,10 @@ the intended component; and the decomposition itself recomputed at $k=3,4,5,6$.
 Because rank, dimension and radicality are *not* characteristic-independent (a matrix of rank 3
 over $QQ$ may drop rank modulo $p$), computations over $QQ$ license nothing about $FF_p$, and the
 four main results were therefore re-run over $FF_2$, $FF_3$, $FF_4$, $FF_5$, $FF_7$ and $FF_9$ as
-well. No deviation appeared. The scripts are named at the point of use, and are included with this
-submission as ancillary files under `anc/code/`, with their full output transcripts under
-`anc/runs/`; the paths cited in the text are the paths inside that directory. The bibliography is
-written for a reader and carries no access notes; `anc/runs/REFERENCE-CERTIFICATE.md` records
+well. No deviation appeared. The scripts are named at the point of use, and are deposited,
+with their full output transcripts, at Zenodo (DOI: ZENODO-DOI-PENDING); the paths cited in the
+text are the paths inside that archive. The bibliography is
+written for a reader and carries no access notes; `runs/REFERENCE-CERTIFICATE.md` records
 instead, for each source, the exact statement relied on, whether it was read in the source or only
 confirmed from publisher metadata, and the two citation errors that earlier drafts carried. The explicit
 computations they produce are displayed in @sec-appendix.
@@ -1697,8 +1697,8 @@ that remain.
 The results above are stated with their computations named rather than displayed, so that the
 argument stays legible. This appendix displays them. Everything here is *corroboration*: no proof
 in the article rests on a computation, and nothing below is offered as one. Each block names the
-script that produced it, and the scripts ship with this submission as ancillary files under
-`anc/code/`, with their full transcripts under `anc/runs/`.
+script that produced it; the scripts and their full transcripts are in the Zenodo deposit
+(DOI: ZENODO-DOI-PENDING).
 
 One naming point, since the scripts ship as they are. Most of them were written while the sign
 twist was called $D$, and they still write `D` internally for the matrix this article calls
@@ -1756,8 +1756,8 @@ The factors of $2$ here are expected and are *not* a symptom of the retired enco
 traceless part $a_22 = -a_11$, so $d_a = a_11 - a_22 = 2a_11$. The article's claim that no $2$
 appears is about the $vek(v)$-coordinates of @ex-wk-signed, which is a different expansion in
 different variables. Both routes agree exactly
-(#text(style: "italic")[anc/code/regenerate\_displays\_S.sage],
-#text(style: "italic")[anc/code/verify\_lorentzian\_encoding\_identity.sage]).
+(#text(style: "italic")[code/regenerate\_displays\_S.sage],
+#text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]).
 
 == The three assertions of @rem-why-D <app-remark2>
 
@@ -1768,7 +1768,7 @@ $ -v_(1,3)v_(2,2) + v_(1,2)v_(2,3), quad v_(1,3)v_(2,1) - v_(1,1)v_(2,3), quad
 so $"ideal"(vek(w)_2) = "ideal"(signtwist() vek(w)_2)$ generator by generator: two of the three are
 negated and the third is fixed, and negating a generator does not change the ideal it generates.
 Confirmed independently by Gröbner-basis equality in
-#text(style: "italic")[anc/code/verify\_encoding\_gl3\_equivariance.sage].
+#text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage].
 
 *The Lorentzian form.* With $A_0$ the traceless part of a generic $A$, the polynomial
 $-"enc"(A_0)_1^2 - "enc"(A_0)_2^2 + "enc"(A_0)_3^2 - 4 det(A_0)$ is identically $0$, not zero at
@@ -1811,8 +1811,8 @@ w_6,1 = -v1_3*v2_1*v3_1*v4_1*v5_1*v6_2 + v1_1*v2_3*v3_1*v4_1*v5_1*v6_2
 
 The other two components, $w_(6,2)$ and $w_(6,3)$, have the same shape and the same $32$-term,
 $plus.minus 1$ profile; all three are printed in full in
-#text(style: "italic")[anc/code/regenerate\_displays\_S.sage]'s transcript, which ships as
-`anc/runs/display-ground-truth-S.txt`. The script asserts the coefficient profile rather than
+#text(style: "italic")[code/regenerate\_displays\_S.sage]'s transcript, which ships as
+`runs/display-ground-truth-S.txt`. The script asserts the coefficient profile rather than
 merely printing it, so a regression to the retired encoding fails the run instead of producing a
 plausible-looking table.
 
@@ -1833,7 +1833,7 @@ j    witness (v_1,...,v_j)              w_j
 ```
 ]
 
-Each level is checked twice in #text(style: "italic")[anc/code/verify\_nondegeneracy\_witness.sage]:
+Each level is checked twice in #text(style: "italic")[code/verify\_nondegeneracy\_witness.sage]:
 once as the induction runs, and once by feeding the finished witness back through @def-wk's
 recursion as a point of $AA^(3j)$, which is how @lem-nondeg states it. The same script runs the
 retired $tau$ alongside, where the witness must alternate, $(e_1,e_2,e_1,e_2,dots)$, and the images
@@ -1864,7 +1864,7 @@ nontrivial constant relation holds among them:
 ]
 
 The monomial count doubles at each step while the rank stays at $3$, so the margin widens rather
-than narrows as $k$ grows (#text(style: "italic")[anc/code/verify\_generator\_independence.sage]).
+than narrows as $k$ grows (#text(style: "italic")[code/verify\_generator\_independence.sage]).
 
 #v(1.5em)
 = References
