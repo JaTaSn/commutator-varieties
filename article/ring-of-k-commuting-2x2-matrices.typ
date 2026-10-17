@@ -1636,67 +1636,31 @@ Nothing in this article is conjectural, or checked only at small $k$: every stat
 *every* $k >= 2$, over an *arbitrary* field of the stated characteristic. The computational thread
 corroborates the general proofs; nowhere does it substitute for one.
 
-*Source of truth, and a partial formalization.* The manuscript is written in Typst, and that source
-is canonical: the LaTeX is generated from it mechanically, so the two cannot drift apart. The same
-source supplied the statements for a partial formalization in Lean 4 against #emph[mathlib].
-Machine-checked, with no proof gaps and depending on no axioms beyond the three that every
-#emph[mathlib] development uses: the basic identity (@thm-basic-identity), in the strengthened form
-that drops the traceless hypothesis; the minimal-generator theorem (@thm-mingens) for the actual
-$vek(w)_k$, together with the whole chain beneath it --- the general lemma that independent
-same-degree generators are minimal (@lem-mingens-generic), the homogeneity of $vek(w)_k$, the
-freshness of each new variable block, and the linear independence itself (@lem-mingens-indep); the
-Jacobian recursion (@lem-jacrecursion); and the smaller computational claims of §3 and §5,
-including the identity of @rem-why-D.
+*A partial formalization.* The statements were formalized in Lean 4 against #emph[mathlib] and
+machine-checked, with no proof gaps and no axioms beyond the three that every #emph[mathlib]
+development uses. The formalization reaches part of the article, and the division is this.
 
-*Not* formalized: everything resting on determinantal-ideal theory or on dimension theory --- the
-codimension (@thm-codim), Cohen-Macaulayness (@thm-cm), radicality (@thm-radical), the component
-count (@thm-componentcount) and the Primary Decomposition Theorem (@thm-primarydecomp) --- for
-which the necessary libraries do not presently exist. The formalization is therefore a *partial*
-guarantee, and is described as one: it should not be read as covering the article's main results.
+Formalized:
 
-*On the explicitness of the exposition.* This article is more explicit than a paper of its length
-usually is. Steps that would ordinarily be left to the reader are written out, definitions that
-would ordinarily be recalled in passing are stated, and there are more worked examples than the
-proofs strictly require --- the $2 times 3$ matrix of @thm-determinantal displayed at three
-successive $k$, the components at $k=3$ and $k=4$ given by their generators, the non-degeneracy
-witness tabulated, and the explicit computations collected in @sec-appendix.
+- the basic identity (@thm-basic-identity), in the strengthened form that drops the traceless
+  hypothesis;
+- the minimal-generator theorem (@thm-mingens) for the actual $vek(w)_k$, with the chain beneath
+  it: that independent same-degree generators are minimal (@lem-mingens-generic), the homogeneity
+  of $vek(w)_k$, the freshness of each new variable block, and the linear independence itself
+  (@lem-mingens-indep);
+- the Jacobian recursion (@lem-jacrecursion);
+- the smaller computational claims of §3 and §5, including the identity of @rem-why-D.
 
-That was deliberate, for two reasons. The first concerns the reader: a manuscript produced with
-substantial machine assistance, and only partially formalized, invites a scepticism that is
-entirely reasonable, and the honest answer to it is not reassurance but exposure --- to write the
-argument out at a level of detail at which a determined reader can check it without reconstructing
-the missing steps, and to say plainly, as @sec-methods does, which parts are machine-checked and
-which are not. The second concerns the author: writing at this level of explicitness is how the
-author satisfied himself that he understood the argument rather than merely followed it, and
-several of the corrections recorded below were found precisely because a step that had seemed
-obvious stopped being obvious once it had to be written down in full.
+Not formalized, the libraries for it not presently existing:
 
-The same reasoning produced a large body of short standalone notes kept alongside the research,
-one question to a note. Their first purpose was the author's own understanding. Their second turned
-out to be discovery: the signed encoding $"enc"$ used throughout this article --- which replaced an
-earlier coordinate choice that forced a coordinate swap and two factors of 2 --- emerged from one
-such note, written to answer nothing more ambitious than whether a different encoding might be
-tidier.
+- the codimension (@thm-codim);
+- Cohen-Macaulayness (@thm-cm);
+- radicality (@thm-radical);
+- the component count (@thm-componentcount);
+- the Primary Decomposition Theorem (@thm-primarydecomp).
 
-*Adversarial review.* The manuscript was put through five rounds of deliberately adversarial
-review, each instructed to find errors rather than to approve, and each required to verify by
-computation rather than by reading. This was not a formality. The rounds found: a genuine gap in
-the proof of @lem-mingens-indep, where non-degeneracy was doing work that only linear independence
-can do; explicit displays that had not been recomputed after a change of encoding, and so still
-showed the superseded values; a false statement about the state of the literature, contradicted by
-the very sources cited for it; a citation to the wrong tag of a reference work, made under an
-explicit assurance that it had been verified; a stretch of prose that described the formulas
-printed beside it incorrectly; and the gap in generality that @rem-base-field now closes. All are
-corrected above. The mention is not decorative: a reader is entitled to know what kind of error an
-adversarial pass actually catches, and to calibrate accordingly.
-
-*What this workflow is, and is not, good for.* Its strength is coverage of the mechanical: a
-recomputation notices a stale display, an inconsistent index or an unverified citation reliably,
-and does so at a scale and patience that re-reading does not sustain. Its weakness is that none of
-that establishes that the argument is *right*; every substantive correction above was found by an
-adversarial reading, not by a passing test. The machine checks and the Lean formalization narrow
-the space in which an error can hide; they do not empty it, and the responsibility statement below
-is meant literally.
+Everything in the second list rests on determinantal-ideal theory or on dimension theory. The
+guarantee is therefore partial, and does not cover the article's main results.
 
 #v(1.5em)
 = Acknowledgements
@@ -1907,17 +1871,14 @@ than narrows as $k$ grows (#text(style: "italic")[anc/code/verify\_generator\_in
 #v(0.5em)
 
 #bibentry("BrunsVetter1988")[W. Bruns, U. Vetter, #emph[Determinantal Rings], Lecture Notes in
-  Mathematics 1327, Springer-Verlag, 1988. Out of print; freely available with Springer's
-  permission at
-  #link("https://www.home.uni-osnabrueck.de/wbruns/brunsw/detrings.pdf")[the first author's own
-  page].]
+  Mathematics 1327, Springer-Verlag, 1988.]
 #bibentry("EagonNorthcott1962")[J.A. Eagon, D.G. Northcott, #emph[Ideals defined by matrices and a
   certain complex associated with them], Proc. Roy. Soc. London Ser. A 269(1337) (1962), 188-204.
   DOI: #link("https://doi.org/10.1098/rspa.1962.0170")[10.1098/rspa.1962.0170].]
 #bibentry("MotzkinTaussky1955")[T. Motzkin, O. Taussky, #emph[Pairs of matrices with property L.
   II], Trans. Amer. Math. Soc. 80 (1955), 387-401.]
 #bibentry("Stacks00OS")[#emph[The Stacks Project], tag 00OS (dimension formula for finitely
-  generated field extensions / equicodimensionality of affine domains). Open access at
+  generated field extensions / equicodimensionality of affine domains),
   #link("https://stacks.math.columbia.edu/tag/00OS")[stacks.math.columbia.edu/tag/00OS].]
 #bibentry("Gerstenhaber1961")[M. Gerstenhaber, #emph[On dominance and varieties of commuting
   matrices], Ann. of Math. 73 (1961), 324-348.]
@@ -1927,28 +1888,23 @@ than narrows as $k$ grows (#text(style: "italic")[anc/code/verify\_generator\_in
   Majidi-Zolbanin and Snapp below.]
 #bibentry("MajidiZolbaninSnapp")[M. Majidi-Zolbanin, B. Snapp, #emph[A note on the variety of pairs
   of matrices whose product is symmetric], in #emph[Commutative Algebra and Its Connections to
-  Geometry], Contemporary Mathematics 555, American Mathematical Society, 2011, pp. 145-150.
-  Author's open-access copy at
-  #link("https://people.math.osu.edu/snapp.14/SymmetrizingVariety.pdf")[people.math.osu.edu/
-  snapp.14/SymmetrizingVariety.pdf].]
+  Geometry], Contemporary Mathematics 555, American Mathematical Society, 2011, pp. 145-150.]
 #bibentry("Chau2024")[T. Chau, #emph[The $F$-regularity of algebraic sets related to commutator
   matrices], J. Algebra 652 (2024), 52-66. DOI:
   #link("https://doi.org/10.1016/j.jalgebra.2024.04.008")[10.1016/j.jalgebra.2024.04.008].]
 #bibentry("Hreinsdottir2005")[F. Hreinsdóttir, #emph[Conjectures on the ring of commuting matrices],
-  arXiv:math/0501465. Open access at
-  #link("https://arxiv.org/abs/math/0501465")[arxiv.org/abs/math/0501465].]
+  #link("https://arxiv.org/abs/math/0501465")[arXiv:math/0501465].]
 #bibentry("Knutson2003")[A. Knutson, #emph[Some Schemes Related to the Commuting Variety],
-  J. Algebraic Geom. 14 (2005), 283-294; preprint arXiv:math/0306275. (The arXiv abstract page's
-  "to appear" note long predates publication.) Open access at
-  #link("https://arxiv.org/abs/math/0306275")[arxiv.org/abs/math/0306275].]
+  J. Algebraic Geom. 14 (2005), 283-294; preprint
+  #link("https://arxiv.org/abs/math/0306275")[arXiv:math/0306275].]
 #bibentry("Youcis2014")[A. Youcis, answer to "What can we say about the image of a regular map?",
   Mathematics Stack Exchange, question 731178, answer 732415, 2014. States both the
   point-set-topology fact that the continuous image of an irreducible space is irreducible, and the
-  $(x,y) |-> (x,x y)$ non-closed-image example cited above. CC BY-SA 3.0. Open access at
+  $(x,y) |-> (x,x y)$ non-closed-image example cited above. CC BY-SA 3.0.
   #link("https://math.stackexchange.com/questions/731178/what-can-we-say-about-the-image-of-a-regular-map")[math.stackexchange.com/questions/731178].]
 #bibentry("Stacks031R")[#emph[The Stacks Project], tag *031R* = Lemma 10.157.3, Serre's criterion
   for reducedness: "Let $R$ be a Noetherian ring. The following are equivalent: (1) $R$ is reduced,
-  and (2) $R$ has properties $(R_0)$ and $(S_1)$." Open access at
+  and (2) $R$ has properties $(R_0)$ and $(S_1)$."
   #link("https://stacks.math.columbia.edu/tag/031R")[stacks.math.columbia.edu/tag/031R].
   Note that the enclosing *section* 10.157 is tag 031O and is titled "Serre's criterion for
   #emph[normality]"; its own Lemma 10.157.4 (tag 031S) is the normality criterion $(R_1)$ and
@@ -1956,11 +1912,7 @@ than narrows as $k$ grows (#text(style: "italic")[anc/code/verify\_generator\_in
 
 #bibentry("Tambour2000")[T. Tambour, #emph[The Number of Solutions of Some Equations in Finite
   Groups and a New Proof of Itô's Theorem], Communications in Algebra *28* (2000), no. 11,
-  5353--5361. #link("https://doi.org/10.1080/00927870008827160")[doi:10.1080/00927870008827160].
-  The published version is not open access; freely available as the earlier
-  #emph[On the number of solutions of some equations in finite groups], Stockholm University
-  Research Reports in Mathematics No. 15 (1998), at
-  #link("https://www2.math.su.se/reports/1998/15/")[www2.math.su.se/reports/1998/15].]
+  5353--5361. #link("https://doi.org/10.1080/00927870008827160")[doi:10.1080/00927870008827160].]
 
 #bibentry("Eisenbud1995")[D. Eisenbud, #emph[Commutative Algebra with a View Toward Algebraic
   Geometry], Graduate Texts in Mathematics 150, Springer-Verlag, 1995. Cor. 13.4 is the
