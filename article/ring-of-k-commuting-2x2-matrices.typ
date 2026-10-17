@@ -531,8 +531,8 @@ not used: the identity holds over every commutative ring.
   the 8 free entries, agree term by term; they are displayed in full in @app-identity.
 
   Both sides are integer polynomials in those entries, so the identity descends to every commutative
-  ring. It was also checked directly over $ZZ$ and, separately, over $FF_2$ --- where it still
-  holds --- in #text(style: "italic")[anc/code/referee\_round4\_setup\_determinantal\_check.sage],
+  ring. It was also checked directly over $ZZ$ and, separately, over $FF_2$ (where it still
+  holds), in #text(style: "italic")[anc/code/referee\_round4\_setup\_determinantal\_check.sage],
   precisely to confirm that this step is not one of the places where $"char" FF eq.not 2$ is spent
   (@qst-char2).
 ]
@@ -659,7 +659,7 @@ are happy to hand on:
   The splitting $A = ("tr"(A)\/2)I + A_0$ then has no meaning at all: the scalars do not sit
   beside a complement, they sit *inside* the traceless matrices.
 
-  The bracket is unbothered --- scalars are central in every characteristic --- so $[dot,dot]$
+  The bracket is unbothered, since scalars are central in every characteristic, so $[dot,dot]$
   still descends to the three-dimensional quotient $frak(g l)_2 \/ (FF dot I)$. Whether the rest of
   the article descends with it is @qst-char2 below.
 ] <prob-char2>
@@ -673,7 +673,7 @@ are happy to hand on:
 
 What makes @qst-char2 more than idle curiosity: *every polynomial displayed in @ex-wk-signed has
 coefficients $plus.minus 1$ only*. No $2$ appears anywhere in the output. Whatever the
-obstruction is, it lives entirely in the setup and not in the ideal --- which is exactly the
+obstruction is, it lives entirely in the setup and not in the ideal, which is exactly the
 situation in which a different setup might dissolve it.
 
 *Computational evidence, bearing on the second half of @qst-char2 only.* Nothing in @def-wk's
@@ -682,11 +682,11 @@ $vek(w)_j = signtwist(vek(w)_(j-1)) times vek(v)_j$ define an ideal $I_k subset 
 Taking that recursion as the definition and running the four results in characteristic 2 anyway,
 for $k=2,dots,5$ over $FF_2$ and $FF_4$: the codimension is $2$, the three generators are
 linearly independent over the base field, $I_k$ is radical, and $"pd"(R_k \/ I_k) = 2$, so
-$R_k \/ I_k$ is Cohen-Macaulay --- in every case, with no deviation whatever from the
+$R_k \/ I_k$ is Cohen-Macaulay in every case, with no deviation whatever from the
 characteristic-zero behaviour (#text(style: "italic")[anc/code/verify\_over\_finite\_fields.sage] and
 #text(style: "italic")[anc/code/verify\_cm\_over\_finite\_fields.m2]; the same runs also cover
 $FF_3, FF_5, FF_7, FF_9$ and $QQ$). The *conclusions*, then, appear to survive characteristic 2
-untouched --- which is evidence for the paragraph above, not against it.
+untouched, which is evidence for the paragraph above, not against it.
 
 What no computation of this kind can settle is the *first* half of @qst-char2: whether a
 twisted-cross-product model of $frak(g l)_2 \/ (FF dot I)$ exists there at all, so that this
@@ -772,8 +772,8 @@ classical determinantal variety.
   + Therefore $FF dot signtwist(c)$ is a *line* in $FF^3$. The three vectors $e_1,e_2,e_3$ span
     $FF^3$, and a line contains at most one of them; so at least two indices $i$ have
     $e_i in.not FF dot signtwist(c)$. Fix any such $i$.
-  + A cross product vanishes exactly on linearly dependent pairs --- $ker [u]_times = FF u$ for
-    $u eq.not 0$, the computation carried out in the proof of @lem-witness-inherited --- so
+  + A cross product vanishes exactly on linearly dependent pairs ($ker [u]_times = FF u$ for
+    $u eq.not 0$, the computation carried out in the proof of @lem-witness-inherited), so
     $signtwist(c) times e_i eq.not 0$.
 
   By @def-wk, $vek(w)_j (p, e_i) = signtwist(vek(w)_(j-1)(p)) times e_i = signtwist(c) times e_i eq.not 0$.
@@ -819,8 +819,8 @@ codimension, not the determinantal-structure theorem above, not any external cit
 
   *Base case $k=2$.* The three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$ are the $2 times 2$
   minors of the generic $2 times 3$ matrix with rows $vek(v)_1,vek(v)_2$, displayed in
-  @ex-wk-signed. Each contains a monomial the other two do not --- $v_(1,2)v_(2,3)$ occurs only in
-  the first, $v_(1,3)v_(2,1)$ only in the second, $v_(1,1)v_(2,2)$ only in the third --- so no
+  @ex-wk-signed. Each contains a monomial the other two do not: $v_(1,2)v_(2,3)$ occurs only in
+  the first, $v_(1,3)v_(2,1)$ only in the second, and $v_(1,1)v_(2,2)$ only in the third. So no
   nontrivial constant relation is possible.
 
   *Induction step.* Suppose the components of $vek(w)_(k-1)$ are linearly independent over $FF$, and
@@ -831,7 +831,7 @@ codimension, not the determinantal-structure theorem above, not any external cit
   right-hand side is linear in them; so each of its three coefficients vanishes separately, i.e.
   $ c times a = 0 . $
 
-  Suppose $c eq.not 0$. Then $c times a = 0$ forces $a = f dot c$ for a single polynomial $f$ ---
+  Suppose $c eq.not 0$. Then $c times a = 0$ forces $a = f dot c$ for a single polynomial $f$:
   over the fraction field $c times a = 0$ says $a$ lies in the line spanned by $c$, and $f = a_i\/c_i$
   is a polynomial for any index with $c_i eq.not 0$. But then $a$'s three components are pairwise
   proportional, hence linearly *dependent* over $FF$ (any $d$ with $d dot c = 0$ gives
@@ -855,7 +855,7 @@ codimension, not the determinantal-structure theorem above, not any external cit
   It is tempting to argue instead that a constant relation would force $signtwist(vek(w)_(k-1))$ to be a
   *constant vector*, and to rule that out by @lem-nondeg. That argument is not valid. The relation
   forces only $c times signtwist(vek(w)_(k-1)) = 0$, which makes the components of $signtwist(vek(w)_(k-1))$
-  pairwise proportional --- not constant. A vector such as $(f,2f,3f)$ with $f eq.not 0$ is
+  pairwise proportional, not constant. A vector such as $(f,2f,3f)$ with $f eq.not 0$ is
   nonvanishing, so @lem-nondeg does not exclude it, yet its components are visibly dependent.
   Non-degeneracy is strictly weaker than what the step needs, which is why the induction above
   carries linear independence itself.
@@ -1131,8 +1131,8 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   irreducible -- the affine cone over the Segre embedding $PP^1 times PP^2 arrow.hook PP^5$,
   equivalently the Motzkin-Taussky #bcite("MotzkinTaussky1955") irreducibility of the $2 times 2$
   commuting variety -- so exactly 1 component, matching $k-1=1$. *Step*: $V(I_k) = Y_1 union Y_2$
-  as in @thm-codim's proof. By the inductive hypothesis --- this theorem at level $k-1$, which is
-  where the per-component dimension comes from --- $V(I_(k-1))$ has $k-2$ irreducible components,
+  as in @thm-codim's proof. By the inductive hypothesis (this theorem at level $k-1$, which is
+  where the per-component dimension comes from), $V(I_(k-1))$ has $k-2$ irreducible components,
   each of dimension $3(k-1)-2$, none contained in another; crossing with $AA^3$ makes them $Y_1$'s
   components, each of dimension $3k-2$. That is exactly the hypothesis @prop-y1-not-in-y2 asks for,
   so it and @prop-y2-not-in-y1 together rule out containment between $Y_2$ and any of them, in
@@ -1299,7 +1299,7 @@ component count to a genuine primary decomposition.
 
 #lemma[reduction via Serre][
   Recall Serre's two conditions. They are written $(R_n)$ and $(S_n)$ throughout, always
-  parenthesised, to keep them apart from this article's polynomial rings $R_k$ --- the letters
+  parenthesised, to keep them apart from this article's polynomial rings $R_k$: the letters
   collide, the objects have nothing to do with each other, and $R_0$ unparenthesised beside $R_k$
   invites exactly the wrong reading.
 
@@ -1450,7 +1450,7 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
 
 #proof[Proof of @lem-witness-new][
   *The case $k=2$ separately*, because the statement above cannot be read at $k=2$: it would refer
-  to a non-degeneracy witness "at level 1", and neither $vek(w)_1$ nor @lem-nondeg exists there ---
+  to a non-degeneracy witness "at level 1", and neither $vek(w)_1$ nor @lem-nondeg exists there, since
   @def-wk starts the recursion at $j=2$. Nor does @lem-jacrecursion's $k >= 3$ formula apply. Argue
   directly instead: $J_2 = [ -[vek(v)_2]_times mid(|) [vek(v)_1]_times ]$ carries no $signtwist()$ at all, so
   for any $p eq.not 0$, $J_2(p,0) = [ 0 mid(|) [p]_times ]$, which has rank 2 by the kernel
@@ -1494,8 +1494,8 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
 This has been verified independently in Sage, for the signed encoding, at every $k=2,dots,6$: the Jacobian
 recursion (@lem-jacrecursion) checked as a polynomial identity, not just at points, and every
 witness confirmed to lie on $V(I_k)$ with $"rank" J_k = 2$
-(#text(style: "italic")[anc/code/referee\_radicality\_S\_check.sage]). The sharper claim --- that each
-witness lies on *exactly* its intended component --- is confirmed by an independently-computed
+(#text(style: "italic")[anc/code/referee\_radicality\_S\_check.sage]). The sharper claim, that each
+witness lies on *exactly* its intended component, is confirmed by an independently-computed
 primary decomposition at every $k=3,4,5,6$, which returns $k-1$ components in each case, in
 agreement with @thm-componentcount; the $k=6$ decomposition takes some hours.
 
@@ -1614,15 +1614,15 @@ throughout, for two quite different purposes. The first is *conjecture*: the com
 @thm-componentcount, its block-involvement pattern, and the shape of the primary decomposition were
 found by computing primary decompositions of $I_k$ at small $k$ and reading off the pattern, well
 before any of it was proved. The second is *verification*: once proved, the general statements were
-checked against independent computation --- the determinantal structure of @thm-determinantal by
+checked against independent computation: the determinantal structure of @thm-determinantal by
 Gröbner-basis equality in both directions and, separately, against ordinary $2 times 2$ matrix
 multiplication, the two routes sharing no code; the Jacobian recursion of @lem-jacrecursion as a
 polynomial identity rather than at sampled points; the witness points of @lem-witness-new and
 @lem-witness-inherited confirmed to lie on $V(I_k)$ with the stated Jacobian rank, and on exactly
 the intended component; and the decomposition itself recomputed at $k=3,4,5,6$.
 
-Because rank, dimension and radicality are *not* characteristic-independent --- a matrix of rank 3
-over $QQ$ may drop rank modulo $p$ --- computations over $QQ$ license nothing about $FF_p$, and the
+Because rank, dimension and radicality are *not* characteristic-independent (a matrix of rank 3
+over $QQ$ may drop rank modulo $p$), computations over $QQ$ license nothing about $FF_p$, and the
 four main results were therefore re-run over $FF_2$, $FF_3$, $FF_4$, $FF_5$, $FF_7$ and $FF_9$ as
 well. No deviation appeared. The scripts are named at the point of use, and are included with this
 submission as ancillary files under `anc/code/`, with their full output transcripts under
@@ -1685,7 +1685,7 @@ established and what it merely corroborated, and what the adversarial review fou
 co-author, and is not credited as one.
 
 Every computational claim has been checked along a route independent of the statement being tested,
-and the reference list has been checked against the sources cited --- with the one exception that
+and the reference list has been checked against the sources cited, with the one exception that
 where a source is a printed book outside this project's open-access policy, an independently
 verified equivalent is cited alongside it. The author has verified the results to the best of his
 ability, made the final edits, and assumes full responsibility for any errors, mistakes or gaps
@@ -1709,7 +1709,7 @@ code for cosmetic reasons is a worse risk than a sentence saying so.
 Every polynomial below was recomputed for this appendix from the recursion of @def-wk rather than
 transcribed from an earlier draft. That distinction is not pedantry here: the article changed
 encoding partway through its life, from the reshuffle $tau(a,b,c)=(b,a,2c)$ to $signtwist()$, and
-a computed polynomial cannot be carried across such a change by substituting symbols --- it has to
+a computed polynomial cannot be carried across such a change by substituting symbols. It has to
 be recomputed. Output that still carries a literal coefficient $2$ in the $vek(v)$-coordinates is
 the tell that it was not.
 
@@ -1771,8 +1771,8 @@ Confirmed independently by Gröbner-basis equality in
 #text(style: "italic")[anc/code/verify\_encoding\_gl3\_equivariance.sage].
 
 *The Lorentzian form.* With $A_0$ the traceless part of a generic $A$, the polynomial
-$-"enc"(A_0)_1^2 - "enc"(A_0)_2^2 + "enc"(A_0)_3^2 - 4 det(A_0)$ is identically $0$ --- not zero at
-sampled points, but the zero polynomial in $a_11,dots,a_22$.
+$-"enc"(A_0)_1^2 - "enc"(A_0)_2^2 + "enc"(A_0)_3^2 - 4 det(A_0)$ is identically $0$, not zero at
+sampled points but the zero polynomial in $a_11,dots,a_22$.
 
 *The involution, and the $FF_3$ congruence.* $signtwist()^2 = I$ exactly, while
 $tau^2 = "diag"(1,1,4) eq.not I$ and $det tau = -2$. Over $FF_3$, with
@@ -1845,7 +1845,7 @@ $signtwist()$ column above a check rather than merely a new computation.
 
 This is the corroboration cited in the proof of @lem-mingens-indep. For each $k$, the three components of
 $vek(w)_k$ are expanded over the monomials that actually occur and the resulting $3 times N$
-coefficient matrix is checked to have rank $3$ --- which is exactly the assertion that no
+coefficient matrix is checked to have rank $3$, which is exactly the assertion that no
 nontrivial constant relation holds among them:
 
 #align(center)[
