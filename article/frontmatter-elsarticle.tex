@@ -1,0 +1,55 @@
+% frontmatter-elsarticle.tex -- elsarticle title block, abstract and keywords for the Journal of
+% Computational Algebra (Elsevier) build.  Used by tools/make-jaca.sh.
+%
+% Changelog (reverse-chronological)
+%   2026-10-21  Claude-Code-3c0af632 (jts-pc), at Jan's request.  Created from frontmatter.tex,
+%               in elsarticle's own frontmatter environment.  Title, abstract, keywords and MSC
+%               are copied verbatim from frontmatter.tex; the affiliation is given in English,
+%               as Elsevier's structured fields expect.  elsarticle's \MSC has no
+%               primary/secondary slots, so the codes are listed primary first (13C40, 14M12)
+%               and the split goes in the submission form (SUBMISSION-FIELDS.txt).
+%
+% Like frontmatter.tex this is a hand-made second copy of the Typst front matter, and can drift
+% from it: edit the .typ first, then mirror the change here AND in frontmatter.tex.
+
+\begin{frontmatter}
+
+\title{The coordinate ring of the $k$-fold iterated commutator locus for $2 \times 2$
+  matrices}
+
+\author{Jan Snellman\,\orcidlink{0009-0002-6676-5068}}
+\ead{jan.snellman@liu.se}
+
+\affiliation{organization={Department of Mathematics, Linköping University},
+             postcode={SE-581 83},
+             city={Linköping},
+             country={Sweden}}
+
+\begin{abstract}
+  For $2 \times 2$ matrices $A_1,\dots,A_k$, write $[A_1,\dots,A_k]$ for the
+  left-normed iterated commutator $[\dots[[A_1,A_2],A_3],\dots,A_k]$, and $I_k$
+  for the ideal, in the $3k$-variable reduced-coordinate polynomial ring $R_k$,
+  cutting out its vanishing locus. We prove, for every $k \geq 2$ over any field
+  of characteristic $\neq 2$, and as four independently-established results
+  rather than one bundled claim: $I_k$ has codimension 2; $I_k$ has exactly 3
+  minimal generators; $R_k / I_k$ is Cohen-Macaulay; and $I_k$ is radical. The
+  last of these, together with an explicit component count resting on a
+  non-containment argument, assembles into the \textbf{Primary Decomposition
+  Theorem}: $I_k = P_2 \cap \cdots \cap P_k$ is an irredundant primary
+  decomposition into exactly $k-1$ primes, following an explicit recursive
+  block-involvement pattern. The proof identifies $I_k$ as the ideal of
+  $2 \times 2$ minors of an explicit $2 \times 3$ matrix (a determinantal ideal,
+  not merely determinantal-\textit{looking}), and invokes classical
+  determinantal-ideal theory (Bruns-Vetter) and an explicit rank-2 Jacobian
+  witness on every component (Serre's criterion) for the algebraic and
+  radicality halves respectively.
+\end{abstract}
+
+\begin{keyword}
+  Iterated commutator \sep determinantal ideal \sep commuting variety \sep
+  Cohen-Macaulay ring \sep primary decomposition \sep radical ideal \sep
+  cross product \sep $\mathfrak{sl}_2$
+  \MSC[2020] 13C40 \sep 14M12 \sep 13H10 \sep 15A27 \sep 13P10
+\end{keyword}
+
+\end{frontmatter}

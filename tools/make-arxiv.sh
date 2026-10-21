@@ -2,6 +2,11 @@
 # Build the arXiv upload bundle from the Typst source, in one command.
 #
 # Changelog (reverse-chronological)
+#   2026-10-21  Claude-Code-3c0af632 (jts-pc): semicolon guard widened to any embedded call,
+#               with or without content blocks: '#text(style: "italic")[...];' and
+#               '#link(...)[...];' slipped past the old pattern, and two such semicolons
+#               had been missing from every build, this one's included, since at least
+#               the arXiv version.  Comment lines (//) are exempt.
 #   2026-10-02  Widened the semicolon-eating guard from bracket-argument
 #               expressions (#emph[...];) to calls as well (#bcite(...);) --
 #               see the guard's own note.
@@ -148,7 +153,7 @@ printf '  pages ................. %s\n' "$(pdfinfo main.pdf 2>/dev/null | awk '/
 # vanished from the LaTeX route, and the guard said nothing -- the same silent
 # failure one syntactic form over.  There is no markup-emphasis escape for a
 # call, so the fix is to reorder the sentence off the semicolon.
-if grep -nE '#(emph|text|strong)\[[^]]*\];|#[a-zA-Z][a-zA-Z0-9-]*\([^)]*\);' "$SRC"; then
+if grep -nE '#[a-zA-Z][a-zA-Z0-9-]*(\([^)]*\))?(\[[^]]*\])*;' "$SRC" | grep -vE '^[0-9]+:\s*//'; then
   echo >&2
   echo "FAIL: '#expr[...];' or '#call(...);' in the Typst -- pandoc drops the semicolon." >&2
   echo "      For emphasis use markup instead: _x_;  For a call, reword so the" >&2

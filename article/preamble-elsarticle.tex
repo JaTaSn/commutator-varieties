@@ -1,0 +1,130 @@
+% preamble-elsarticle.tex -- typography for the Journal of Computational Algebra (Elsevier)
+% build.  Loaded by tools/make-jaca.sh right after \documentclass[preprint,12pt]{elsarticle}.
+%
+% Changelog (reverse-chronological)
+%   2026-10-21  Claude-Code-3c0af632 (jts-pc), at Jan's request ("you might as well use the
+%               Elsevier style file").  Created as the "one-file swap" preamble.tex was designed
+%               for.  Differences from preamble.tex, and why:
+%               (a) No fontspec, geometry or KOMA: elsarticle sets the page, and Elsevier's
+%                   Editorial Manager compiles LaTeX with pdflatex, so nothing here may need
+%                   xelatex.  make-jaca.sh builds with BOTH engines and fails on either.
+%               (b) No tcolorbox.  The converted body calls every theorem-like environment as
+%                   \begin{theorem}{TITLE}{LABEL} (tcolorbox's signature), so the environments
+%                   below keep that signature but are plain amsthm theorems: Elsevier typesets
+%                   its own look, and coloured boxes in a submission only get in the way.
+%               (c) elsarticle's own thebibliography (natbib, numbered), which prints its own
+%                   "References" heading; make-jaca.sh removes the body's \section{References}
+%                   instead of redefining the environment as preamble.tex has to.
+%               (d) \emergencystretch 6em and 9pt verbatim, for the narrower measure (both
+%                   explained where they are set).
+%               Everything else -- \thmref, \fitdisplay, the notation macros, the breakable
+%               underscore -- is copied from preamble.tex unchanged.  Keep the two in step.
+
+% ---- packages ----------------------------------------------------------
+% graphicx is loaded by elsarticle itself.
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{booktabs}
+% pandoc emits longtable for every table, plus these helpers (see preamble.tex).
+\usepackage{longtable,array,calc}
+\usepackage{etoolbox}
+\usepackage{orcidlink}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+% Converted prose is dense with unbreakable inline maths (see preamble.tex).  6em here, not
+% preamble.tex's 3em: elsarticle's measure is 390pt, and at 3em xelatex (Latin Modern metrics)
+% left two lines 11pt and 24pt over -- a long inline formula, and a typewriter filename that
+% has no break point.  6em clears both under both engines, at the price of two or four loose
+% (badness 10000) lines; Elsevier re-typesets the article in any case.
+\setlength{\emergencystretch}{6em}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\providecommand{\pandocbounded}[1]{#1}
+
+% ---- words never to hyphenate ---------------------------------------------
+% TeX broke the DOI 10.5281/zenodo.23433729 as "zen-odo" at a line end, and a hyphen inside a
+% DOI gets copied as part of it.  An exception with no break points forbids it.
+\hyphenation{zenodo}
+
+% ---- verbatim -------------------------------------------------------------
+% The appendix reproduces raw program output in verbatim, with lines up to ~76 characters.
+% At this class's 12pt and 390pt measure the widest ran 79pt into the margin; 9pt cmtt fits
+% them all (cmtt has a real 9pt design size, so nothing is scaled or substituted).
+\makeatletter
+\renewcommand{\verbatim@font}{\fontsize{9}{11}\selectfont\ttfamily}
+\makeatother
+
+% ---- theorem-like environments -----------------------------------------
+% ONE shared counter for everything except Question, exactly as in preamble.tex and in the
+% Typst source: the numbers (Theorem 6, Remark 45, ...) are cited by name in the Lean sources
+% and elsewhere, so the three routes must agree.  Question is deliberately off the counter.
+\theoremstyle{plain}
+\newtheorem{jtsTheorem}{Theorem}
+\newtheorem{jtsProposition}[jtsTheorem]{Proposition}
+\newtheorem{jtsLemma}[jtsTheorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{jtsDefinition}[jtsTheorem]{Definition}
+\newtheorem{jtsExample}[jtsTheorem]{Example}
+\newtheorem{jtsProblem}[jtsTheorem]{Problem}
+\newtheorem{jtsQuestion}{Question}
+\theoremstyle{remark}
+\newtheorem{jtsRemark}[jtsTheorem]{Remark}
+% \begin{theorem}{TITLE}{LABEL}: an empty TITLE prints no parenthesis; the label gets the
+% ":" prefix that tcolorbox prepends, because \thmref below (and every cross-reference that
+% tools/markers2env.py writes) looks for ":LABEL".  The title is braced inside [...] so that
+% a "]" in it cannot end the optional argument early.
+\newcommand{\jtsBox}[2]{%
+  \newenvironment{#1}[2]%
+    {\ifstrempty{##1}{\begin{#2}}{\begin{#2}[{##1}]}\label{:##2}}%
+    {\end{#2}}}
+\jtsBox{theorem}{jtsTheorem}
+\jtsBox{proposition}{jtsProposition}
+\jtsBox{lemma}{jtsLemma}
+\jtsBox{definition}{jtsDefinition}
+\jtsBox{example}{jtsExample}
+\jtsBox{problem}{jtsProblem}
+\jtsBox{question}{jtsQuestion}
+\jtsBox{remark}{jtsRemark}
+\renewcommand{\qedsymbol}{$\square$}
+
+% ---- cross-references into the appendix --------------------------------
+% elsarticle's \appendix makes the section number itself read "Appendix A" ("Appendix A.2"
+% for a subsection), so cleveref's default printed "Section Appendix A.2".  After
+% \appendix, section and subsection labels get a type whose format is the bare number.
+\apptocmd{\appendix}{\crefalias{section}{jtsappendix}\crefalias{subsection}{jtsappendix}}{}{%
+  \PackageError{preamble-elsarticle}{could not patch \string\appendix}{}}
+\crefformat{jtsappendix}{#2#1#3}
+\Crefformat{jtsappendix}{#2#1#3}
+
+% ---- cross-references into the theorem-like environments ---------------
+% Copied from preamble.tex, where the reasons are written out: the environment name is passed
+% in because all of them share one counter, and there are no square brackets in the call.
+\newcommand{\thmref}[2]{\hyperref[:#2]{#1~\ref*{:#2}}}
+
+% ---- displays that are wider than the measure (from preamble.tex) -----
+\makeatletter
+\newsavebox{\jts@fitbox}
+\newcommand{\fitdisplay}[1]{%
+  \sbox{\jts@fitbox}{\ensuremath{\displaystyle #1}}%
+  \ifdim\wd\jts@fitbox>\linewidth
+    \resizebox{\linewidth}{!}{\usebox{\jts@fitbox}}%
+  \else
+    \usebox{\jts@fitbox}%
+  \fi}
+\makeatother
+
+% ---- notation (from preamble.tex) --------------------------------------
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\AAA}{\mathbb{A}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\vek}[1]{\overline{#1}}
+% Breakable underscores, for the script filenames in running prose (see preamble.tex).
+\let\jtsOldUnderscore\_
+\renewcommand{\_}{\jtsOldUnderscore\allowbreak}
+\newcommand{\enc}{\operatorname{enc}}
+\newcommand{\red}{\operatorname{red}}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\pd}{pd}

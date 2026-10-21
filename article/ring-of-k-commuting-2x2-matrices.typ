@@ -1,5 +1,23 @@
 // Changelog (reverse chronological):
 
+// 2026-10-21 - Claude-Code-3c0af632 (jts-pc), at Jan's request, for the Journal of Computational
+//   Algebra (Elsevier): (1) the two Zenodo DOI placeholders replaced by the published
+//   deposit's DOI, 10.5281/zenodo.23433730 (concept 10.5281/zenodo.23433729, cited in Methods);
+//   (2) "Disclosure of AI assistance" replaced by Elsevier's mandatory section, under Elsevier's
+//   exact heading and placed immediately before the References as Elsevier specifies: their
+//   template sentence, filled in with the models and dates (from commit trailers and session
+//   transcripts) and naming Figure 1, which Claude drew from Jan's sketch on 2026-08-17; then the
+//   existing account, unchanged after its first sentence. The Acknowledgements now point to it.
+//   (3) Example 38's nine-variable list split into separate inline formulas, so that TeX can
+//   break the line between them (one unbreakable formula ran 72pt into the margin at
+//   elsarticle's narrower measure); the rendering is unchanged. (4) Three semicolons that pandoc
+//   silently ate, because each directly followed an embedded call with a content block
+//   (#text(...)[...]; and #link(...)[...];): two of them have been missing from every build since
+//   at least the arXiv version ("...gl3_equivariance.sage the three generators", "...fields.m2 the
+//   same runs"), and the third was today's new DOI sentence.  Reworded with commas, which Typst
+//   does not consume.  The build guard missed all three; it is widened in make-arxiv.sh and
+//   make-jaca.sh.
+
 // 2026-08-17 - Claude: correction to the previous entry below. Earlier this same day, asked
 //   whether Remark 14's non-closed-image example traced to a Stack Exchange source, a fresh
 //   WebSearch turned up nothing and no citation was added. That was a real miss: this exact
@@ -548,8 +566,8 @@ not used: the identity holds over every commutative ring.
     *individually* negating two of three generators obviously leaves the ideal unchanged, generator
     by generator -- no swap to account for. (Still verified computationally, not merely asserted:
     $"ideal"(vek(w)_2) = "ideal"(signtwist() vek(w)_2)$, confirmed by direct Gröbner-basis equality in
-    #text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage]; the three generators are
-    written out in @app-remark2.)
+    #text(style: "italic")[code/verify\_encoding\_gl3\_equivariance.sage], and the three generators
+    are written out in @app-remark2.)
   + *$signtwist()$ is an involution; $tau$ is not.* $signtwist()^2 = I$ exactly (immediate from the diagonal entries
     being $plus.minus 1$), while $tau^2 = "diag"(1,1,4) eq.not I$.
   + *$signtwist()$ is not an arbitrary matrix that happens to work -- it is (up to a constant) the matrix of
@@ -684,7 +702,7 @@ for $k=2,dots,5$ over $FF_2$ and $FF_4$: the codimension is $2$, the three gener
 linearly independent over the base field, $I_k$ is radical, and $"pd"(R_k \/ I_k) = 2$, so
 $R_k \/ I_k$ is Cohen-Macaulay in every case, with no deviation whatever from the
 characteristic-zero behaviour (#text(style: "italic")[code/verify\_over\_finite\_fields.sage] and
-#text(style: "italic")[code/verify\_cm\_over\_finite\_fields.m2]; the same runs also cover
+#text(style: "italic")[code/verify\_cm\_over\_finite\_fields.m2], whose runs also cover
 $FF_3, FF_5, FF_7, FF_9$ and $QQ$). The *conclusions*, then, appear to survive characteristic 2
 untouched, which is evidence for the paragraph above, not against it.
 
@@ -1408,7 +1426,8 @@ pair of mutually-citing lemmas (as in an earlier draft of this section) obscures
 ]
 
 #example[$J_3$, explicitly][
-  With variables ordered $v_(1,1),v_(1,2),v_(1,3),v_(2,1),v_(2,2),v_(2,3),v_(3,1),v_(3,2),v_(3,3)$,
+  With variables ordered $v_(1,1)$, $v_(1,2)$, $v_(1,3)$, $v_(2,1)$, $v_(2,2)$, $v_(2,3)$, $v_(3,1)$,
+  $v_(3,2)$, $v_(3,3)$,
   the $3 times 9$ Jacobian of $vek(w)_3$ (the three generators of $I_3$ from the earlier example),
   column-blocked to match @lem-jacrecursion's formula $J_3 = [ -[vek(v)_3]_times signtwist() J_2 mid(|)
   [signtwist(vek(w)_2)]_times ]$ -- shown here as the two blocks separately, since side by side the full
@@ -1625,7 +1644,10 @@ Because rank, dimension and radicality are *not* characteristic-independent (a m
 over $QQ$ may drop rank modulo $p$), computations over $QQ$ license nothing about $FF_p$, and the
 four main results were therefore re-run over $FF_2$, $FF_3$, $FF_4$, $FF_5$, $FF_7$ and $FF_9$ as
 well. No deviation appeared. The scripts are named at the point of use, and are deposited,
-with their full output transcripts, at Zenodo (DOI: ZENODO-DOI-PENDING); the paths cited in the
+with their full output transcripts, at Zenodo (DOI:
+#link("https://doi.org/10.5281/zenodo.23433730")[10.5281/zenodo.23433730], with
+#link("https://doi.org/10.5281/zenodo.23433729")[10.5281/zenodo.23433729] for all versions); the
+paths cited in the
 text are the paths inside that archive. The bibliography is
 written for a reader and carries no access notes; `runs/REFERENCE-CERTIFICATE.md` records
 instead, for each source, the exact statement relied on, whether it was read in the source or only
@@ -1672,24 +1694,8 @@ system open beside the page.
 
 The computations were carried out in SageMath and Macaulay2, and the formalization in Lean 4 with
 _mathlib_; this article would have a different and smaller content without them. The nature
-and extent of the assistance from a large language model is set out in §10 and in the disclosure
-below.
-
-#v(1.5em)
-= Disclosure of AI assistance
-
-This manuscript was produced with substantial assistance from a large language model, Claude
-(Anthropic), and the extent of it is stated here rather than left to be inferred. The itemised
-account is §10: which results were machine-checked and which were not, what the computer algebra
-established and what it merely corroborated, and what the adversarial review found. Claude is not a
-co-author, and is not credited as one.
-
-Every computational claim has been checked along a route independent of the statement being tested,
-and the reference list has been checked against the sources cited, with the one exception that
-where a source is a printed book outside this project's open-access policy, an independently
-verified equivalent is cited alongside it. The author has verified the results to the best of his
-ability, made the final edits, and assumes full responsibility for any errors, mistakes or gaps
-that remain.
+and extent of the assistance from a large language model is set out in §10 and in the declaration
+at the end.
 
 #v(1.5em)
 = Appendix: the explicit computations <sec-appendix>
@@ -1698,7 +1704,7 @@ The results above are stated with their computations named rather than displayed
 argument stays legible. This appendix displays them. Everything here is *corroboration*: no proof
 in the article rests on a computation, and nothing below is offered as one. Each block names the
 script that produced it; the scripts and their full transcripts are in the Zenodo deposit
-(DOI: ZENODO-DOI-PENDING).
+(DOI: #link("https://doi.org/10.5281/zenodo.23433730")[10.5281/zenodo.23433730]).
 
 One naming point, since the scripts ship as they are. Most of them were written while the sign
 twist was called $D$, and they still write `D` internally for the matrix this article calls
@@ -1865,6 +1871,29 @@ nontrivial constant relation holds among them:
 
 The monomial count doubles at each step while the rank stays at $3$, so the margin widens rather
 than narrows as $k$ grows (#text(style: "italic")[code/verify\_generator\_independence.sage]).
+
+#v(1.5em)
+= Declaration of generative AI and AI-assisted technologies in the manuscript preparation process
+
+During the preparation of this work the author used Claude (Anthropic), through Claude Code, in
+order to assist with mathematical exploration, drafting, computational verification and the
+preparation of the Lean formalization, and to draw Figure 1 from the author's sketch. The models
+used were Claude Sonnet 5 (August 2026), Claude Opus 5 (August to October 2026) and Claude Opus 5.5
+(October 2026), with adversarial reviews of the proofs run with Claude Fable 5 (August and
+September 2026). After using this tool, the author reviewed and edited the content as needed and
+takes full responsibility for the content of the published article.
+
+The assistance was substantial, and its extent is stated here rather than left to be inferred. The
+itemised account is §10: which results were machine-checked and which were not, what the computer algebra
+established and what it merely corroborated, and what the adversarial review found. Claude is not a
+co-author, and is not credited as one.
+
+Every computational claim has been checked along a route independent of the statement being tested,
+and the reference list has been checked against the sources cited, with the one exception that
+where a source is a printed book outside this project's open-access policy, an independently
+verified equivalent is cited alongside it. The author has verified the results to the best of his
+ability, made the final edits, and assumes full responsibility for any errors, mistakes or gaps
+that remain.
 
 #v(1.5em)
 = References
