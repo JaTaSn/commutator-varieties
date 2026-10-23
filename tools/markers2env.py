@@ -406,10 +406,12 @@ def replace_figure(text):
     pat = re.compile(
         r"(\\begin\{figure\}\n\\centering\n).*?(\\caption\{)", re.S)
     n = len(pat.findall(text))
+    # 2026-10-23: the figure was deliberately removed in the JACA revision pass, so n == 0 is
+    # now the expected case; the machinery stays in case a figure returns.
+    if n == 0:
+        return text
     if n != 1:
-        sys.stderr.write("markers2env: expected 1 figure, found %d\n" % n)
-        if n == 0:
-            return text
+        sys.stderr.write("markers2env: expected at most 1 figure, found %d\n" % n)
     text = pat.sub(lambda m: m.group(1) + body + "\n" + m.group(2), text, count=1)
 
     # move "\end{figure}\n\n\protect\phantomsection\label{...}{}" inside
