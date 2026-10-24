@@ -363,7 +363,7 @@ For the following theorem, the article's standing hypothesis \(\text{char }\math
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-basic-identity}}] The proof is a direct computation, carried out symbolically over generic entries \(a_{11},\ldots,b_{22}\) rather than checked at sampled points, in code/verify\_lorentzian\_encoding\_identity.sage. Both sides, expanded in the 8 free entries, agree term by term; they are displayed in full in \cref{app-identity}.
+\begin{proof} The proof is a direct computation, carried out symbolically over generic entries \(a_{11},\ldots,b_{22}\) rather than checked at sampled points, in code/verify\_lorentzian\_encoding\_identity.sage. Both sides, expanded in the 8 free entries, agree term by term; they are displayed in full in \cref{app-identity}.
 
 Both sides are integer polynomials in those entries, so the identity descends to every commutative ring. It was also checked directly over \(\mathbb{Z}\) and, separately, over \(\mathbb{F}_{2}\) (where it still holds), in code/referee\_round4\_setup\_determinantal\_check.sage.
 
@@ -395,7 +395,7 @@ The displayed examples above were computed over \(\mathbb{Q}\); every result bel
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-determinantal}}] The claim is immediate from two facts taken together. The three components of a cross product \(a \times b\) are, up to sign, the \(2 \times 2\) minors of the \(2 \times 3\) matrix with rows \(a\) and \(b\); and \thmref{Definition}{def-wk}'s recursion builds \({\overline{w}}_{k}\) from exactly such a cross product. The statement was also checked independently at \(k = 2,\ldots,6\) in code/verify\_determinantal\_structure\_all\_k.sage, in two separate ways. First, \(I_{k}\) and the ideal of the displayed minors are shown equal by reducing each ideal's generators to zero against the other's Gröbner basis, in \textbf{both} directions, rather than by containment one way. Second -- and this is what makes ``independent'' mean something here -- the recursion itself is checked against honest \(2 \times 2\) matrix multiplication: the \(A_{i}\) are reconstructed from their \(\text{enc}\)-coordinates, the iterated commutator is formed by repeated matrix products, and the result encoded and compared against \(S\left( {\overline{w}}_{k} \right)\). The two routes share no code. The underlying polynomial identity \(\text{enc}\left( \lbrack A,B\rbrack \right) = {S\left( \text{enc}(A) \times \text{ enc}(B) \right)}\) of \thmref{Theorem}{thm-basic-identity} makes this a two-line induction valid for \textbf{every} \(k\), not merely a pattern checked at small \(k\) (code/verify\_lorentzian\_encoding\_identity.sage).
+\begin{proof} The claim is immediate from two facts taken together. The three components of a cross product \(a \times b\) are, up to sign, the \(2 \times 2\) minors of the \(2 \times 3\) matrix with rows \(a\) and \(b\); and \thmref{Definition}{def-wk}'s recursion builds \({\overline{w}}_{k}\) from exactly such a cross product. The statement was also checked independently at \(k = 2,\ldots,6\) in code/verify\_determinantal\_structure\_all\_k.sage, in two separate ways. First, \(I_{k}\) and the ideal of the displayed minors are shown equal by reducing each ideal's generators to zero against the other's Gröbner basis, in \textbf{both} directions, rather than by containment one way. Second -- and this is what makes ``independent'' mean something here -- the recursion itself is checked against honest \(2 \times 2\) matrix multiplication: the \(A_{i}\) are reconstructed from their \(\text{enc}\)-coordinates, the iterated commutator is formed by repeated matrix products, and the result encoded and compared against \(S\left( {\overline{w}}_{k} \right)\). The two routes share no code. The underlying polynomial identity \(\text{enc}\left( \lbrack A,B\rbrack \right) = {S\left( \text{enc}(A) \times \text{ enc}(B) \right)}\) of \thmref{Theorem}{thm-basic-identity} makes this a two-line induction valid for \textbf{every} \(k\), not merely a pattern checked at small \(k\) (code/verify\_lorentzian\_encoding\_identity.sage).
 
 \end{proof}
 
@@ -428,7 +428,7 @@ C & = v_{1,3}v_{2,1}v_{3,1} - v_{1,1}v_{2,3}v_{3,1} + v_{1,3}v_{2,2}v_{3,2} - v_
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-nondeg}}] The induction is on \(j\), and it carries more than the statement ``some point survives'': it carries a \textbf{named} point, because \thmref{Lemma}{lem-witness-new} later needs one rather than a mere existence claim.
+\begin{proof} The induction is on \(j\), and it carries more than the statement ``some point survives'': it carries a \textbf{named} point, because \thmref{Lemma}{lem-witness-new} later needs one rather than a mere existence claim.
 
 \textbf{Base case \(j = 2\).} By \thmref{Definition}{def-wk}, \({\overline{w}}_{2} = {\overline{v}}_{1} \times {\overline{v}}_{2}\), so \({\overline{w}}_{2}\left( e_{1},e_{2} \right) = e_{1} \times e_{2} = e_{3} \neq 0\). Thus \(p^{(2)} = \left( e_{1},e_{2} \right)\) works.
 
@@ -457,7 +457,7 @@ The generator count of \(I_{k}\) needs nothing beyond the definition and non-deg
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-mingens-generic}}] A polynomial-coefficient combination reproducing one of the generators from the others, while staying in the same degree, can only use degree-0 (constant) coefficients -- so a redundant generator would violate linear independence directly.
+\begin{proof} A polynomial-coefficient combination reproducing one of the generators from the others, while staying in the same degree, can only use degree-0 (constant) coefficients -- so a redundant generator would violate linear independence directly.
 
 \end{proof}
 
@@ -465,7 +465,7 @@ The generator count of \(I_{k}\) needs nothing beyond the definition and non-deg
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-mingens-indep}}] By induction on \(k\), and the induction hypothesis must be \textbf{independence} itself; see \thmref{Remark}{rem-nondeg-insufficient} for why the weaker non-degeneracy of \thmref{Lemma}{lem-nondeg} does not suffice.
+\begin{proof} By induction on \(k\), and the induction hypothesis must be \textbf{independence} itself; see \thmref{Remark}{rem-nondeg-insufficient} for why the weaker non-degeneracy of \thmref{Lemma}{lem-nondeg} does not suffice.
 
 \textbf{Base case \(k = 2\).} The three components of \({\overline{w}}_{2} = {\overline{v}}_{1} \times {\overline{v}}_{2}\) are the \(2 \times 2\) minors of the generic \(2 \times 3\) matrix with rows \({\overline{v}}_{1},{\overline{v}}_{2}\), displayed in \thmref{Example}{ex-wk-signed}. Each contains a monomial the other two do not: \(v_{1,2}v_{2,3}\) occurs only in the first, \(v_{1,3}v_{2,1}\) only in the second, and \(v_{1,1}v_{2,2}\) only in the third. So no nontrivial constant relation is possible.
 
@@ -487,7 +487,7 @@ This lemma is also \textbf{formally verified}: it is the statement w\_linearInde
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-mingens}}] Immediate from \thmref{Lemma}{lem-mingens-generic} applied to \thmref{Lemma}{lem-mingens-indep}'s independence, since \(I_{k}\) is generated by the three (same-degree-\(k\)-homogeneous) components of \({\overline{w}}_{k}\) by definition.
+\begin{proof} Immediate from \thmref{Lemma}{lem-mingens-generic} applied to \thmref{Lemma}{lem-mingens-indep}'s independence, since \(I_{k}\) is generated by the three (same-degree-\(k\)-homogeneous) components of \({\overline{w}}_{k}\) by definition.
 
 \end{proof}
 
@@ -497,7 +497,7 @@ This lemma is also \textbf{formally verified}: it is the statement w\_linearInde
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-top-irred}}] \textbf{Image.} Suppose \(f(X) = C_{1} \cup C_{2}\) with \(C_{1},C_{2}\) closed in \(f(X)\). By continuity, \(f^{- 1}\left( C_{1} \right)\) and \(f^{- 1}\left( C_{2} \right)\) are closed in \(X\), and \(X = f^{- 1}\left( C_{1} \right) \cup f^{- 1}\left( C_{2} \right)\). Since \(X\) is irreducible, one of the two equals \(X\) -- say \(f^{- 1}\left( C_{1} \right) = X\) -- so \(f(X) \subseteq C_{1}\), i.e. \(C_{1} = f(X)\), which is not proper. Hence \(f(X)\) is irreducible. \textbf{Closure.} If \(A \subseteq Y\) is irreducible and \(\overline{A} = C_{1} \cup C_{2}\) with \(C_{1},C_{2}\) closed in \(Y\), then \(A = \left( A \cap C_{1} \right) \cup \left( A \cap C_{2} \right)\); irreducibility of \(A\) forces, say, \(A \subseteq C_{1}\); since \(C_{1}\) is closed, \(\overline{A} \subseteq C_{1}\), and combined with \(C_{1} \subseteq \overline{A}\), \(C_{1} = \overline{A}\), not proper. Apply both parts with \(A \coloneqq  f(X)\).
+\begin{proof} \textbf{Image.} Suppose \(f(X) = C_{1} \cup C_{2}\) with \(C_{1},C_{2}\) closed in \(f(X)\). By continuity, \(f^{- 1}\left( C_{1} \right)\) and \(f^{- 1}\left( C_{2} \right)\) are closed in \(X\), and \(X = f^{- 1}\left( C_{1} \right) \cup f^{- 1}\left( C_{2} \right)\). Since \(X\) is irreducible, one of the two equals \(X\) -- say \(f^{- 1}\left( C_{1} \right) = X\) -- so \(f(X) \subseteq C_{1}\), i.e. \(C_{1} = f(X)\), which is not proper. Hence \(f(X)\) is irreducible. \textbf{Closure.} If \(A \subseteq Y\) is irreducible and \(\overline{A} = C_{1} \cup C_{2}\) with \(C_{1},C_{2}\) closed in \(Y\), then \(A = \left( A \cap C_{1} \right) \cup \left( A \cap C_{2} \right)\); irreducibility of \(A\) forces, say, \(A \subseteq C_{1}\); since \(C_{1}\) is closed, \(\overline{A} \subseteq C_{1}\), and combined with \(C_{1} \subseteq \overline{A}\), \(C_{1} = \overline{A}\), not proper. Apply both parts with \(A \coloneqq  f(X)\).
 
 \end{proof}
 
@@ -511,7 +511,7 @@ This is purely topological -- continuity of \(f\) is the only hypothesis used, n
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-y2-irred}}] The map \(\Phi\) is polynomial, hence continuous for the Zariski topology, since preimages of Zariski-closed sets under a polynomial map are again Zariski-closed by substitution. Its domain \(\mathbb{A}^{3k - 2}\) is irreducible, because the polynomial ring over \(\mathbb{F}\) is a domain and so its zero ideal is prime. \thmref{Lemma}{lem-top-irred} then gives \(Y_{2}\) irreducible directly. Primality of the elimination ideal follows the same way: it is the kernel of a map into a domain (\(\mathbb{F}\left\lbrack {\overline{v}}_{1},\ldots,{\overline{v}}_{k} \right\rbrack/( \cdot ) \cong \mathbb{F}\left\lbrack {\overline{v}}_{1},\ldots,{\overline{v}}_{k - 1},\lambda \right\rbrack\)), hence prime -- this holds for every \(k\) by this argument alone, additionally corroborated computationally at \(k = 4\) by computing the elimination ideal directly and confirming primality in Sage, as an independent check rather than a substitute for the argument.
+\begin{proof} The map \(\Phi\) is polynomial, hence continuous for the Zariski topology, since preimages of Zariski-closed sets under a polynomial map are again Zariski-closed by substitution. Its domain \(\mathbb{A}^{3k - 2}\) is irreducible, because the polynomial ring over \(\mathbb{F}\) is a domain and so its zero ideal is prime. \thmref{Lemma}{lem-top-irred} then gives \(Y_{2}\) irreducible directly. Primality of the elimination ideal follows the same way: it is the kernel of a map into a domain (\(\mathbb{F}\left\lbrack {\overline{v}}_{1},\ldots,{\overline{v}}_{k} \right\rbrack/( \cdot ) \cong \mathbb{F}\left\lbrack {\overline{v}}_{1},\ldots,{\overline{v}}_{k - 1},\lambda \right\rbrack\)), hence prime -- this holds for every \(k\) by this argument alone, additionally corroborated computationally at \(k = 4\) by computing the elimination ideal directly and confirming primality in Sage, as an independent check rather than a substitute for the argument.
 
 \end{proof}
 
@@ -523,7 +523,7 @@ This is purely topological -- continuity of \(f\) is the only hypothesis used, n
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-y2-dim}}] The projection \(\pi:\mathbb{A}^{3k} \rightarrow \mathbb{A}^{3(k - 1)}\) discards the last block, so that \(\pi({\overline{v}}_{1},\ldots,{\overline{v}}_{k}) = \left( {\overline{v}}_{1},\ldots,{\overline{v}}_{k - 1} \right)\). Hence \(\pi^{- 1}\left( U_{k - 1} \right) = U_{k - 1} \times \mathbb{A}^{3}\), the set of points whose \textbf{first} \(k - 1\) blocks lie in \(U_{k - 1}\) and whose \({\overline{v}}_{k}\) is completely unconstrained. Over \(U_{k - 1}\), \(\Phi\) is injective. Both \(p\) and \(\lambda\) can be recovered from \(\Phi(p,\lambda)\): \(p\) directly, and \(\lambda\) by dividing any nonzero coordinate of \({\overline{v}}_{k} = \lambda{S\left( {\overline{w}}_{k - 1}(p) \right)}\) by the corresponding coordinate of \(S\left( {\overline{w}}_{k - 1}(p) \right)\); this division is well-defined since \({S\left( {\overline{w}}_{k - 1}(p) \right)} \neq 0\) on \(U_{k - 1}\). Injectivity gives \(\dim Y_{2} = \dim\left( U_{k - 1} \times \mathbb{A}^{1} \right) = 3(k - 1) + 1 = 3k - 2\). Since \(U_{k - 1}\) is nonempty by \thmref{Lemma}{lem-nondeg}, \(\Phi(U_{k - 1} \times \left\{ 1 \right\})\) is a nonempty subset of \(Y_{2} \cap \pi^{- 1}\left( U_{k - 1} \right)\).
+\begin{proof} The projection \(\pi:\mathbb{A}^{3k} \rightarrow \mathbb{A}^{3(k - 1)}\) discards the last block, so that \(\pi({\overline{v}}_{1},\ldots,{\overline{v}}_{k}) = \left( {\overline{v}}_{1},\ldots,{\overline{v}}_{k - 1} \right)\). Hence \(\pi^{- 1}\left( U_{k - 1} \right) = U_{k - 1} \times \mathbb{A}^{3}\), the set of points whose \textbf{first} \(k - 1\) blocks lie in \(U_{k - 1}\) and whose \({\overline{v}}_{k}\) is completely unconstrained. Over \(U_{k - 1}\), \(\Phi\) is injective. Both \(p\) and \(\lambda\) can be recovered from \(\Phi(p,\lambda)\): \(p\) directly, and \(\lambda\) by dividing any nonzero coordinate of \({\overline{v}}_{k} = \lambda{S\left( {\overline{w}}_{k - 1}(p) \right)}\) by the corresponding coordinate of \(S\left( {\overline{w}}_{k - 1}(p) \right)\); this division is well-defined since \({S\left( {\overline{w}}_{k - 1}(p) \right)} \neq 0\) on \(U_{k - 1}\). Injectivity gives \(\dim Y_{2} = \dim\left( U_{k - 1} \times \mathbb{A}^{1} \right) = 3(k - 1) + 1 = 3k - 2\). Since \(U_{k - 1}\) is nonempty by \thmref{Lemma}{lem-nondeg}, \(\Phi(U_{k - 1} \times \left\{ 1 \right\})\) is a nonempty subset of \(Y_{2} \cap \pi^{- 1}\left( U_{k - 1} \right)\).
 
 \end{proof}
 
@@ -531,7 +531,7 @@ This is purely topological -- continuity of \(f\) is the only hypothesis used, n
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-codim}}] The proof is by induction on \(k\). \textbf{Base case \(k = 2\)}: \(V\left( I_{2} \right)\) is the rank-\(\leq 1\) locus of a \(2 \times 3\) matrix with independent-indeterminate entries. Its dimension is the standard \(4 = 3 \cdot 2 - 2\) for a generic determinantal variety of this shape: the classical codimension formula for the rank-\(\leq t\) locus of a generic \(m \times n\) matrix gives \((m - t)(n - t) = 1 \cdot 2 = 2\) here \cite{BrunsVetter1988}, and the same value falls out of viewing \(V\left( I_{2} \right)\) as the affine cone over the Segre embedding \(\mathbb{P}^{1} \times \mathbb{P}^{2} \hookrightarrow \mathbb{P}^{5}\), of dimension \(1 + 2 + 1 = 4\). The value is confirmed directly by Gröbner-basis computation as well (\thmref{Example}{ex-dim-codim}). \textbf{Inductive step}: by \thmref{Theorem}{thm-determinantal}, and since \(a \times b = 0\) if and only if \(a,b\) are linearly dependent, \(V\left( I_{k} \right) = Y_{1} \cup Y_{2}\) (\thmref{Definition}{def-y1y2}). The locus \({S\left( {\overline{w}}_{k - 1} \right)} = 0\) gives \(Y_{1}\), with \({\overline{v}}_{k}\) unconstrained; the locus \({S\left( {\overline{w}}_{k - 1} \right)} \neq 0\) with \({\overline{v}}_{k}\) proportional to it gives points \textbf{literally in \(\Phi\)'s image}, no closure needed, hence in \(Y_{2}\). For the reverse containment \(Y_{1} \cup Y_{2} \subseteq V\left( I_{k} \right)\): \({\overline{w}}_{k} = {S\left( {\overline{w}}_{k - 1} \right)} \times {\overline{v}}_{k}\) vanishes wherever \({\overline{w}}_{k - 1}\) does, so \(Y_{1} \subseteq V\left( I_{k} \right)\); and \(\Phi( \cdot ) \subseteq V\left( I_{k} \right)\) identically, since a vector crossed with its own scalar multiple vanishes, so \(Y_{2} = \overline{\Phi( \cdot )} \subseteq V\left( I_{k} \right)\), the vanishing locus being closed. By the inductive hypothesis, \(\dim V\left( I_{k - 1} \right) = 3(k - 1) - 2\), so \(\dim Y_{1} = 3(k - 1) - 2 + 3 = 3k - 2\). Also \(\dim Y_{2} = 3k - 2\), by \thmref{Lemma}{lem-y2-dim}. Hence \(\dim V\left( I_{k} \right) = \dim(Y_{1} \cup Y_{2}) = 3k - 2\). This dimension statement alone needs no containment argument; that is needed only for the sharper component-count result below.
+\begin{proof} The proof is by induction on \(k\). \textbf{Base case \(k = 2\)}: \(V\left( I_{2} \right)\) is the rank-\(\leq 1\) locus of a \(2 \times 3\) matrix with independent-indeterminate entries. Its dimension is the standard \(4 = 3 \cdot 2 - 2\) for a generic determinantal variety of this shape: the classical codimension formula for the rank-\(\leq t\) locus of a generic \(m \times n\) matrix gives \((m - t)(n - t) = 1 \cdot 2 = 2\) here \cite{BrunsVetter1988}, and the same value falls out of viewing \(V\left( I_{2} \right)\) as the affine cone over the Segre embedding \(\mathbb{P}^{1} \times \mathbb{P}^{2} \hookrightarrow \mathbb{P}^{5}\), of dimension \(1 + 2 + 1 = 4\). The value is confirmed directly by Gröbner-basis computation as well (\thmref{Example}{ex-dim-codim}). \textbf{Inductive step}: by \thmref{Theorem}{thm-determinantal}, and since \(a \times b = 0\) if and only if \(a,b\) are linearly dependent, \(V\left( I_{k} \right) = Y_{1} \cup Y_{2}\) (\thmref{Definition}{def-y1y2}). The locus \({S\left( {\overline{w}}_{k - 1} \right)} = 0\) gives \(Y_{1}\), with \({\overline{v}}_{k}\) unconstrained; the locus \({S\left( {\overline{w}}_{k - 1} \right)} \neq 0\) with \({\overline{v}}_{k}\) proportional to it gives points \textbf{literally in \(\Phi\)'s image}, no closure needed, hence in \(Y_{2}\). For the reverse containment \(Y_{1} \cup Y_{2} \subseteq V\left( I_{k} \right)\): \({\overline{w}}_{k} = {S\left( {\overline{w}}_{k - 1} \right)} \times {\overline{v}}_{k}\) vanishes wherever \({\overline{w}}_{k - 1}\) does, so \(Y_{1} \subseteq V\left( I_{k} \right)\); and \(\Phi( \cdot ) \subseteq V\left( I_{k} \right)\) identically, since a vector crossed with its own scalar multiple vanishes, so \(Y_{2} = \overline{\Phi( \cdot )} \subseteq V\left( I_{k} \right)\), the vanishing locus being closed. By the inductive hypothesis, \(\dim V\left( I_{k - 1} \right) = 3(k - 1) - 2\), so \(\dim Y_{1} = 3(k - 1) - 2 + 3 = 3k - 2\). Also \(\dim Y_{2} = 3k - 2\), by \thmref{Lemma}{lem-y2-dim}. Hence \(\dim V\left( I_{k} \right) = \dim(Y_{1} \cup Y_{2}) = 3k - 2\). This dimension statement alone needs no containment argument; that is needed only for the sharper component-count result below.
 
 \end{proof}
 
@@ -556,7 +556,7 @@ All three rows follow directly from \thmref{Theorem}{thm-codim}'s formula \(\dim
 
 \end{proposition}
 
-\begin{proof}[{Proof of \thmref{Proposition}{prop-y2-not-in-y1}}] Pick \(p \in U_{k - 1}\) (\thmref{Lemma}{lem-nondeg}); then \(\Phi(p,0) = (p,0) \in Y_{2}\) but \({\overline{w}}_{k - 1}(p) \neq 0\) puts \((p,0) \notin Y_{1}\).
+\begin{proof} Pick \(p \in U_{k - 1}\) (\thmref{Lemma}{lem-nondeg}); then \(\Phi(p,0) = (p,0) \in Y_{2}\) but \({\overline{w}}_{k - 1}(p) \neq 0\) puts \((p,0) \notin Y_{1}\).
 
 \end{proof}
 
@@ -566,7 +566,7 @@ The dimension hypothesis is stated rather than cited. \thmref{Theorem}{thm-codim
 
 \end{proposition}
 
-\begin{proof}[{Proof of \thmref{Proposition}{prop-y1-not-in-y2}}] Both \(Z \times \mathbb{A}^{3}\) and \(Y_{2}\) are irreducible: \(Y_{2}\) by \thmref{Lemma}{lem-y2-irred}, and \(Z \times \mathbb{A}^{3}\) because a product of irreducible varieties is irreducible (\(Z\) is irreducible by hypothesis, and \(\mathbb{A}^{3}\) trivially is). Both have the \textbf{same} dimension \(3k - 2\): \(Z \times \mathbb{A}^{3}\) by the hypothesis on \(Z\), and \(Y_{2}\) by \thmref{Lemma}{lem-y2-dim}. Containment would therefore force equality. This is refuted: \(Z \times \mathbb{A}^{3}\) is disjoint from \(\pi^{- 1}\left( U_{k - 1} \right)\), since \({\overline{w}}_{k - 1}\) vanishes identically on \(Z \subset V\left( I_{k - 1} \right)\); but \(Y_{2}\) meets \(\pi^{- 1}\left( U_{k - 1} \right)\), by \thmref{Lemma}{lem-y2-dim}.
+\begin{proof} Both \(Z \times \mathbb{A}^{3}\) and \(Y_{2}\) are irreducible: \(Y_{2}\) by \thmref{Lemma}{lem-y2-irred}, and \(Z \times \mathbb{A}^{3}\) because a product of irreducible varieties is irreducible (\(Z\) is irreducible by hypothesis, and \(\mathbb{A}^{3}\) trivially is). Both have the \textbf{same} dimension \(3k - 2\): \(Z \times \mathbb{A}^{3}\) by the hypothesis on \(Z\), and \(Y_{2}\) by \thmref{Lemma}{lem-y2-dim}. Containment would therefore force equality. This is refuted: \(Z \times \mathbb{A}^{3}\) is disjoint from \(\pi^{- 1}\left( U_{k - 1} \right)\), since \({\overline{w}}_{k - 1}\) vanishes identically on \(Z \subset V\left( I_{k - 1} \right)\); but \(Y_{2}\) meets \(\pi^{- 1}\left( U_{k - 1} \right)\), by \thmref{Lemma}{lem-y2-dim}.
 
 \end{proof}
 
@@ -574,7 +574,7 @@ The dimension hypothesis is stated rather than cited. \thmref{Theorem}{thm-codim
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-componentcount}}] The proof is by induction on \(k\). \textbf{Base case \(k = 2\)}: the rank-\(\leq 1\) locus of a generic \(2 \times 3\) matrix is irreducible -- the affine cone over the Segre embedding \(\mathbb{P}^{1} \times \mathbb{P}^{2} \hookrightarrow \mathbb{P}^{5}\), equivalently the Motzkin-Taussky \cite{MotzkinTaussky1955} irreducibility of the \(2 \times 2\) commuting variety -- so exactly 1 component, matching \(k - 1 = 1\). \textbf{Step}: \(V\left( I_{k} \right) = Y_{1} \cup Y_{2}\) as in \thmref{Theorem}{thm-codim}'s proof. By the inductive hypothesis (this theorem at level \(k - 1\), which is where the per-component dimension comes from), \(V\left( I_{k - 1} \right)\) has \(k - 2\) irreducible components, each of dimension \(3(k - 1) - 2\), none contained in another; crossing with \(\mathbb{A}^{3}\) makes them \(Y_{1}\)'s components, each of dimension \(3k - 2\). That is exactly the hypothesis \thmref{Proposition}{prop-y1-not-in-y2} asks for, so it and \thmref{Proposition}{prop-y2-not-in-y1} together rule out containment between \(Y_{2}\) and any of them, in either direction. A finite union of irreducible closed sets with no containments is irredundant, giving exactly \((k - 2) + 1 = k - 1\) components.
+\begin{proof} The proof is by induction on \(k\). \textbf{Base case \(k = 2\)}: the rank-\(\leq 1\) locus of a generic \(2 \times 3\) matrix is irreducible -- the affine cone over the Segre embedding \(\mathbb{P}^{1} \times \mathbb{P}^{2} \hookrightarrow \mathbb{P}^{5}\), equivalently the Motzkin-Taussky \cite{MotzkinTaussky1955} irreducibility of the \(2 \times 2\) commuting variety -- so exactly 1 component, matching \(k - 1 = 1\). \textbf{Step}: \(V\left( I_{k} \right) = Y_{1} \cup Y_{2}\) as in \thmref{Theorem}{thm-codim}'s proof. By the inductive hypothesis (this theorem at level \(k - 1\), which is where the per-component dimension comes from), \(V\left( I_{k - 1} \right)\) has \(k - 2\) irreducible components, each of dimension \(3(k - 1) - 2\), none contained in another; crossing with \(\mathbb{A}^{3}\) makes them \(Y_{1}\)'s components, each of dimension \(3k - 2\). That is exactly the hypothesis \thmref{Proposition}{prop-y1-not-in-y2} asks for, so it and \thmref{Proposition}{prop-y2-not-in-y1} together rule out containment between \(Y_{2}\) and any of them, in either direction. A finite union of irreducible closed sets with no containments is irredundant, giving exactly \((k - 2) + 1 = k - 1\) components.
 
 \end{proof}
 
@@ -594,7 +594,7 @@ This gives \(I_{k}\)'s minimal primes and their count, but not yet that \(I_{k}\
 
 \end{proposition}
 
-\begin{proof}[{Proof of \thmref{Proposition}{prop-rational}}] At parameter \(j = k\) the map \(\Psi_{k}\) is \(\Phi\) itself, whose image closure is \(Y_{2}\) (\thmref{Definition}{def-y1y2}), and \thmref{Theorem}{thm-componentcount}'s induction identifies \(Y_{2}\) with the component indexed \(k\). For \(j < k\) the same construction run at parameter \(j\) gives that level's \(Y_{2}\), and appending the free blocks \({\overline{v}}_{j + 1},\ldots,{\overline{v}}_{k}\) crosses it with \(\mathbb{A}^{3(k - j)}\) -- which is exactly \thmref{Theorem}{thm-componentcount}'s description of the inherited component indexed \(j\). That the vanishing ideal of the closure of a polynomial map's image is the kernel of the corresponding algebra homomorphism is the standard identification, over \(\overline{\mathbb{F}}\).
+\begin{proof} At parameter \(j = k\) the map \(\Psi_{k}\) is \(\Phi\) itself, whose image closure is \(Y_{2}\) (\thmref{Definition}{def-y1y2}), and \thmref{Theorem}{thm-componentcount}'s induction identifies \(Y_{2}\) with the component indexed \(k\). For \(j < k\) the same construction run at parameter \(j\) gives that level's \(Y_{2}\), and appending the free blocks \({\overline{v}}_{j + 1},\ldots,{\overline{v}}_{k}\) crosses it with \(\mathbb{A}^{3(k - j)}\) -- which is exactly \thmref{Theorem}{thm-componentcount}'s description of the inherited component indexed \(j\). That the vanishing ideal of the closure of a polynomial map's image is the kernel of the corresponding algebra homomorphism is the standard identification, over \(\overline{\mathbb{F}}\).
 
 For birationality, \thmref{Lemma}{lem-y2-dim}'s injectivity argument (over \(U_{j - 1}\), via \thmref{Lemma}{lem-nondeg} at level \(j - 1\)) applies verbatim at parameter \(j\), and appending the free blocks \(q\) unchanged does not affect injectivity.
 
@@ -637,7 +637,7 @@ For birationality, \thmref{Lemma}{lem-y2-dim}'s injectivity argument (over \(U_{
 
 \end{proposition}
 
-\begin{proof}[{Proof of \thmref{Proposition}{prop-detideal}}] Bruns and Vetter \cite{BrunsVetter1988}, Theorem (2.7), p. 13, gives exactly this for an \textbf{arbitrary} matrix, as needed since one row of our \(2 \times 3\) matrix (\(S\left( {\overline{w}}_{k - 1} \right)\)) is a fixed polynomial vector, not a row of independent indeterminates. (The construction originates with Eagon and Northcott \cite{EagonNorthcott1962}. It is the more general form given by Bruns and Vetter that is applied here.)
+\begin{proof} Bruns and Vetter \cite{BrunsVetter1988}, Theorem (2.7), p. 13, gives exactly this for an \textbf{arbitrary} matrix, as needed since one row of our \(2 \times 3\) matrix (\(S\left( {\overline{w}}_{k - 1} \right)\)) is a fixed polynomial vector, not a row of independent indeterminates. (The construction originates with Eagon and Northcott \cite{EagonNorthcott1962}. It is the more general form given by Bruns and Vetter that is applied here.)
 
 \end{proof}
 
@@ -656,7 +656,7 @@ This is why \thmref{Theorem}{thm-mingens} is proven directly from linear indepen
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-cm}}] By \thmref{Theorem}{thm-codim}, \(I_{k}\) has codimension 2, the expected value for the \(2 \times 3\) matrix of \thmref{Theorem}{thm-determinantal} presenting it. \thmref{Proposition}{prop-detideal} applies directly. (This uses \thmref{Theorem}{thm-codim} only -- not \thmref{Theorem}{thm-mingens}'s generator count, not \thmref{Theorem}{thm-componentcount}'s component count -- genuinely independent of both.)
+\begin{proof} By \thmref{Theorem}{thm-codim}, \(I_{k}\) has codimension 2, the expected value for the \(2 \times 3\) matrix of \thmref{Theorem}{thm-determinantal} presenting it. \thmref{Proposition}{prop-detideal} applies directly. (This uses \thmref{Theorem}{thm-codim} only -- not \thmref{Theorem}{thm-mingens}'s generator count, not \thmref{Theorem}{thm-componentcount}'s component count -- genuinely independent of both.)
 
 \end{proof}
 
@@ -670,7 +670,7 @@ Serre's two conditions are written \(\left( R_{n} \right)\) and \(\left( S_{n} \
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-serre}}] Cohen-Macaulayness (\thmref{Theorem}{thm-cm}) is the extremal case of \(\left( S_{n} \right)\): it asks for \(\text{depth}\left( A_{P} \right) = \dim A_{P}\) at \textbf{every} prime, so \(\text{depth}\left( A_{P} \right) = \dim A_{P} \geq \min(n,\dim A_{P})\) holds trivially whatever \(n\) is, and a Cohen-Macaulay ring satisfies \(\left( S_{n} \right)\) for every \(n\). (This needs nothing beyond the definitions, and is standard: Bruns and Vetter \cite{BrunsVetter1988}, or Eisenbud \cite{Eisenbud1995}.) Given \(\left( S_{1} \right)\), Serre's criterion makes reducedness of \(R_{k}/I_{k}\) -- radicality of \(I_{k}\) -- equivalent to \(\left( R_{0} \right)\) alone.
+\begin{proof} Cohen-Macaulayness (\thmref{Theorem}{thm-cm}) is the extremal case of \(\left( S_{n} \right)\): it asks for \(\text{depth}\left( A_{P} \right) = \dim A_{P}\) at \textbf{every} prime, so \(\text{depth}\left( A_{P} \right) = \dim A_{P} \geq \min(n,\dim A_{P})\) holds trivially whatever \(n\) is, and a Cohen-Macaulay ring satisfies \(\left( S_{n} \right)\) for every \(n\). (This needs nothing beyond the definitions, and is standard: Bruns and Vetter \cite{BrunsVetter1988}, or Eisenbud \cite{Eisenbud1995}.) Given \(\left( S_{1} \right)\), Serre's criterion makes reducedness of \(R_{k}/I_{k}\) -- radicality of \(I_{k}\) -- equivalent to \(\left( R_{0} \right)\) alone.
 
 \end{proof}
 
@@ -680,7 +680,7 @@ The four lemmas that follow are the standard Jacobian criterion, split into its 
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-cotangent}}] Only linear algebra is needed here; in particular, no hypothesis on \(A\) is required. Sending \(g\) to its gradient at \(x\) identifies the cotangent space \(\mathfrak{n}/\mathfrak{n}^{2}\) with \(\mathbb{F}^{n}\). Under that identification the image of \(I\) is the span of the linear parts at \(x\) of \(f_{1},\ldots,f_{m}\): a general element of \(I\) is \(\sum_{i}g_{i}f_{i}\), whose linear part at \(x\) is \(\sum_{i}g_{i}(x)\) times that of \(f_{i}\), since every \(f_{i}\) vanishes at \(x\). That span is the row space of \(\text{Jac}(x)\), of dimension \(\text{rank }\text{ Jac}(x)\). As \(\mathfrak{m}/\mathfrak{m}^{2} \cong \left( \mathfrak{n}/\mathfrak{n}^{2} \right)/\text{ im}(I)\), the claim follows.
+\begin{proof} Only linear algebra is needed here; in particular, no hypothesis on \(A\) is required. Sending \(g\) to its gradient at \(x\) identifies the cotangent space \(\mathfrak{n}/\mathfrak{n}^{2}\) with \(\mathbb{F}^{n}\). Under that identification the image of \(I\) is the span of the linear parts at \(x\) of \(f_{1},\ldots,f_{m}\): a general element of \(I\) is \(\sum_{i}g_{i}f_{i}\), whose linear part at \(x\) is \(\sum_{i}g_{i}(x)\) times that of \(f_{i}\), since every \(f_{i}\) vanishes at \(x\). That span is the row space of \(\text{Jac}(x)\), of dimension \(\text{rank }\text{ Jac}(x)\). As \(\mathfrak{m}/\mathfrak{m}^{2} \cong \left( \mathfrak{n}/\mathfrak{n}^{2} \right)/\text{ im}(I)\), the claim follows.
 
 \end{proof}
 
@@ -688,7 +688,7 @@ The four lemmas that follow are the standard Jacobian criterion, split into its 
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-localdim}}] The local dimension is computed componentwise: \begin{equation}\fitdisplay{\dim A_{\mathfrak{m}} = \max\left\{ \dim(A/P)_{\mathfrak{m}}:P \in \text{ Min}(A),P \subseteq \mathfrak{m} \right\},}\end{equation} and each \(A/P = S/\widetilde{P}\) is an affine domain over a field, for which \(\dim\left( S/\widetilde{P} \right)_{\mathfrak{M}} = \dim S/\widetilde{P}\) at \textbf{every} maximal ideal \(\mathfrak{M}\) -- affine domains over a field are catenary and equicodimensional (Eisenbud \cite{Eisenbud1995}, \emph{Commutative Algebra}, Cor. 13.4; equivalently the Stacks Project, tag 00OS \cite{Stacks00OS} -- a dimension formula for finitely generated field extensions, holding over an arbitrary field, not needing a perfect-field hypothesis by accident). By equidimensionality every such \(\dim S/\widetilde{P}\) equals \(n - c\).
+\begin{proof} The local dimension is computed componentwise: \begin{equation}\fitdisplay{\dim A_{\mathfrak{m}} = \max\left\{ \dim(A/P)_{\mathfrak{m}}:P \in \text{ Min}(A),P \subseteq \mathfrak{m} \right\},}\end{equation} and each \(A/P = S/\widetilde{P}\) is an affine domain over a field, for which \(\dim\left( S/\widetilde{P} \right)_{\mathfrak{M}} = \dim S/\widetilde{P}\) at \textbf{every} maximal ideal \(\mathfrak{M}\) -- affine domains over a field are catenary and equicodimensional (Eisenbud \cite{Eisenbud1995}, \emph{Commutative Algebra}, Cor. 13.4; equivalently the Stacks Project, tag 00OS \cite{Stacks00OS} -- a dimension formula for finitely generated field extensions, holding over an arbitrary field, not needing a perfect-field hypothesis by accident). By equidimensionality every such \(\dim S/\widetilde{P}\) equals \(n - c\).
 
 \end{proof}
 
@@ -696,7 +696,7 @@ The four lemmas that follow are the standard Jacobian criterion, split into its 
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-jacobian-rankbound}}] In any Noetherian local ring one has \(\dim_{\mathbb{F}}\mathfrak{m}/\mathfrak{m}^{2} \geq \dim A_{\mathfrak{m}}\). By \thmref{Lemma}{lem-cotangent} the left-hand side is \(n - \text{ rank }\text{ Jac}(x)\), and by \thmref{Lemma}{lem-localdim} the right-hand side is \(n - c\); rearranging gives \(\text{rank }\text{ Jac}(x) \leq c\).
+\begin{proof} In any Noetherian local ring one has \(\dim_{\mathbb{F}}\mathfrak{m}/\mathfrak{m}^{2} \geq \dim A_{\mathfrak{m}}\). By \thmref{Lemma}{lem-cotangent} the left-hand side is \(n - \text{ rank }\text{ Jac}(x)\), and by \thmref{Lemma}{lem-localdim} the right-hand side is \(n - c\); rearranging gives \(\text{rank }\text{ Jac}(x) \leq c\).
 
 \end{proof}
 
@@ -704,7 +704,7 @@ The four lemmas that follow are the standard Jacobian criterion, split into its 
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-jacobian-regularity}}] If \(\text{rank }\text{ Jac}(x) = c\) then \(\dim_{\mathbb{F}}\mathfrak{m}/\mathfrak{m}^{2} = n - c\) by \thmref{Lemma}{lem-cotangent}, while \(\dim A_{\mathfrak{m}} = n - c\) by \thmref{Lemma}{lem-localdim}; equality of the two is the definition of regularity. A regular local ring is a domain, so \(\mathfrak{m}\) contains a unique minimal prime of \(A\), and the local ring at that prime is a further localization of a regular local ring at its own maximal ideal in dimension 0, hence a field.
+\begin{proof} If \(\text{rank }\text{ Jac}(x) = c\) then \(\dim_{\mathbb{F}}\mathfrak{m}/\mathfrak{m}^{2} = n - c\) by \thmref{Lemma}{lem-cotangent}, while \(\dim A_{\mathfrak{m}} = n - c\) by \thmref{Lemma}{lem-localdim}; equality of the two is the definition of regularity. A regular local ring is a domain, so \(\mathfrak{m}\) contains a unique minimal prime of \(A\), and the local ring at that prime is a further localization of a regular local ring at its own maximal ideal in dimension 0, hence a field.
 
 \end{proof}
 
@@ -712,7 +712,7 @@ The four lemmas that follow are the standard Jacobian criterion, split into its 
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-jacrecursion}}] For the second block, \({\overline{w}}_{k} = {S\left( {\overline{w}}_{k - 1} \right)} \times {\overline{v}}_{k} = \left\lbrack {S\left( {\overline{w}}_{k - 1} \right)} \right\rbrack_{\times}{\overline{v}}_{k}\) is linear in \({\overline{v}}_{k}\) with coefficient matrix free of \({\overline{v}}_{k}\). For the first, differentiating \({\overline{w}}_{k} = {S\left( {\overline{w}}_{k - 1} \right)} \times {\overline{v}}_{k}\) with respect to any variable \(t\) among \({\overline{v}}_{1},\ldots,{\overline{v}}_{k - 1}\) gives \(\partial_{t}{\overline{w}}_{k} = \left( S\partial_{t}{\overline{w}}_{k - 1} \right) \times {\overline{v}}_{k} = - \left\lbrack {\overline{v}}_{k} \right\rbrack_{\times}S\partial_{t}{\overline{w}}_{k - 1}\), using \(a \times b = - \lbrack b\rbrack_{\times}a\); assembling columns gives the stated product.
+\begin{proof} For the second block, \({\overline{w}}_{k} = {S\left( {\overline{w}}_{k - 1} \right)} \times {\overline{v}}_{k} = \left\lbrack {S\left( {\overline{w}}_{k - 1} \right)} \right\rbrack_{\times}{\overline{v}}_{k}\) is linear in \({\overline{v}}_{k}\) with coefficient matrix free of \({\overline{v}}_{k}\). For the first, differentiating \({\overline{w}}_{k} = {S\left( {\overline{w}}_{k - 1} \right)} \times {\overline{v}}_{k}\) with respect to any variable \(t\) among \({\overline{v}}_{1},\ldots,{\overline{v}}_{k - 1}\) gives \(\partial_{t}{\overline{w}}_{k} = \left( S\partial_{t}{\overline{w}}_{k - 1} \right) \times {\overline{v}}_{k} = - \left\lbrack {\overline{v}}_{k} \right\rbrack_{\times}S\partial_{t}{\overline{w}}_{k - 1}\), using \(a \times b = - \lbrack b\rbrack_{\times}a\); assembling columns gives the stated product.
 
 \end{proof}
 
@@ -736,7 +736,7 @@ v_{1,3}v_{2,1} - v_{1,1}v_{2,3} & v_{1,3}v_{2,2} - v_{1,2}v_{2,3} & 0
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-witness-new}}] \textbf{The case \(k = 2\) separately}, because the statement above cannot be read at \(k = 2\): it would refer to a non-degeneracy witness ``at level 1'', and neither \({\overline{w}}_{1}\) nor \thmref{Lemma}{lem-nondeg} exists there, since \thmref{Definition}{def-wk} starts the recursion at \(j = 2\). Nor does \thmref{Lemma}{lem-jacrecursion}'s \(k \geq 3\) formula apply. Argue directly instead: \(J_{2} = \left\lbrack - \left\lbrack {\overline{v}}_{2} \right\rbrack_{\times}|\left\lbrack {\overline{v}}_{1} \right\rbrack_{\times} \right\rbrack\) carries no \(S\) at all, so for any \(p \neq 0\), \(J_{2}(p,0) = \left\lbrack 0|\lbrack p\rbrack_{\times} \right\rbrack\), which has rank 2 by the kernel computation below. And \((p,0) \in V\left( I_{2} \right)\) since \({\overline{w}}_{2}(p,0) = p \times 0 = 0\).
+\begin{proof} \textbf{The case \(k = 2\) separately}, because the statement above cannot be read at \(k = 2\): it would refer to a non-degeneracy witness ``at level 1'', and neither \({\overline{w}}_{1}\) nor \thmref{Lemma}{lem-nondeg} exists there, since \thmref{Definition}{def-wk} starts the recursion at \(j = 2\). Nor does \thmref{Lemma}{lem-jacrecursion}'s \(k \geq 3\) formula apply. Argue directly instead: \(J_{2} = \left\lbrack - \left\lbrack {\overline{v}}_{2} \right\rbrack_{\times}|\left\lbrack {\overline{v}}_{1} \right\rbrack_{\times} \right\rbrack\) carries no \(S\) at all, so for any \(p \neq 0\), \(J_{2}(p,0) = \left\lbrack 0|\lbrack p\rbrack_{\times} \right\rbrack\), which has rank 2 by the kernel computation below. And \((p,0) \in V\left( I_{2} \right)\) since \({\overline{w}}_{2}(p,0) = p \times 0 = 0\).
 
 \textbf{For \(k \geq 3.\)} By \thmref{Lemma}{lem-jacrecursion}, \(J_{k(p,0)} = \left\lbrack 0|\left\lbrack {S\left( {\overline{w}}_{k - 1}(p) \right)} \right\rbrack_{\times} \right\rbrack\) since \(- \lbrack 0\rbrack_{\times}SJ_{k - 1}(p) = 0\); and \({S\left( {\overline{w}}_{k - 1}(p) \right)} \neq 0\) since \({\overline{w}}_{k - 1}(p) \neq 0\) (\thmref{Lemma}{lem-nondeg}) and \(S\) is invertible. For \(u \neq 0\), \(\ker\lbrack u\rbrack_{\times} = \left\{ v:u \times v = 0 \right\} = \mathbb{F}u\) (a cross product vanishes exactly on linearly dependent pairs), so \(\left\lbrack {S\left( {\overline{w}}_{k - 1}(p) \right)} \right\rbrack_{\times}\) has rank 2, giving \(\text{rank }J_{k(p,0)} = 2\).
 
@@ -746,7 +746,7 @@ v_{1,3}v_{2,1} - v_{1,1}v_{2,3} & v_{1,3}v_{2,2} - v_{1,2}v_{2,3} & 0
 
 \end{lemma}
 
-\begin{proof}[{Proof of \thmref{Lemma}{lem-witness-inherited}}] Let \(W \coloneqq  S \cdot \text{ im }J_{k - 1}(q)\), a 2-dimensional subspace of \(\mathbb{F}^{3}\) since \(S\) is invertible and \(\text{rank }J_{k - 1}(q) = 2\). Since \(e_{1},e_{2},e_{3}\) span \(\mathbb{F}^{3}\) and \(W \neq \mathbb{F}^{3}\), some \(e_{i} \notin W\); fix such an \(i\). Since \(q \in V\left( I_{k - 1} \right)\), \({\overline{w}}_{k - 1}(q) = 0\), so \thmref{Lemma}{lem-jacrecursion} gives \(J_{k\left( q,e_{i} \right)} = \left\lbrack - \left\lbrack e_{i} \right\rbrack_{\times}SJ_{k - 1}(q)|0 \right\rbrack\), of rank \(\dim(\left\lbrack e_{i} \right\rbrack_{\times}W)\) since \(SJ_{k - 1}(q)\) has image exactly \(W\). As \(\ker\left\lbrack e_{i} \right\rbrack_{\times} = \mathbb{F}e_{i}\) and \(W \cap \mathbb{F}e_{i} = 0\) (else \(e_{i} \in W\)), \(\left\lbrack e_{i} \right\rbrack_{\times}\) is injective on \(W\), so \(\dim(\left\lbrack e_{i} \right\rbrack_{\times}W) = 2\).
+\begin{proof} Let \(W \coloneqq  S \cdot \text{ im }J_{k - 1}(q)\), a 2-dimensional subspace of \(\mathbb{F}^{3}\) since \(S\) is invertible and \(\text{rank }J_{k - 1}(q) = 2\). Since \(e_{1},e_{2},e_{3}\) span \(\mathbb{F}^{3}\) and \(W \neq \mathbb{F}^{3}\), some \(e_{i} \notin W\); fix such an \(i\). Since \(q \in V\left( I_{k - 1} \right)\), \({\overline{w}}_{k - 1}(q) = 0\), so \thmref{Lemma}{lem-jacrecursion} gives \(J_{k\left( q,e_{i} \right)} = \left\lbrack - \left\lbrack e_{i} \right\rbrack_{\times}SJ_{k - 1}(q)|0 \right\rbrack\), of rank \(\dim(\left\lbrack e_{i} \right\rbrack_{\times}W)\) since \(SJ_{k - 1}(q)\) has image exactly \(W\). As \(\ker\left\lbrack e_{i} \right\rbrack_{\times} = \mathbb{F}e_{i}\) and \(W \cap \mathbb{F}e_{i} = 0\) (else \(e_{i} \in W\)), \(\left\lbrack e_{i} \right\rbrack_{\times}\) is injective on \(W\), so \(\dim(\left\lbrack e_{i} \right\rbrack_{\times}W) = 2\).
 
 \end{proof}
 
@@ -754,7 +754,7 @@ v_{1,3}v_{2,1} - v_{1,1}v_{2,3} & v_{1,3}v_{2,2} - v_{1,2}v_{2,3} & 0
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-radical}}] By induction on \(k\) (mirroring \thmref{Theorem}{thm-componentcount}'s own induction), \thmref{Lemma}{lem-witness-new} and \thmref{Lemma}{lem-witness-inherited} exhibit a rank-2-Jacobian point on \textbf{every} one of the \(k - 1\) components of \thmref{Theorem}{thm-componentcount}. \thmref{Lemma}{lem-jacobian-regularity} then gives \(\left( R_{0} \right)\) at every one (and, by its ``unique component'' clause, confirms each witness lies only on its intended component -- an independent check on \thmref{Theorem}{thm-componentcount}'s count, not merely assumed); \thmref{Lemma}{lem-serre} gives \(\left( S_{1} \right)\), using \thmref{Theorem}{thm-cm}'s Cohen-Macaulayness. Serre's criterion \cite{Stacks031R} gives radicality.
+\begin{proof} By induction on \(k\) (mirroring \thmref{Theorem}{thm-componentcount}'s own induction), \thmref{Lemma}{lem-witness-new} and \thmref{Lemma}{lem-witness-inherited} exhibit a rank-2-Jacobian point on \textbf{every} one of the \(k - 1\) components of \thmref{Theorem}{thm-componentcount}. \thmref{Lemma}{lem-jacobian-regularity} then gives \(\left( R_{0} \right)\) at every one (and, by its ``unique component'' clause, confirms each witness lies only on its intended component -- an independent check on \thmref{Theorem}{thm-componentcount}'s count, not merely assumed); \thmref{Lemma}{lem-serre} gives \(\left( S_{1} \right)\), using \thmref{Theorem}{thm-cm}'s Cohen-Macaulayness. Serre's criterion \cite{Stacks031R} gives radicality.
 
 \end{proof}
 
@@ -774,7 +774,7 @@ The conclusion nonetheless descends to \(\mathbb{F}\) itself, so the theorem may
 
 \end{theorem}
 
-\begin{proof}[{Proof of \thmref{Theorem}{thm-primarydecomp}}] The two halves were proven independently above, so this combines them in full rather than asserting the conjunction in one line.
+\begin{proof} The two halves were proven independently above, so this combines them in full rather than asserting the conjunction in one line.
 
 \textbf{The decomposition itself.} By \thmref{Theorem}{thm-radical}, \(I_{k}\) is radical, so \(I_{k} = \sqrt{I_{k}}\). A radical ideal in a Noetherian ring equals the intersection of its own minimal primes: \begin{equation}\fitdisplay{I_{k} = \cap_{P \in \text{ Min}\left( I_{k} \right)}P.}\end{equation} This holds because \(\sqrt{I_{k}}\) is the intersection of \textbf{all} primes containing \(I_{k}\) -- Krull's theorem, not the definition of the radical, which is instead the set of elements with a power in \(I_{k}\) -- and the minimal primes already suffice. Every non-minimal prime containing \(I_{k}\) contains a minimal one, and is therefore redundant in the intersection.
 

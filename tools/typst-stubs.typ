@@ -2,7 +2,10 @@
 #let proposition(..a) = { let p = a.pos(); [ ⟦PRP|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
 #let lemma(..a) = { let p = a.pos(); [ ⟦LEM|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
 #let remark(..a) = { let p = a.pos(); [ ⟦REM|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
-#let proof(..a) = { let p = a.pos(); [ ⟦PRF|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
+// proof: title only when TWO positionals are given -- the one-argument form #proof[body] (the
+// norm since 2026-10-24) must not leak the body into the title marker; an empty title makes
+// markers2env emit a bare \begin{proof}, i.e. amsthm's own "Proof.".
+#let proof(..a) = { let p = a.pos(); [ ⟦PRF|#if p.len() > 1 { p.at(0) }⟧ ]; p.at(-1) ; [⟦END⟧] }
 #let definition(..a) = { let p = a.pos(); [ ⟦DEF|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
 #let example(..a) = { let p = a.pos(); [ ⟦EXA|#p.at(0, default: "")⟧ ]; p.at(-1) ; [⟦END⟧] }
 // bcite: the real definition renders "[n]" (or "[n, detail]") and links to the
