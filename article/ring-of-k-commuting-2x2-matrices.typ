@@ -1,5 +1,22 @@
 // Changelog (reverse chronological):
 
+// 2026-10-24 - Claude-Code-47ce5a71 (jts-pc), Jan's request, second trim of the day: script names
+//   and double-checking/corroboration verbiage removed from the BODY (proofs and examples) -- the
+//   referee read them as padding. The proof of the basic identity is now two sentences ("Direct
+//   calculation ... @app-identity" plus the integer-coefficients descent); the proof of the
+//   determinantal theorem is its first two sentences, which were already logically sufficient;
+//   the Groebner/matrix-multiplication cross-check it described moves out of the body entirely.
+//   Also cut: the verification codas of the non-degeneracy and generator-independence proofs (the
+//   latter's Lean paragraph too -- Methods already carries the formalization division), the k=4
+//   corroboration in the Y_2-irreducibility proof, the Groebner double-check sentences in the
+//   dimension example and codimension proof, "computed directly, not merely asserted"-style
+//   closers in three examples, and the whole post-radicality verification paragraph (its content
+//   lives in Methods). The appendix DELIBERATELY keeps its script names -- it is the in-article
+//   record of the computations; Methods now says the scripts are named there rather than "at the
+//   point of use". Jan's instruction, recorded at his request in the LOGBOOK: this is adaptation
+//   to this journal's conventions, NOT a repudiation of the explanatory style, which he likes and
+//   which the LiTH-MAT-R report preserves.
+
 // 2026-10-24 - Claude-Code-47ce5a71 (jts-pc), Jan's request: every "#proof[Proof of @label][...]"
 //   (26 of them) is now plain "#proof[...]" -- the explicit "Proof of Theorem N" headers were our
 //   own doing, not a theorion default; theorion's one-argument form falls back to the i18n title,
@@ -507,14 +524,9 @@ not used: the identity holds over every commutative ring.
 ] <thm-basic-identity>
 
 #proof[
-  The proof is a direct computation, carried out symbolically over generic entries
-  $a_11,dots,b_22$ rather than checked at sampled points, in
-  #text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]. Both sides, expanded in
-  the 8 free entries, agree term by term; they are displayed in full in @app-identity.
-
-  Both sides are integer polynomials in those entries, so the identity descends to every commutative
-  ring. It was also checked directly over $ZZ$ and, separately, over $FF_2$ (where it still
-  holds), in #text(style: "italic")[code/referee\_round4\_setup\_determinantal\_check.sage].
+  Direct calculation: both sides, expanded in the 8 free entries $a_11,dots,b_22$, agree term by
+  term; see @app-identity. Both sides are integer polynomials in those entries, so the identity
+  descends to every commutative ring.
 ]
 
 
@@ -546,9 +558,8 @@ evaluating each of $vek(w)_j$'s three polynomial components at a point of $AA^(3
 
 
 #example[$vek(w)_k$ and $I_k$, explicitly, for $k=2,3,4$][
-  Everything below was computed directly
-  (#text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]) rather than derived by
-  hand. At $k=2$, the three components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
+  Everything below was computed directly rather than derived by hand. At $k=2$, the three
+  components of $vek(w)_2 = vek(v)_1 times vek(v)_2$:
   $ v_(1,2)v_(2,3)-v_(1,3)v_(2,2), quad v_(1,3)v_(2,1)-v_(1,1)v_(2,3), quad
     v_(1,1)v_(2,2)-v_(1,2)v_(2,1). $
   At $k=3$, the three components of
@@ -563,11 +574,9 @@ evaluating each of $vek(w)_j$'s three polynomial components at a point of $AA^(3
     + v_(1,2)v_(2,3)v_(3,2)v_(4,2) $
   $ + v_(1,2)v_(2,1)v_(3,1)v_(4,3) - v_(1,1)v_(2,2)v_(3,1)v_(4,3) + v_(1,3)v_(2,2)v_(3,3)v_(4,3)
     - v_(1,2)v_(2,3)v_(3,3)v_(4,3), $
-  the other two of the same shape (omitted for space; all three components of $vek(w)_4$, and
-  $I_4:=(w_(4,1),w_(4,2),w_(4,3))$, in
-  #text(style: "italic")[code/compute\_signed\_encoding\_examples.sage]'s output). The same data at
-  $k=6$, where the generators reach 32 terms apiece and the $plus.minus 1$ pattern is still
-  unbroken, is in @app-i6.
+  the other two of the same shape (omitted for space), and $I_4:=(w_(4,1),w_(4,2),w_(4,3))$. The
+  same data at $k=6$, where the generators reach 32 terms apiece and the $plus.minus 1$ pattern is
+  still unbroken, is in @app-i6.
 ] <ex-wk-signed>
 
 The displayed examples above were computed over $QQ$; every result below holds over the arbitrary
@@ -587,21 +596,9 @@ field $FF$ of characteristic $eq.not 2$ fixed at the start of this section.
 ] <thm-determinantal>
 
 #proof[
-  The claim is immediate from two facts taken together. The three components of a cross product
+  The claim is immediate from two facts taken together: the three components of a cross product
   $a times b$ are, up to sign, the $2 times 2$ minors of the $2 times 3$ matrix with rows $a$ and
-  $b$; and @def-wk's recursion builds $vek(w)_k$ from exactly such a cross product. The statement
-  was also checked independently at $k=2,dots,6$ in
-  #text(style: "italic")[code/verify\_determinantal\_structure\_all\_k.sage], in two separate ways.
-  First, $I_k$ and the ideal of the displayed minors are shown equal by reducing each ideal's
-  generators to zero against the other's Gröbner basis, in *both* directions, rather than by
-  containment one way. Second -- and this is what makes "independent" mean something here -- the
-  recursion itself is checked against honest $2 times 2$ matrix multiplication: the $A_i$ are
-  reconstructed from their $"enc"$-coordinates, the iterated commutator is formed by repeated
-  matrix products, and the result encoded and compared against $signtwist(vek(w)_k)$. The two routes share
-  no code. The underlying
-  polynomial identity $"enc"([A,B]) = signtwist("enc"(A) times "enc"(B))$ of @thm-basic-identity makes this a two-line induction
-  valid for *every* $k$, not merely a pattern checked at small $k$
-  (#text(style: "italic")[code/verify\_lorentzian\_encoding\_identity.sage]).
+  $b$; and @def-wk's recursion builds $vek(w)_k$ from exactly such a cross product.
 ]
 
 This theorem is the engine behind the geometric results of @sec-geom: $R_k \/ I_k$ is not merely
@@ -667,9 +664,7 @@ classical determinantal variety.
   then $signtwist(e_2) = -e_2$, again not proportional to $e_1$, giving
   $vek(w)_4 = (-e_2) times e_1 = e_3$; and the pair $(e_3, e_2)$ now repeats. Hence the closed form
   in the statement, and every coordinate of both the witness and its image lies in
-  $\{0, plus.minus 1\}$. This has been verified for $j=2,dots,8$, by two independent evaluations
-  per level, in #text(style: "italic")[code/verify\_nondegeneracy\_witness.sage], and the results
-  are tabulated in @app-witness.
+  $\{0, plus.minus 1\}$. The witness values for $j <= 8$ are tabulated in @app-witness.
 
   *Openness.* $U_j$ is the complement of the Zariski-closed set $V(w_(j,1),w_(j,2),w_(j,3))$, hence
   open; it is nonempty because $p^((j))$ lies in it.
@@ -717,18 +712,9 @@ codimension, not the determinantal-structure theorem above, not any external cit
   proportional, hence linearly *dependent* over $FF$ (any $d$ with $d dot c = 0$ gives
   $d dot a = (d dot c) f = 0$, and such a nonzero $d$ exists since $c$ spans only a line in $FF^3$).
   Since $signtwist()$ is invertible, the components of $vek(w)_(k-1) = signtwist()^(-1)(a)$ are then linearly dependent
-  too, contradicting the induction hypothesis. Hence $c = 0$.
-
-  Corroborated computationally: the coefficient matrix has rank 3 at $k=2,dots,6$
-  (#text(style: "italic")[code/verify\_generator\_independence.sage]); the full table is in
-  @app-independence.
-
-  This lemma is also *formally verified*: it is the statement
-  #text(style: "italic")[w\_linearIndependent] of the Lean 4 / mathlib development accompanying
-  this article, proved there for every $k >= 2$ over an arbitrary field rather than checked at
-  small $k$. @thm-mingens below is formalized too, as
-  #text(style: "italic")[w\_minimal\_generators]. @sec-methods says what the formalization does
-  and does not cover.
+  too, contradicting the induction hypothesis. Hence $c = 0$. (The coefficient-rank data for small
+  $k$ is tabulated in @app-independence; this lemma and @thm-mingens are among the formally
+  verified statements, @sec-methods.)
 ]
 
 #remark[why non-degeneracy is not enough here][
@@ -798,10 +784,8 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   $AA^(3k-2)$ is irreducible, because the polynomial ring over $FF$ is a domain and so its zero
   ideal is prime. @lem-top-irred then gives $Y_2$ irreducible directly. Primality of the elimination ideal
   follows the same way: it is the kernel of a map into a domain
-  ($FF[vek(v)_1,dots,vek(v)_k]\/(dot) tilde.equiv FF[vek(v)_1,dots,vek(v)_(k-1),lambda]$), hence prime -- this holds for
-  every $k$ by this argument alone, additionally corroborated computationally at $k=4$ by computing
-  the elimination ideal directly and confirming primality in Sage, as an independent check rather
-  than a substitute for the argument.
+  ($FF[vek(v)_1,dots,vek(v)_k]\/(dot) tilde.equiv FF[vek(v)_1,dots,vek(v)_(k-1),lambda]$), hence
+  prime.
 ]
 
 #example[the defining ideals of $Y_1$ *and* $Y_2$, for $k=2,3,4$][
@@ -831,8 +815,7 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   $vek(v)_3 times signtwist(vek(w)_2)$, whose three components are, up to sign, exactly the components
   of $vek(w)_3$ -- enters through a single representative: the third generator, of degree 3, is
   verbatim the first component of $vek(w)_3$, and the other two components of $vek(w)_3$ also lie
-  in this ideal (as they must, since $I_3 subset.eq P_3$; confirmed by direct reduction) without
-  being needed as generators. Note that no generator of this ideal
+  in this ideal (as they must, since $I_3 subset.eq P_3$) without being needed as generators. Note that no generator of this ideal
   could avoid $vek(v)_3$ altogether: $Y_2$ projects dominantly onto $AA^6$, so the elimination ideal
   meets $R_2$ in $0$. *This ideal strictly contains $I_3$* --
   $I_3$ is its intersection with a second prime (the "$Y_1$" piece,
@@ -849,8 +832,7 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
     + v_(1,3) v_(2,2) v_(3,2) v_(4,2) - v_(1,2) v_(2,3) v_(3,2) v_(4,2) $
   $ - v_(1,2) v_(2,1) v_(3,1) v_(4,3) + v_(1,1) v_(2,2) v_(3,1) v_(4,3)
     - v_(1,3) v_(2,2) v_(3,3) v_(4,3) + v_(1,2) v_(2,3) v_(3,3) v_(4,3). $
-  All computed directly (elimination of $lambda$ from the graph ideal of $Phi$, in Sage), not just
-  asserted from the pattern.
+  All computed directly, by elimination of $lambda$ from the graph ideal of $Phi$.
 ]
 
 #lemma[dimension of $Y_2$, and where it lives][
@@ -880,8 +862,7 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
   generic determinantal variety of this shape: the classical codimension formula for the rank-$<= t$
   locus of a generic $m times n$ matrix gives $(m-t)(n-t) = 1 dot 2 = 2$ here
   #bcite("BrunsVetter1988"), and the same value falls out of viewing $V(I_2)$ as the affine cone
-  over the Segre embedding $PP^1 times PP^2 arrow.hook PP^5$, of dimension $1+2+1=4$. The value is
-  confirmed directly by Gröbner-basis computation as well (@ex-dim-codim). *Inductive step*: by
+  over the Segre embedding $PP^1 times PP^2 arrow.hook PP^5$, of dimension $1+2+1=4$. *Inductive step*: by
   @thm-determinantal, and since $a times b = 0$ if and only if $a,b$ are linearly dependent,
   $V(I_k) = Y_1 union Y_2$ (@def-y1y2). The locus $signtwist(vek(w)_(k-1))=0$ gives $Y_1$, with $vek(v)_k$
   unconstrained; the locus $signtwist(vek(w)_(k-1)) eq.not 0$ with $vek(v)_k$ proportional to it gives
@@ -912,8 +893,7 @@ being a polynomial map or morphism of varieties #bcite("Youcis2014").
       [4], [12], [10], [2],
     )
   ]
-  All three rows follow directly from @thm-codim's formula $dim(R_k\/I_k)=3k-2$; also confirmed by
-  direct Gröbner-basis dimension computation in Sage at each $k$, as an independent check.
+  All three rows follow directly from @thm-codim's formula $dim(R_k\/I_k)=3k-2$.
 ] <ex-dim-codim>
 
 #proposition[$Y_2 subset.not.eq Y_1$][
@@ -1049,8 +1029,8 @@ of $sqrt(I_k)$) -- that is closed in @sec-rad, after Cohen-Macaulayness is avail
   (@thm-componentcount, @def-primecomponents) and only their explicit generators change:
   - *At $k=2$*: $I_2$ is already prime (@thm-componentcount's base case), so $V(I_2)$ has exactly
     $k-1=1$ component -- itself.
-  - *At $k=3$*: exactly $k-1=2$ components, both computed directly (Gröbner bases, not inferred
-    from the pattern alone), matching $I_3 = P_2 inter P_3$:
+  - *At $k=3$*: exactly $k-1=2$ components, both computed directly, matching
+    $I_3 = P_2 inter P_3$:
     - $P_2$, the "$Y_1$" piece (block pattern $\{1,2\}$, matching that the length-2 sub-bracket
       already vanishes with $vek(v)_3$ free) -- generated by exactly $I_2$'s three generators from
       the first example, now inside $R_3$ with $vek(v)_3$ simply not appearing:
@@ -1252,7 +1232,6 @@ regularity criterion each draw on *both* ingredients and on neither each other.
       -v_(1,2)v_(2,1)+v_(1,1)v_(2,2), 0, -v_(1,3)v_(2,2)+v_(1,2)v_(2,3);
       v_(1,3)v_(2,1)-v_(1,1)v_(2,3), v_(1,3)v_(2,2)-v_(1,2)v_(2,3), 0
     ) $
-  Both blocks computed directly, not merely asserted from the recursive formula.
 ]
 
 #remark[a false shortcut][
@@ -1312,14 +1291,6 @@ regularity criterion each draw on *both* ingredients and on neither each other.
   independent check on @thm-componentcount's count, not merely assumed); @lem-serre gives $(S_1)$,
   using @thm-cm's Cohen-Macaulayness. Serre's criterion #bcite("Stacks031R") gives radicality.
 ]
-
-This has been verified independently in Sage, for the signed encoding, at every $k=2,dots,6$: the Jacobian
-recursion (@lem-jacrecursion) checked as a polynomial identity, not just at points, and every
-witness confirmed to lie on $V(I_k)$ with $"rank" J_k = 2$
-(#text(style: "italic")[code/referee\_radicality\_S\_check.sage]). The sharper claim, that each
-witness lies on *exactly* its intended component, is confirmed by an independently-computed
-primary decomposition at every $k=3,4,5,6$, which returns $k-1$ components in each case, in
-agreement with @thm-componentcount; the $k=6$ decomposition takes some hours.
 
 = The Primary Decomposition Theorem
 
@@ -1445,8 +1416,8 @@ the decomposition itself recomputed at $k=3,4,5,6$.
 Because rank, dimension and radicality are *not* characteristic-independent (a matrix of rank 3
 over $QQ$ may drop rank modulo $p$), computations over $QQ$ license nothing about $FF_p$, and the
 four main results were therefore re-run over $FF_2$, $FF_3$, $FF_4$, $FF_5$, $FF_7$ and $FF_9$ as
-well. No deviation appeared. The scripts are named at the point of use, and are deposited,
-with their full output transcripts, at Zenodo (DOI:
+well. No deviation appeared. The scripts are named in @sec-appendix beside the computations they
+produced, and are deposited, with their full output transcripts, at Zenodo (DOI:
 #link("https://doi.org/10.5281/zenodo.23433730")[10.5281/zenodo.23433730], with
 #link("https://doi.org/10.5281/zenodo.23433729")[10.5281/zenodo.23433729] for all versions); the
 paths cited in the
