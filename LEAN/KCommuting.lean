@@ -4,3 +4,8 @@ import KCommuting.Independence
 import KCommuting.CrossFacts
 import KCommuting.JacobianRecursion
 import KCommuting.Theorem12
+import KCommuting.IteratedIdentity
+import KCommuting.Determinantal
+import KCommuting.NonDegeneracy
+import KCommuting.PrimeComponents
+import KCommuting.Witnesses

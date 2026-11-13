@@ -408,3 +408,72 @@ the section is rewritten rather than deleted so the estimate and its outcome sta
   primary decomposition, and the geometric component count. Out of reach without substantial new
   library, and the Nullstellensatz-flavoured steps would additionally need the base-field care that
   `rem-base-field` handles informally in the article.
+
+## Status, 2026-11-12 — "Tier 0": everything the article states that needed no new library
+
+Done on jts-mini at Jan's request ("do tier 0 now"), after a survey of what Mathlib gained since the
+pin and of Axiom's Stacks library: `ai-workspace/20-projects/fast-commutators/working-notes/lean-what-more-can-be-formalized-2026-11-12.org`.
+Same pin (Lean `v4.34.0-rc2`, Mathlib `3a8a8942`); no new dependencies. Five new files, about 840
+lines. `lake build` is clean (1783 jobs) with no `sorry`, and `#print axioms` on all 15 headline
+declarations gives exactly `propext`, `Classical.choice` and `Quot.sound`.
+
+| article | declaration | file |
+|---|---|---|
+| iterated `thm-basic-identity` | `enc_icomm` | `IteratedIdentity.lean` |
+| "I_k cuts out the k-commuting locus" | `icomm_eq_zero_iff` | `IteratedIdentity.lean` |
+| `thm-determinantal` | `Ik_two`, `Ik_succ`, via `span_cross_eq_minorIdeal` | `Determinantal.lean` |
+| `def-wk`, D(w_k) and w_k give one ideal | `span_D` | `Determinantal.lean` |
+| `lem-nondeg` | `evalv_w_ptNd`, `w_ne_zero` | `NonDegeneracy.lean` |
+| `prop-y2-not-in-y1`, at the level of points | `ptY2_mem_Y2_not_mem_Y1` | `NonDegeneracy.lean` |
+| `def-primecomponents`: each P_j is prime | `P_isPrime` | `PrimeComponents.lean` |
+| I_k ⊆ P_j for 2 ≤ j ≤ k | `Ik_le_P` | `PrimeComponents.lean` |
+| `lem-witness-new` (k = 2, and k ≥ 3) | `witness_two`, `witness_new` | `Witnesses.lean` |
+| `lem-witness-inherited` | `witness_inherited` | `Witnesses.lean` |
+
+**Two places where the Lean statement is stronger than the article's.**
+
+- `icomm_eq_zero_iff` holds for *arbitrary* 2 × 2 matrices, not only traceless ones. In
+  characteristic ≠ 2, `[A₁,…,A_k] = 0` exactly when `w_k` vanishes at `(enc A₁,…,enc A_k)`. Until
+  now the link between `w k` and matrices was one commutator deep (`enc_commutator`), and "I_k is
+  the ideal of the k-commuting locus" was prose. The file also has a `ZMod 2` example showing the
+  characteristic hypothesis is needed: `enc 1 = 0` and `trace 1 = 0` there.
+- `Ik_le_P` and `P_isPrime` live in the single ring `MvPolynomial (Fin 3 × ℕ) F`. So the article's
+  remark that "Pⱼ does not depend on which k ≥ j it is viewed inside" is built in, not proved.
+
+**How rank is stated.** Blocks are indexed by `ℕ`, so the Jacobian is a family of columns indexed by
+`Fin 3 × ℕ` rather than a `3 × 3k` matrix. Its rank is `finrank` of the column span (`jacSpan`).
+Columns of blocks `≥ k` vanish by freshness, so this equals the article's rank.
+
+**Non-vacuity test.** An `example` at the end of `Witnesses.lean` feeds `witness_new`'s output at
+level k into `witness_inherited` at level k + 1, the way `thm-radical`'s induction uses them. This
+shows the hypotheses of `witness_inherited` can be satisfied.
+
+**A lemma Mathlib lacks**, at the pin *and* on master of 2026-11-12: `vars_pderiv_subset`
+(`vars (pderiv i p) ⊆ vars p`). It took eight lines from `as_sum`, `pderiv_monomial` and
+`Finsupp.support_tsub`. It is a candidate for a small Mathlib contribution, if anyone wants one.
+
+**Wrong turns, recorded as before:**
+
+1. `first | (convert …; simp) | …` does **not** backtrack when `simp` makes progress but leaves a
+   goal. Each alternative needs a closing `done`. Likewise `ring` inside `first`: on failure it
+   falls back to `ring_nf` and *succeeds* with the goal still open. Use `ring1`, which fails.
+2. `Ideal.neg_mem_iff.2 h` gives "Invalid projection … has function type". This is the same trap as
+   `Submodule.mem_span_image_iff_exists_fun` above: the ideal is an explicit argument. The generic
+   `neg_mem h` avoids it.
+3. `w (n + 2 + (m + 1))` is **not** definitionally `D (w _) ⨯₃ v _`. `w`'s recursion matches the
+   literal pattern `k + 3`, and `Nat.add` recurses on the variable `m`. Rewrite the index to
+   `(n + m) + 3` with `omega` first.
+4. `if_pos` / `if_neg` are deprecated at this pin. `simp only [h, h', ↓reduceIte]` does the job.
+5. Coercing an `AlgHom` to a `RingHom` by type ascription fails to elaborate. Use `.toRingHom`.
+6. Statements where `F` occurs only in an implicit argument (`Dv_single i`, `DvL.map_smul`,
+   `ptY2 n` inside an `example`) leave `Field ?m` stuck. Pin it with `(F := F)`.
+
+**What is still not formalized** is the dimension theory, Cohen–Macaulayness, Serre's criterion and
+the Jacobian criterion: `thm-codim`, `thm-componentcount`, `thm-cm`, `lem-serre`, `lem-cotangent`,
+`lem-localdim`, `lem-jacobian-*`, `thm-radical`, `thm-primarydecomp`. The working note above
+proposes an algebraic route ("Tier 1") that would reach the component count and (R₀) on Mathlib
+alone. It leaves (S₁) as the one step that needs either Axiom's unreviewed `StacksFrontier` or a
+future Mathlib.
+
+Note that the article numbers cited higher up in this README predate the JACA revision pass. Cite
+the Typst labels, as the 2026-08-31 staleness note says.
