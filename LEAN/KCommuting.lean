@@ -9,3 +9,5 @@ import KCommuting.Determinantal
 import KCommuting.NonDegeneracy
 import KCommuting.PrimeComponents
 import KCommuting.Witnesses
+import KCommuting.MinimalPrimes
+import KCommuting.RZero
